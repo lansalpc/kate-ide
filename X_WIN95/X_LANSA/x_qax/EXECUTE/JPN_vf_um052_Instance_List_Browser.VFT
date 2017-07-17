@@ -1,0 +1,99 @@
+<context>
+BusinessObject 
+</context>
+<caption>
+ｽﾅｯﾌﾟｲﾝ ｲﾝｽﾀﾝｽ ﾘｽﾄ ﾌﾞﾗｳｻﾞ
+</caption>
+<preamble>
+JPN_vf_um052_Instance_List_Browser.htm
+</preamble> 
+<hint>
+このｳｨｻﾞｰﾄﾞはｽﾅｯﾌﾟｲﾝ ｲﾝｽﾀﾝｽ ﾘｽﾄ ﾌﾞﾗｳｻﾞのｿｰｽを作成します。ｽﾅｯﾌﾟｲﾝ ｲﾝｽﾀﾝｽ ﾘｽﾄ ﾌﾞﾗｳｻﾞについてのより詳細な情報は VL ﾌﾚｰﾑﾜｰｸ ﾄﾞｷｭﾒﾝﾄを参照してください。
+</hint>
+<sequence>
+000100  
+</sequence>
+<handler>
+VF_UM055 
+</handler>
+<handlertxt>
+このﾋﾞｼﾞﾈｽ ｵﾌﾞｼﾞｪｸﾄの定義を自動的に生成できるように、ﾋﾞｼﾞﾈｽ ｵﾌﾞｼﾞｪｸﾄに近い物理ﾌｧｲﾙの名前を指定して下さい。
+</handlertxt>
+<code>
+* <<majorsep>>
+* ﾀｲﾌﾟ            : SNAP IN INSTANCE LIST BROWSER  
+* Ancestor        : VF_AC012  
+* 開発者          : <<user>> / <<date>> <<time>>
+* 著作権          : <<copyright>>
+* ﾌﾚｰﾑﾜｰｸ         : <<framework_lang ucaption>>
+* ｱﾌﾟﾘｹｰｼｮﾝ       : <<application_lang ucaption>>
+* ﾋﾞｼﾞﾈｽ ｵﾌﾞｼﾞｪｸﾄ : <<businessobject_lang ucaption>>
+* <<majorsep>>
+* 独自のｽﾅｯﾌﾟｲﾝ ｲﾝｽﾀﾝｽ ﾘｽﾄ ﾌﾞﾗｳｻﾞを作成するには:
+* <<majorsep>>
+*   (1). Visual LANSA の再利用可能な新規ｺﾝﾎﾟｰﾈﾝﾄを作成します。 (eg: MYBROWSER)
+*   (2). 新規ｺﾝﾎﾟｰﾈﾝﾄにこのｻﾝﾌﾟﾙのｿｰｽｺｰﾄﾞをｺﾋﾟｰします。
+*   (3). 新規ｺﾝﾎﾟｰﾈﾝﾄに Ancestor VF_AC012 があることを確認します。
+*   (4). ｺﾋﾟｰしたｿｰｽｺｰﾄﾞがﾋﾞｼﾞﾈｽ ｵﾌﾞｼﾞｪｸﾄの要求と識別方法のｲﾝｽﾀﾝｽ ﾘｽﾄに合うよ 
+*        うに修正してください。
+*   (5). 新規ｺﾝﾎﾟｰﾈﾝﾄをｺﾝﾊﾟｲﾙしてください。
+*   (6). ﾃﾞｻﾞｲﾝﾓｰﾄﾞでﾌﾚｰﾑﾜｰｸを開き、新規ｺﾝﾎﾟｰﾈﾝﾄのｽﾅｯﾌﾟｲﾝ ﾌﾞﾗｳｻﾞを使用する
+*        ﾋﾞｼﾞﾈｽ ｵﾌﾞｼﾞｪｸﾄの｢ﾋﾞｼﾞﾈｽ ｵﾌﾞｼﾞｪｸﾄ ﾌﾟﾛﾊﾟﾃｨ｣を表示します。
+*        ｢ｲﾝｽﾀﾝｽ ﾘｽﾄの設定｣ﾀﾌﾞを表示し、｢ｽﾅｯﾌﾟｲﾝ ｲﾝｽﾀﾝｽ ﾌﾞﾗｳｻﾞ｣の値を
+*        ｺﾝﾎﾟｰﾈﾝﾄの名前に変更してください。(eg: MYBROWSER)
+*   (7). ﾌﾚｰﾑﾜｰｸをｼｬｯﾄﾀﾞｳﾝし、ﾘｽﾀｰﾄしてください。ｽﾅｯﾌﾟｲﾝ ｲﾝｽﾀﾝｽ ﾌﾞﾗｳｻﾞは標準で 
+*        出荷されているものに置き換えられます。
+* <<majorsep>>
+Begin_Com Role(*EXTENDS #VF_AC012) Height(218) Layoutmanager(#ATTACHMENT_MANAGER) Width(332)
+<<Comment>> 全体の｢添付｣のﾚｲｱｳﾄ ﾏﾈｰｼﾞｬｰ  
+Define_Com Class(#PRIM_ATLM) Name(#ATTACHMENT_MANAGER)
+<<Comment>>可視の<<businessobject_lang ucaption>>ｸﾞﾘｯﾄﾞ
+Define_Com Class(#PRIM_GRID) Name(#INST_LIST) Columnbuttonheight(50) Displayposition(1) Left(0) Parent(#COM_OWNER) Selectionstyle(Multiple) Showlines(False) Showselection(True) Showsortarrow(True) Tabposition(1) Tabstop(False) Top(0)
+Define_Com Class(#PRIM_ATLI) Name(#GRID_ATTACHMENT_ITEM) Attachment(Center) Manage(#INST_LIST) Parent(#ATTACHMENT_MANAGER)
+<<UM055_GenGrid>> 
+* <<majorsep>>
+* ﾒｿｯﾄﾞの定義
+* <<majorsep>>
+* <<minorsep>>
+* 標準の uClearInstanceList ﾒｿｯﾄﾞを再定義する
+* <<minorsep>>
+MthRoutine uClearInstanceList Options(*Redefine)
+Clr_List #Inst_List
+EndRoutine
+* <<minorsep>>
+* 標準のuAddListEntry ﾒｿｯﾄﾞを再定義する
+* <<minorsep>>
+Mthroutine Name(uAddListEntry) Options(*Redefine)
+<<UM055_GenDclTmpCol>>  
+<<UM055_GenSnapIAssign>>  
+<<comment>>ｲﾝｽﾀﾝｽ ﾘｽﾄへ詳細を追加する
+Add_Entry #Inst_List
+<<comment>>終了
+EndRoutine
+* <<minorsep>>
+* ｸﾞﾘｯﾄﾞの<<businessobject_lang ucaption>>の選択の処理
+* <<minorsep>>
+EvtRoutine Handling(#Inst_List.ItemGotSelection) OPTIONS(*NOCLEARMESSAGES *NOCLEARERRORS)
+Signal SetSelectedInstance <<UM055_GenANKeys>>
+EndRoutine
+* <<minorsep>>
+* ｸﾞﾘｯﾄﾞの<<businessobject_lang ucaption>>の選択が外れた時の処理
+* <<minorsep>>
+EvtRoutine Handling(#Inst_List.ItemLostSelection) OPTIONS(*NOCLEARMESSAGES *NOCLEARERRORS)
+Signal DropSelectedInstance <<UM055_GenANKeys>>
+EndRoutine
+* <<minorsep>>
+* ｸﾞﾘｯﾄﾞの<<businessobject_lang ucaption>>のﾌｫｰｶｽの処理 
+* <<minorsep>>
+EvtRoutine Handling(#Inst_List.ItemGotFocus) OPTIONS(*NOCLEARMESSAGES *NOCLEARERRORS)
+Signal SetCurrentInstance <<UM055_GenANKeys>>
+EndRoutine
+* <<minorsep>>
+* ｸﾞﾘｯﾄﾞの<<businessobject_lang ucaption>>のﾌｫｰｶｽが外れた時の処理
+* <<minorsep>>
+EvtRoutine Handling(#Inst_List.ItemLostFocus) OPTIONS(*NOCLEARMESSAGES *NOCLEARERRORS)
+Signal DropCurrentInstance <<UM055_GenANKeys>>
+EndRoutine
+
+End_Com
+</code>

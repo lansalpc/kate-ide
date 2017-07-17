@@ -1,0 +1,175 @@
+<caption>
+Critère de recherche à partir d'un fichier ou d'une vue      
+</caption>
+<context>
+Filter 
+</context>
+<mode>
+ONE
+</mode>
+<preamble>
+FRA_vf_um052_Filter_Full_One.htm
+</preamble>
+<sequence>
+000100  
+</sequence>
+<handlertxt>
+Specify the physical file that your business object is to be based on.  Then choose which fields to show on the instance list and which field / fields uniquely identify a record.
+Préciser le fichier physique qui supportera la recherche effectuée dans ce filtre. Puis choisissez le module de Service utilisé pour lire les données. Enfin choisir la vue nécessaire, les clés et les options de recherche en suivant les questions posées.
+Choisissez toutes les autres options nécessaires.
+</handlertxt>
+<handler>
+VF_UM128 
+VF_UM058    
+VF_UM109 
+</handler>
+<hint>
+Cet assistant génère le code d'un filtre avec peu ou pas de modifications manuelles, basé sur un fichier ou une vue donnés. Il est destiné aux développeurs découvrant le cadre d'applications VL.
+</hint>
+<code>
+<<include VF_UM052_Filter_Preamble.vfi>>
+Function Options(*DIRECT)
+Begin_Com Role(*EXTENDS £VF_AC007O) Height(182) Width(215) LayoutManager(£TableLayout_Main) Verticalscroll(True)
+* <<majorsep>>
+* Définitions de zones simples, groupes et conditions
+* * <<majorsep>>
+Group_By   Name(£XG_Keys)    Fields(<<UM058_FullKeyList>>)
+Def_List   Name(£Save_Keys)   Fields(£XG_Keys) Type(*Working) Entrys(1)
+Def_Cond   Name(*SearchOK)   <<UM058_SearchCondition>> 
+* <<majorsep>>
+* Définitions des composants
+* <<majorsep>>
+
+* Présentation de Table
+
+Define_Com Class(£PRIM_TBLO) Name(£TableLayout_Main)
+
+Define_Com Class(£PRIM_TBLO.Column) Name(£Column1) Displayposition(1) Parent(£TableLayout_Main)
+Define_Com Class(£PRIM_TBLO.Row) Name(£Row1) Displayposition(1) Parent(£TableLayout_Main) Height(1,72)
+Define_Com Class(£PRIM_TBLO.Row) Name(£Row2) Displayposition(2) Parent(£TableLayout_Main) Height(25) Units(Pixels)
+
+* Bouton Rechercher
+
+Define_Com class(£PRIM_PHBN) Name(£Search_Button) Buttondefault(True) Caption('Rechercher') Parent(£Com_Owner)
+Define_Com Class(£PRIM_TBLO.Item) Name(£Search_ButtonItem1) Manage(£Search_Button) Parent(£TableLayout_Main) Row(£Row2) Column(£Column1) Sizing(FitToHeight) Alignment(CenterLeft) Flow(Right)
+
+<<if CA_UM058_CLEARLIST>>
+
+* Case à cocher Vider la liste
+
+Define_Com Class(£PRIM_CKBX) Name(£CLEAR_LIST) Caption('Vider la liste') Parent(£Com_owner) Displayposition(9) Tabposition(9)  Buttonstate(Checked)
+Define_Com Class(£PRIM_TBLO.Item) Name(£CLEAR_LISTItem1) Manage(£CLEAR_LIST) Parent(£TableLayout_Main) Row(£Row1) Sizing(None) Column(£Column1) Alignment(TopLeft) Flow(Down) Marginleft(5) Margintop(5)
+<<endif>>
+
+<<Comment>>Définir les zones et composants sur le formulaire du filtre
+<<UM058_Repeat False>>Define_Com Class(£<<field>>.Visual) Parent(£Com_Owner) Labelposition(Top) Marginleft(0) Margintop(19) Height(38) Left(5) Top(5)
+<<UM058_Repeat False>>Define_Com Class(£PRIM_TBLO.Item) Name(£<<Field>>Item1) Manage(£<<Field>>) Parent(£TableLayout_Main) Row(£Row1) Sizing(FitToWidth) Column(£Column1) Alignment(TopLeft) Flow(Down) Marginleft(5) Margintop(5) Marginright(5)
+
+* La liste utilisée pour recevoir les données du module de service  d'accès au fichier 
+
+Def_List Name(£<<UM055_BaseFile>>List) Counter(£ListCount) Type(*Working) Entrys(*Max) <<UM055_BaseFileFields>> 
+
+* <<majorsep>>
+* Routines
+* <<majorsep>>
+
+<<CommentBlock>>
+Mthroutine Name(uInitialize) Options(*Redefine) 
+<<Comment>>Exécuter toute logique d'initialisation définie dans l'ancêtre 
+
+£Com_Ancestor.uInitialize
+<<CommentBlock>>
+£COM_OWNER.avFilterLocation := LEFT /* Ce filtre est à gauche */
+£COM_OWNER.avAllowLocationChange := True /* autoriser l'utilisateur à déplacer le filtre */
+<<CommentBlock>>
+* <ici votre logique d'initialisation> 
+<<CommentBlock>>
+Endroutine
+<<if CA_UM109_TERMINATE>>
+<<CommentBlock>>
+Mthroutine Name(uTerminate) Options(*REDEFINE)
+<<CommentBlock>>
+* <ici votre logique de fin> 
+<<Comment>>Exécuter toute logique de fin définie dans l'ancêtre
+£Com_Ancestor.uTerminate
+<<CommentBlock>>
+Endroutine
+<<endif>>
+
+<<CommentBlock>>
+EvtRoutine Handling(£Search_Button.Cliquer)
+£Com_Owner.uSelectData
+Endroutine
+
+<<CommentBlock>>
+Mthroutine Name(uSelectData)  
+
+* Définir le service de données
+Define_Com Class(£<<UM058_BaseFileWAM>>.Find<<UM058_ViewName truncate>>) Name(£Find<<UM058_ViewName>>)
+
+* Protéger les valeurs en cours des clés d'écrasement par la boucle de sélection 
+Inz_List £Save_Keys 1 
+
+* Aller à l'état occupé
+£COM_OWNER.avGotoBusyState Showbusytext('Recherche') Animated(False)
+
+* Demander au module de Service <<UM058_BaseFileWAM>>  de lire les données du serveur
+£Find<<UM058_ViewName>>.ExecuteAsync(<<UM058_FullKeyList>> £<<UM055_BaseFile>>List )
+
+Evtroutine Handling(£Find<<UM058_ViewName>>.Completed)
+
+<<if CA_UM058_CLEARLIST>>
+If Cond(£CLEAR_LIST.ButtonState *EQ Checked)
+£AVLISTMANAGER.ClearList
+Endif
+<<else>>
+£AVLISTMANAGER.ClearList
+<<endif>>
+
+Selectlist Named(£<<UM055_BaseFile>>List)
+
+* Ici toute logique de sélection complémentaire 
+
+<<UM055_AddtoList>>  
+
+Endselect
+Clr_List Named(£<<UM055_BaseFile>>List)
+
+* Restaurer les valeurs de clé sauvegardées 
+Get_Entry 1 £Save_Keys 
+
+* Retour à l'état disponible
+£com_Owner.avGotoFreeState
+
+endroutine
+endroutine
+
+<<if CA_UM109_LISTEN>>
+* <<minorsep>>
+* Gérer toute demande externe pour mettre à jour la liste d'instance  
+* <<minorsep>>
+EvtRoutine £Com_owner.avEvent WithId(£EventId) WithAInfo1(£AInfo1) WithAInfo2(£AInfo2) WithAInfo3(£AInfo3) WithAInfo4(£AInfo4) WithAInfo5(£AInfo5)  WithNInfo1(£NInfo1) WithNInfo2(£NInfo2) WithNInfo3(£NInfo3) WithNInfo4(£NInfo4) WithNInfo5(£NInfo5)
+
+* placer les valeurs reçues dans les zones
+£vf_elIdn := £EventId.Value
+
+* Mapper les valeurs de AInfo et NInfo passées dans les zones clés - <<UM055_BaseFileKeys>>
+<<UM055_GenMapKeys>> 
+Case £vf_elIDN
+
+when value_is(= Refresh_Instance_List)
+* Recharger la liste d'instance
+
+Invoke £Com_Owner.uSelectData
+
+when value_is(= Add_List_Entry)
+* Ajouter une entrée à la liste
+
+* <ici votre logique>
+
+endcase
+Endroutine
+<<endif>>
+
+End_Com
+</code>  

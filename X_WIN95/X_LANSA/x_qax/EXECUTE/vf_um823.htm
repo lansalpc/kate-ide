@@ -1,0 +1,306 @@
+﻿<!-- ================================================================================================= -->
+<!-- =============================== COPYRIGHT NOTICE ================================================ -->
+<!-- ================================================================================================= -->
+<!-- (C) Copyright 2014 LANSA. LANSA is a trade name and registered trademark of LANSA in the          -->
+<!-- United States of America, Australia, the United Kingdom and other countries. All rights reserved. -->
+<!--                                                                                                   -->
+<!-- ------------------------------------------------------------------------------------------------- -->
+<!--                                                                                                   -->
+<!--          #     #       #       ######     #     #    ###    #     #     #####                     -->
+<!--          #  #  #      # #      #     #    ##    #     #     ##    #    #     #                    -->
+<!--          #  #  #     #   #     #     #    # #   #     #     # #   #    #                          -->
+<!--          #  #  #    #     #    ######     #  #  #     #     #  #  #    #  ####                    -->
+<!--          #  #  #    #######    #   #      #   # #     #     #   # #    #     #                    -->
+<!--          #  #  #    #     #    #    #     #    ##     #     #    ##    #     #                    -->
+<!--           ## ##     #     #    #     #    #     #    ###    #     #     #####                     -->
+<!--                                                                                                   -->
+<!-- ------------------------------------------------------------------------------------------------- -->
+<!-- Modification of this shipped HTML file will result one or more of the following:                  -->
+<!-- The introduction of incompatibilities with future versions of this framework.                     -->
+<!-- Voiding or limitation of any maintenance contract you may have in place for this framework.       -->
+<!-- Being charged for problem resolutions that are traced back to any such modifications.             -->
+<!-- ------------------------------------------------------------------------------------------------- -->
+<!DOCTYPE html>
+<html>  
+<head>    
+<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+<style type="text/css" >
+
+html, body { height:100%; }
+
+</style>
+
+<script type="text/javascript">
+   var VF_UseBackGroundColor = "#F4F3EE";
+   var arrayVFPROP = new Array();
+   var objVFPROP_Exchange1 = null;
+   var objVFPROP_Exchange2 = null;
+   var objVFPROP_LastTransact = null;
+   var intVFPROP_LastTransact = 0;
+   var GLOBAL_objStartSignalQueue = null;
+   var GLOBAL_objEndSignalQueue = null;
+   var GLOBAL_objIFRAME = null;
+   var GLOBAL_objIFRAMEWindow = null;
+   var GLOBAL_FileName = "";
+   var GLOBAL_FileParms = "";
+   var GLOBAL_Directory = "";
+   var GLOBAL_AllowEdit = false;
+   var GLOBAL_LastSaveHTML = "";
+   var GLOBAL_TimerID = null;
+   var GLOBAL_TimerPeriod = 1000;   
+   
+   /* ------------------------------------------------------------------------- */
+   function VFPROP_Initialize() {
+      if (objVFPROP_Exchange1 == null) {
+         objVFPROP_Exchange1 = document.getElementById("VFPROP_Exchange1");
+         objVFPROP_Exchange2 = document.getElementById("VFPROP_Exchange2");
+         objVFPROP_LastTransact = document.getElementById("VFPROP_LastTransAct");
+         if (objVFPROP_Exchange1 == null) alert("Failed to load elements correctly");
+      }
+      return;
+   }
+   /* ------------------------------------------------------------------------- */
+   function VFPROP_Get(strId, intInstance) {
+      VFPROP_Initialize();
+      {
+         var strKey = strId.toUpperCase() + "." + intInstance.toString();
+         var strValue = arrayVFPROP[strKey];
+         if (strValue == null) return ("");
+         else return (strValue);
+      }
+   }
+   /* ------------------------------------------------------------------------- */
+   function VFPROP_Onload() {
+      VFPROP_Initialize();
+      VFPROP_Signal("BASELOADED", "");
+   }
+   /* ------------------------------------------------------------------------- */
+   function VFPROP_Set(strId, intInstance, strValue) {
+      VFPROP_Initialize();
+      {
+         var strKey = strId.toUpperCase() + "." + intInstance.toString();
+         arrayVFPROP[strKey] = strValue;
+      }
+      return;
+   }
+   /* ------------------------------------------------------------------------- */
+   function VFPROP_Get_VL(strId, intInstance) {
+      objVFPROP_Exchange1.innerText = VFPROP_Get(strId, intInstance);
+      return;
+   }
+   /* ------------------------------------------------------------------------- */
+   function VFPROP_Set_VL(strId, intInstance) {
+      VFPROP_Initialize();
+      VFPROP_Set(strId, intInstance, objVFPROP_Exchange1.innerText);
+      return;
+   }
+   /* ------------------------------------------------------------------------- */
+   /* VFPROP_Next_Signal - Get the next signal                                  */
+   /* ------------------------------------------------------------------------- */
+   function VFPROP_Next_Signal() {
+
+      if (GLOBAL_objStartSignalQueue == null) {
+
+         VFPROP_Set("Signal.Id", 1, "");
+         VFPROP_Set("Signal.PayLoad", 1, "");
+      }
+      else {
+         var objSignal = GLOBAL_objStartSignalQueue;
+
+         GLOBAL_objStartSignalQueue = objSignal.objNextSignal;
+
+         if (GLOBAL_objEndSignalQueue == objSignal) GLOBAL_objEndSignalQueue = null;
+
+         VFPROP_Set("Signal.Id", 1, objSignal.strId);
+         VFPROP_Set("Signal.PayLoad", 1, objSignal.strPayLoad);
+
+         objSignal.objNextSignal = null;
+         delete (objSignal);
+      }
+
+      return;
+   }
+
+   /* ------------------------------------------------------------------------- */
+
+   function VFPROP_Signal(strEventId, strEventPayLoad) {
+      var objSignal = new Object();
+
+      /* Initialize */
+
+      VFPROP_Initialize();
+
+      /* Queue the signal object cleanly */
+
+      objSignal.strId = strEventId;
+      objSignal.strPayLoad = strEventPayLoad;
+      objSignal.objNextSignal = null;
+
+      if (GLOBAL_objStartSignalQueue == null) GLOBAL_objStartSignalQueue = objSignal;
+      if (GLOBAL_objEndSignalQueue != null) GLOBAL_objEndSignalQueue.objNextSignal = objSignal;
+      GLOBAL_objEndSignalQueue = objSignal;
+
+      /* Fire the signalling event */
+
+      intVFPROP_LastTransact++;
+      if (intVFPROP_LastTransact > 9999999) intVFPROP_LastTransact = 1;
+
+      /* Fire the signal to the HTML form container */
+
+      objVFPROP_LastTransact.innerText = intVFPROP_LastTransact.toString();
+      window.document.title = "<<SIGNAL>>";
+
+      /* Finished */
+
+      return;
+   }
+   /* ------------------------------------------------------------------------- */
+   function VF_UM823_IFrameFocusChange()
+   {
+      if (GLOBAL_objIFRAMEWindow != null) VFPROP_Signal("FOCUSCHANGE", "");
+   }
+   /* ------------------------------------------------------------------------- */
+   function VF_UM823_IFrameLoaded()
+   {
+
+      if (GLOBAL_objIFRAME.contentWindow.document.readyState != "complete") return;
+       
+      window.clearInterval(GLOBAL_TimerID);
+               
+      GLOBAL_objIFRAMEWindow = GLOBAL_objIFRAME.contentWindow;
+
+      if (GLOBAL_AllowEdit) GLOBAL_objIFRAMEWindow.document.body.contentEditable = "true"; 
+      
+      VFPROP_Signal("FRAMELOADED", "");
+
+      GLOBAL_LastSaveHTML = VF_UM823_GetCurrentHTML();
+
+      if (GLOBAL_AllowEdit) {
+         try {
+
+            GLOBAL_objIFRAMEWindow.document.body.addEventListener("focusin", function(event) { VF_UM823_IFrameFocusChange(event); }, false);
+            GLOBAL_objIFRAMEWindow.document.body.addEventListener("focusout", function(event) { VF_UM823_IFrameFocusChange(event); }, false);
+         }
+
+         catch (oE) {
+
+            GLOBAL_objIFRAMEWindow.document.body.attachEvent("onfocusin", VF_UM823_IFrameFocusChange);
+            GLOBAL_objIFRAMEWindow.document.body.attachEvent("onfocusout", VF_UM823_IFrameFocusChange);
+         }
+      }
+   }
+
+   /* ------------------------------------------------------------------------- */
+   function VF_UM823_GetModifiedHTML(flagReset) {
+
+      VFPROP_Set("HTML.MODIFIED", 1, "FALSE");
+
+      /* No modifications to be handled */
+
+      if (GLOBAL_objIFRAME == null) return;
+      if (GLOBAL_objIFRAMEWindow == null) return;
+      if (!(GLOBAL_AllowEdit)) return;
+      if (GLOBAL_LastSaveHTML == "") return;
+
+      {
+         var strCurrentHTML = VF_UM823_GetCurrentHTML();
+         var i = 0;
+
+         /* No modifications to be handled */
+
+         if (strCurrentHTML == "") return;
+
+         if (GLOBAL_LastSaveHTML == strCurrentHTML) return;
+
+         if (strCurrentHTML.length > 64000) {
+            alert("HTML document " + GLOBAL_FileName + " has a length of " + strCurrentHTML.length.toString() + ". This is too long to be saved correctly. Save request has been ignored.");
+            return;
+         }
+
+         /* Has been modified */
+
+         VFPROP_Set("HTML.MODIFIED", 1, "TRUE");
+
+         arrayobjIMG = GLOBAL_objIFRAMEWindow.document.getElementsByTagName("IMG");
+
+         if ((arrayobjIMG != null) && (arrayobjIMG.length > 0)) {
+            for (i = 0; i < arrayobjIMG.length; i++) {
+               try {
+                  var strNewSrc = "";
+                  var objIMG = arrayobjIMG[i];
+                  var intPos = objIMG.src.lastIndexOf("/");
+
+                  if (intPos < 0) strNewSrc = objIMG.src;
+                  else strNewSrc = objIMG.src.slice((intPos + 1));
+
+                  intPos = strNewSrc.indexOf("?");
+                  if (intPos >= 0) strNewSrc = strNewSrc.substring(0, intPos);
+
+                  objIMG.src = strNewSrc;
+
+               }
+               catch (oE) { window.alert("VF_UM823_GetModifiedHTML encountered error - " + oE.description); }
+            }
+         }
+
+         VFPROP_Set("HTML.HTML", 1, VF_UM823_GetCurrentHTML());
+
+         GLOBAL_objIFRAMEWindow.document.body.contentEditable = "true";
+
+         if (flagReset) GLOBAL_LastSaveHTML = VF_UM823_GetCurrentHTML();
+
+      }
+
+   }
+   /* ------------------------------------------------------------------------- */
+   function VF_UM823_LoadIFrame() 
+   {
+
+      try { window.document.body.removeChild(GLOBAL_objIFRAME) }
+      catch (oE) { } /* Ignore error*/
+
+      var strFileName = VFPROP_Get("CURRENT.FILENAME", 1)
+
+      GLOBAL_FileName = VFPROP_Get("CURRENT.FILENAME", 1);
+      GLOBAL_FileParms = VFPROP_Get("CURRENT.FILEPARMS", 1);
+      GLOBAL_Directory = VFPROP_Get("CURRENT.DIRECTORY", 1);
+      GLOBAL_AllowEdit = (VFPROP_Get("CURRENT.ALLOWEDIT", 1) == "TRUE");
+
+      GLOBAL_objIFRAME = document.createElement("iframe");
+
+      GLOBAL_objIFRAME.id = 'VF_UM823_IFrame';
+      GLOBAL_objIFRAME.style.border = '0px';
+      GLOBAL_objIFRAME.style.backgroundColor = 'threedface';
+      GLOBAL_objIFRAME.style.font = 'Menu';
+      GLOBAL_objIFRAME.style.color = 'MenuText';
+      GLOBAL_objIFRAME.style.height = '100%';
+      GLOBAL_objIFRAME.style.width = '100%';
+      GLOBAL_objIFRAME.style.margin = '0px';
+      GLOBAL_objIFRAME.style.padding = '0px';
+                      
+      if (GLOBAL_Directory == "") GLOBAL_objIFRAME.src = GLOBAL_FileName + GLOBAL_FileParms;
+      else GLOBAL_objIFRAME.src = GLOBAL_Directory + GLOBAL_FileName + GLOBAL_FileParms;
+
+      document.body.appendChild(GLOBAL_objIFRAME);
+
+      GLOBAL_TimerID = window.setInterval(function() { try { VF_UM823_IFrameLoaded(); } catch (oE) { } }, GLOBAL_TimerPeriod); 
+      
+      return;
+   }
+   /* ------------------------------------------------------------------------- */
+   function VF_UM823_GetCurrentHTML() 
+   {
+      return GLOBAL_objIFRAMEWindow.document.documentElement.outerHTML;
+   }
+   
+   /* ------------------------------------------------------------------------- */
+</script>
+</head>
+<body scroll='no' onload='VFPROP_Onload()' oncontextmenu='return(false)' leftmargin='0' rightmargin='0' topmargin='0' bottommargin='0'>
+<div id='VFPROP_Exchange1' style='visibility:hidden;display:none'>xxx</div>
+<div id='VFPROP_Exchange2' style='visibility:hidden;display:none'>xxx</div>
+<div id='VFPROP_LastTransAct' style='visibility:hidden;display:none'>xxx</div>
+</body>
+</html>
+
+

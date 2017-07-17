@@ -1,0 +1,13 @@
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" 
+     xmlns:bal="http://schemas.microsoft.com/wix/BalExtension">
+   <Bundle Name="" Version="" DisableModify="yes" Manufacturer="" UpgradeCode="" IconSourceFile="">
+      <RelatedBundle Id="" Action="Detect"/>
+      <BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.HyperlinkLicense">
+         <bal:WixStandardBootstrapperApplication LicenseUrl="" ShowVersion="yes" LogoFile="" SuppressOptionsUI="yes" SuppressRepair="yes" />
+      </BootstrapperApplicationRef>
+      
+      <Chain>
+         <MsiPackage Id="Version" SourceFile="" Vital="yes" DisplayInternalUI="yes" />
+      </Chain>
+   </Bundle>
+</Wix>

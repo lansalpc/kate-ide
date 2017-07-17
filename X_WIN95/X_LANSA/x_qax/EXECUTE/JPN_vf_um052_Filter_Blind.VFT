@@ -1,0 +1,76 @@
+<caption>
+CRUD ﾌｨﾙﾀ
+</caption>
+<preamble>
+JPN_vf_um052_Filter_Blind.htm
+</preamble>
+<context>
+Filter
+</context>
+<sequence>
+000100  
+</sequence>
+<handler>
+VF_UM128
+VF_UM109 
+</handler>
+<handlertxt>
+Specify the physical file that your business object is to be based on.  Then choose which fields to show on the instance list and which field / fields uniquely identify a record.
+このﾌｨﾙﾀで行う検索を支援する物理ﾌｧｲﾙを指定します。
+</handlertxt>
+<hint>
+このｳｨｻﾞｰﾄﾞはｺｰﾄﾞを生成しますが、それは、指定したﾌｧｲﾙやﾋﾞｭｰに基づいた手作業を不要とするか、もしくはほとんどなしで完了させるﾌｨﾙﾀ用のものです。これは、VL ﾌﾚｰﾑﾜｰｸの初心者である開発者向けに設計されています。
+</hint>
+<code>
+<<include VF_UM052_Filter_Preamble.vfi>>
+Function Options(*DIRECT)
+Begin_Com Role(*EXTENDS #VF_AC007) Height(182) Width(326) LayoutManager(#MAIN_LAYOUT)
+* <<majorsep>>
+* Simple Field, ｸﾞﾙｰﾌﾟ及び Condition Definitions
+* <<majorsep>>
+Group_By   Name(#XG_Ident)   Fields(<<UM055_GenFldList>>)
+<<if CA_UM109_CHK_CONNECT>>
+define field(#con_rslt) type(*char) length(2)
+Def_Cond Name(*conresult) Cond(#con_rslt = OK)
+<<endif>> 
+* <<majorsep>>
+* ｺﾝﾎﾟｰﾈﾝﾄの定義
+* <<majorsep>>
+<<Comment>>ﾎﾞﾃﾞｨ及び Button 配置ﾊﾟﾈﾙ
+Define_Com Class(#PRIM_PANL) Name(#BODY_PANEL) Displayposition(1) Height(182) Layoutmanager(#BODY_FLOW) Left(0) Parent(#COM_OWNER) Tabposition(1) Tabstop(False) Top(0) Width(246)
+Define_Com Class(#PRIM_PANL) Name(#BUTTON_PANEL) Displayposition(2) Height(182) Layoutmanager(#BUTTON_FLOW) Left(246) Parent(#COM_OWNER) Tabposition(2) Tabstop(False) Top(0) Width(88)
+<<Comment>>ﾌﾟﾛｾｽとﾌﾛｰ ﾚｲｱｳﾄ ﾏﾈｰｼﾞｬｰ
+Define_Com Class(#PRIM_ATLM) Name(#MAIN_LAYOUT)
+Define_Com Class(#PRIM_ATLI) Name(#BODY_ATTACH)   Attachment(Center) Manage(#BODY_PANEL) Parent(#MAIN_LAYOUT)
+Define_Com Class(#PRIM_ATLI) Name(#BUTTON_ATTACH) Attachment(Right)  Manage(#BUTTON_PANEL) Parent(#MAIN_LAYOUT)
+Define_Com Class(#PRIM_FWLM) Name(#BUTTON_FLOW) Direction(TopToBottom) Flowoperation(Center) Marginbottom(4) Marginleft(4) Marginright(4) Margintop(4) Spacing(4) Spacingitems(4)
+Define_Com Class(#PRIM_FWLM) Name(#BODY_FLOW) Direction(TopToBottom) Marginbottom(4) Marginleft(4) Marginright(4) Margintop(4) Spacing(4) Spacingitems(4)
+* <<majorsep>>
+* Method Definitions
+* <<majorsep>>
+<<CommentBlock>>
+Mthroutine Name(uInitialize) Options(*Redefine) 
+<<if CA_UM109_CHK_CONNECT>>
+<<comment>>Check that the connection is still live 
+#avFrameworkManager.avCheckConnection ReturnValue(#con_rslt)
+If Cond(*conresult)
+<<endif>> 
+<<comment>><<businessobject_lang ucaption>>ｲﾝｽﾀﾝｽ ﾘｽﾄの更新開始を示します。
+#avListManager.BeginListUpdate
+
+#avListManager.ClearList
+
+Select Fields(#XG_Ident) From_File(<<UM055_BaseFile>>)  
+<<UM055_AddtoList>>  
+EndSelect
+<<comment>><<businessobject_lang ucaption>>ｲﾝｽﾀﾝｽ ﾘｽﾄの更新が現在完了していること示します。
+#avListManager.EndListUpdate
+
+<<if CA_UM109_CHK_CONNECT>>
+endif
+<<endif>>
+<<comment>>Make this a hidden filter
+#Com_Owner.avHiddenFilter := TRUE
+Endroutine
+End_Com
+</code>  

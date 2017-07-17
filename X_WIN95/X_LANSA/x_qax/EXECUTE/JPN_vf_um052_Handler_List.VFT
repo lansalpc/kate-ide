@@ -1,0 +1,194 @@
+<context>
+CommandHandler
+</context>
+<caption>
+ﾘｽﾄを保守するｺﾏﾝﾄﾞﾊﾝﾄﾞﾗ
+</caption>
+<preamble>
+JPN_vf_um052_Handler_List.htm
+</preamble>
+<hint>
+このｱｼｽﾀﾝﾄは、子ﾃﾞｰﾀのﾘｽﾄを保守するｺﾏﾝﾄﾞﾊﾝﾄﾞﾗのｺｰﾄﾞを作成します。
+</hint>
+<sequence>
+000100  
+</sequence>
+<handler>
+VF_UM105
+VF_UM106
+VF_UM108
+</handler>
+<handlertxt>
+親ﾋﾞｼﾞﾈｽｵﾌﾞｼﾞｪｸﾄに最も近い物理ﾌｧｲﾙは何ですか？
+このｺﾏﾝﾄﾞﾊﾝﾄﾞﾗのﾘｽﾄの子ﾃﾞｰﾀを、どのように取得しますか？
+子ﾃﾞｰﾀのﾌｨｰﾙﾄﾞをどこに表示しますか？
+</handlertxt>
+<code>
+<<include VF_UM052_CommandHandler_Preamble.vfi>>
+FUNCTION OPTIONS(*DIRECT)
+
+BEGIN_COM ROLE(*EXTENDS #VF_AC010) LAYOUTMANAGER(#ATLM_1) WIDTH(775)
+* <<majorsep>>
+* Basic filter panel layout and management details
+* <<majorsep>>
+DEFINE_COM CLASS(#prim_GPBX) NAME(#GPBX_1) DISPLAYPOSITION(1) HEIGHT(308) LAYOUTMANAGER(#SPLM_1) LEFT(2) PARENT(#COM_OWNER) TABPOSITION(1) TOP(2) WIDTH(771)
+DEFINE_COM CLASS(#PRIM_ATLM) NAME(#ATLM_1) MARGINBOTTOM(2) MARGINLEFT(2) MARGINRIGHT(2) MARGINTOP(2)
+DEFINE_COM CLASS(#PRIM_ATLI) NAME(#ATLI_4) ATTACHMENT(Center) MANAGE(#GPBX_1) PARENT(#ATLM_1)
+*
+DEFINE_COM CLASS(#PRIM_SPLM) NAME(#SPLM_1) DIVIDERSTYLE(Line) ORIENTATION(Vertical)
+DEFINE_COM CLASS(#PRIM_PANL) NAME(#Left_Panel) DISPLAYPOSITION(1) HEIGHT(293) LAYOUTMANAGER(#ATLM_3) LEFT(4) PARENT(#GPBX_1) TABPOSITION(1) TABSTOP(False) TOP(11) WIDTH(285)
+DEFINE_COM CLASS(#PRIM_PANL) NAME(#Right_Panel) DISPLAYPOSITION(2) HEIGHT(293) LAYOUTMANAGER(#ATLM_2) LEFT(290) PARENT(#GPBX_1) TABPOSITION(2) TABSTOP(False) TOP(11) WIDTH(477)
+DEFINE_COM CLASS(#PRIM_PANL) NAME(#DATA_PANEL) DISPLAYPOSITION(1) HEIGHT(293) LAYOUTMANAGER(#FWLM_1) LEFT(0) PARENT(#Right_Panel) TABPOSITION(1) TABSTOP(False) TOP(0) WIDTH(477)
+DEFINE_COM CLASS(#PRIM_SPLI) NAME(#SPLI_1) MANAGE(#Left_Panel) PARENT(#SPLM_1) WEIGHT(1)
+DEFINE_COM CLASS(#PRIM_SPLI) NAME(#SPLI_2) MANAGE(#Right_Panel) PARENT(#SPLM_1) WEIGHT(1)
+DEFINE_COM CLASS(#PRIM_ATLM) NAME(#ATLM_3)
+DEFINE_COM CLASS(#PRIM_ATLI) NAME(#ATLI_1) ATTACHMENT(Center) MANAGE(#Data_List) PARENT(#ATLM_3)
+DEFINE_COM CLASS(#PRIM_FWLM) NAME(#FWLM_1) DIRECTION(TopToBottom) MARGINBOTTOM(10) MARGINLEFT(10) MARGINRIGHT(10) MARGINTOP(10)
+DEFINE_COM CLASS(#PRIM_FWLI) NAME(#FWLI_8) MANAGE(#Right_Panel) PARENT(#FWLM_1)
+DEFINE_COM CLASS(#PRIM_ATLM) NAME(#ATLM_2)
+DEFINE_COM CLASS(#PRIM_ATLI) NAME(#ATLI_3) ATTACHMENT(Center) MANAGE(#DATA_PANEL) PARENT(#ATLM_2)
+
+* <<majorsep>>
+* The list
+* <<majorsep>>
+DEFINE_COM CLASS(#PRIM_LTVW) NAME(#Data_List) COMPONENTVERSION(2) DISPLAYPOSITION(1) FULLROWSELECT(True) HEIGHT(268) LEFT(0) PARENT(#Left_Panel) SHOWSORTARROW(True) TABPOSITION(1) TOP(0) WIDTH(285)
+<<UM105_Repeat_Field_List>>DEFINE_COM CLASS(#PRIM_LVCL) NAME(#LVCL_<<FIELD_NUMBER>>) Sortonclick(True) DISPLAYPOSITION(<<FIELD_NUMBER>>) PARENT(#Data_List) SOURCE(#<<FIELD>>) 
+* <<majorsep>>
+* The edit panel
+* <<majorsep>>
+<<UM105_Repeat_Field_Edit>>DEFINE_COM CLASS(#<<FIELD>>.Visual) NAME(#<<FIELD>>) DISPLAYPOSITION(<<FIELD_NUMBER>>) HEIGHT(19) LEFT(10) PARENT(#DATA_PANEL) TABPOSITION(<<FIELD_NUMBER>>) USEPICKLIST(False) 
+<<UM105_Repeat_Field_Edit>>DEFINE_COM CLASS(#PRIM_FWLI)NAME(#FWLI_E<<FIELD_NUMBER>>)  MANAGE(#<<FIELD>>) PARENT(#FWLM_1)
+*
+DEFINE_COM CLASS(#PRIM_PHBN) NAME(#Save_Button) CAPTION('Save')  DISPLAYPOSITION(100)PARENT(#DATA_PANEL) 
+DEFINE_COM CLASS(#PRIM_FWLI) NAME(#FWLI_5) MANAGE(#Save_Button) PARENT(#FWLM_1)
+DEFINE_COM CLASS(#PRIM_PHBN) NAME(#Delete_Button) CAPTION('Delete') DISPLAYPOSITION(101) PARENT(#DATA_PANEL) 
+DEFINE_COM CLASS(#PRIM_FWLI) NAME(#FWLI_6) MANAGE(#Delete_Button) PARENT(#FWLM_1)
+DEFINE_COM CLASS(#PRIM_PHBN) NAME(#New_Button) CAPTION('New ') DISPLAYPOSITION(2) LEFT(0) PARENT(#Left_Panel) TABPOSITION(2) TOP(268) WIDTH(285)
+DEFINE_COM CLASS(#PRIM_FWLI) NAME(#FWLI_7) MANAGE(#New_Button) PARENT(#FWLM_1)
+DEFINE_COM CLASS(#PRIM_ATLI) NAME(#ATLI_2) ATTACHMENT(Bottom) MANAGE(#New_Button) PARENT(#ATLM_3)
+*
+* <<majorsep>>
+* Work field definitions
+* <<majorsep>>
+define field(#ret_code) reffld(#STD_BOOL)
+* <<majorsep>>
+* Method Routines and Event Handling Routines
+* <<majorsep>>
+
+* Handle the uExecute request
+
+Mthroutine uExecute Options(*Redefine)
+#Com_Ancestor.uInitialize
+
+<<UM105_GenGetLst>>
+<<comment>>Fetch information about the parent from the main file 
+Fetch Fields(*ALL) From_File(<<UM105_BaseFile>>) With_Key(<<UM105_BaseFileKeys>>) 
+
+Execute FillList
+Endroutine
+
+* Handle the new button
+
+EVTROUTINE HANDLING(#New_Button.Click) OPTIONS(*CLEARERRORS *CLEARMESSAGES)
+Execute ShowData (0)
+Endroutine
+
+* Handle the save button
+
+EVTROUTINE HANDLING(#Save_Button.Click) OPTIONS(*CLEARERRORS *CLEARMESSAGES)
+If_null #Link_Item
+Insert (*ALL) to_file(<<UM106_ChildUniqueKeyView>>) Val_Error(*next) IO_Error(*Next)
+
+If_status *Okay
+Add_Entry #Data_List
+Execute Subroutine(ShowData) With_Parms(#Data_List.CurrentItem.Entry)
+Endif
+Else
+Update #XG_Data in_file(<<UM106_ChildUniqueKeyView>>) Val_Error(*next) IO_Error(*Next)
+
+If_status *Okay
+Inz_list #SaveList 1
+Get_entry #Link_item #Data_List
+Get_entry 1 #Savelist
+Upd_entry #Data_List
+Execute Subroutine(ShowData) With_Parms(#Data_List.CurrentItem.Entry)
+Endif
+
+Endif
+ENDROUTINE
+
+* Handle the delete button
+
+EVTROUTINE HANDLING(#Delete_Button.Click) OPTIONS(*CLEARERRORS *CLEARMESSAGES)
+Delete from_file(<<UM106_ChildUniqueKeyView>>) with_key(<<UM106_ChildUniqueKeys>>) Val_Error(*next) IO_Error(*Next)
+
+If_status *okay
+Dlt_entry #Link_Item #Data_List
+#Data_panel.Visible := False
+Endif
+ENDROUTINE
+
+* Handle click on an item in the list
+
+EVTROUTINE HANDLING(#Data_List.ItemGotSelection) OPTIONS(*CLEARERRORS *CLEARMESSAGES)
+
+Execute ShowData (#Data_List.CurrentItem.Entry)
+
+ENDROUTINE
+
+EVTROUTINE HANDLING(#Data_List.ItemLostSelection) OPTIONS(*CLEARERRORS *CLEARMESSAGES)
+
+#Data_panel.Visible := False
+
+ENDROUTINE
+
+* Fill or refill the list of <<UM106_ChildPhysFileDesc>>
+
+Subroutine FillList
+Def_list #SaveList (<<UM108_ListFields>>) Type(*working) Entrys(1)
+
+Clr_list #Data_List
+
+Select fields(<<UM108_ListFields>>) from_file(<<UM106_ChildView>>) with_Key(<<UM106_ChildViewKeysUsed>>)
+
+Add_entry #Data_List
+Endselect
+
+#Data_panel.Visible := False
+Endroutine
+
+* Show the data panel
+
+Subroutine ShowData ((#Link_Item *Received))
+Define #Link_Item Reffld(#Std_num)
+
+Group_by #XG_Data (<<UM108_EditFields>>)
+
+* Null means a new <<UM106_ChildPhysFileDesc>>
+
+If_null #Link_Item
+
+#XG_Data := *Default
+Set <<UM106_ChildUniqueKeys NOTONPARENT>> ReadOnly(False) VisualStyle(*null)
+Set #Data_panel Visible(True) Enabled(True)
+#Delete_Button.Visible := False
+
+* else review an existing <<UM106_ChildPhysFileDesc>>
+Else
+Fetch *ALL from_file(<<UM106_ChildUniqueKeyView>>) with_key(<<UM106_ChildUniqueKeys>>)
+
+If_status is_not(*okay)
+
+Execute FillList
+Use Message_Box_Show (ok ok warn *Component '<<UM106_ChildPhysFileDesc>> was not found')
+
+else
+Set <<UM106_ChildUniqueKeys NOTONPARENT>> ReadOnly(True) VisualStyle(#UF_VS005)
+
+#Data_panel.Visible #Delete_Button.Visible := True
+
+Endif
+Endif
+Endroutine
+END_COM
+</code>

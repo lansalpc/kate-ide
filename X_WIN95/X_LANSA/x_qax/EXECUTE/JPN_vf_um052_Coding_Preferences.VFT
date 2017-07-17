@@ -1,0 +1,52 @@
+<caption>
+ｺｰﾄﾞ生成ｵﾌﾟｼｮﾝの設定
+<context>
+Framework
+</context>
+</caption>
+<hint>
+ｺｰﾄﾞ ｳｨｻﾞｰﾄﾞのｵﾌﾟｼｮﾝを設定する場合に使用します。
+</hint>
+<context>
+ﾌﾚｰﾑﾜｰｸ
+</context>
+<sequence>
+999999     
+</sequence>
+<handler>
+VF_UM053
+</handler>
+<handlertxt>
+ｵﾌﾟｼｮﾝを設定して"ｺｰﾄﾞ生成"をｸﾘｯｸすると、選択されたｵﾌﾟｼｮﾝを確認するためのｻﾝﾌﾟﾙ ｿｰｽが生成されます。
+</handlertxt>
+<code>
+<<comment>>著作権の文章は次のように表示されます
+<<comment>> <<copyright>>
+<<comment>>ﾏﾆｭｱﾙの修正が必要なｺｰﾄﾞのﾏｰｶｰ
+<<comment>> <<tba>>  
+* <<majorsep>>
+* 第1ﾚﾍﾞﾙのｿｰｽのｻﾝﾌﾟﾙです。 
+* <<majorsep>>     
+* 
+* <<minorsep>>
+* 第2ﾚﾍﾞﾙのｿｰｽのｻﾝﾌﾟﾙです。
+* <<minorsep>>    
+<<Comment>>通常のｺﾒﾝﾄ行はこのように表示されます。
+<<Comment>>通常のｺﾒﾝﾄ行はこのように表示されます。
+<<Comment>>通常のｺﾒﾝﾄ行はこのように表示されます。
+<<commentBlock>> 
+* ｺﾒﾝﾄ ﾌﾞﾛｯｸ 1
+* ｺﾒﾝﾄ ﾌﾞﾛｯｸ 1
+* ｺﾒﾝﾄ ﾌﾞﾛｯｸ 1
+<<commentBlock>> 
+* ｺﾒﾝﾄ ﾌﾞﾛｯｸ 2
+* ｺﾒﾝﾄ ﾌﾞﾛｯｸ 2
+<<commentBlock>> 
+* ｺﾒﾝﾄ ﾌﾞﾛｯｸ 3
+* ｺﾒﾝﾄ ﾌﾞﾛｯｸ 3
+* ｺﾒﾝﾄ ﾌﾞﾛｯｸ 3
+<<Comment>>ﾌｨﾙﾀｰ ﾊﾟﾈﾙのﾌｨｰﾙﾄﾞは次の属性を持っています。
+Define_Com Class(#Std_Num) Name(#SimpleField1) <<filterfield>>
+<<Comment>>ｺﾏﾝﾄﾞ ﾊﾝﾄﾞﾗｰのﾌｨｰﾙﾄﾞは次の属性を持っています。
+Define_Com Class(#Std_Num) Name(#SimpleField2) <<handlerfield>>
+</code>

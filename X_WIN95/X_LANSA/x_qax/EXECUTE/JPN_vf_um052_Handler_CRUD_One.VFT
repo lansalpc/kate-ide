@@ -1,0 +1,289 @@
+﻿<context>
+CommandHandler 
+</context>
+<caption>
+CRUD ƒRƒ}ƒ“ƒh ƒnƒ“ƒhƒ‰[
+</caption>
+<preamble>
+ENG_vf_um052_Handler_CRUD_One.htm
+</preamble>
+<hint>
+‚±‚ÌƒEƒBƒU[ƒh‚Í CRUD (Create<ì¬>/Read<“Ç‚Ýž‚Ý>/Update<XV>/Delete<íœ>) ƒRƒ}ƒ“ƒh ƒnƒ“ƒhƒ‰[‚ÌƒR[ƒh‚ð¶¬‚µ‚Ü‚·B   
+</hint>
+<mode>
+ONE
+</mode>
+<sequence>
+000100  
+</sequence>
+<handler>
+VF_UM128 
+VF_UM129  
+VF_UM130   
+</handler>
+<handlertxt>
+If  the Instance List fields and Identifier fields are correct, proceed to the next step.   
+Specify the fields that you want on your command handler.                   
+Specify the things that you would like to include in the generated code. 
+</handlertxt>
+<code>
+<<include VF_UM052_CommandHandler_Preamble.vfi>>
+*
+* ’ˆÓ:‚±‚ÌƒRƒ}ƒ“ƒh ƒnƒ“ƒhƒ‰[‚ÍAV‹KAíœA‚»‚Ì‘¼ (Ú×‚âì¬/“Ç‚Ýž‚Ý/XV/íœ‚È‚Ç) ‚ÌƒRƒ}ƒ“ƒh‚É‚æ‚è‹N“®‚³‚ê‚é‚æ‚¤‚ÉÝŒv‚³‚ê‚Ä‚¢‚Ü‚·B
+* ‚»‚Ì“®ì‚ÍAƒRƒ}ƒ“ƒh‚Ìƒ†[ƒU[ ƒIƒuƒWƒFƒNƒg ƒ^ƒCƒv‚ðŽg‚Á‚ÄŒˆ’è‚³‚ê‚Ü‚·B
+*
+Function Options(*DIRECT) 
+Begin_Com Role(*EXTENDS #VF_AC010O) Layoutmanager(#TableLayout_Main) Width(600) Height(240) 
+
+* ƒe[ƒuƒ‹ ƒŒƒCƒAƒEƒg
+
+Define_Com Class(#PRIM_TBLO) Name(#TableLayout_Main)
+
+Define_Com Class(#PRIM_TBLO.Column) Name(#Column1) Displayposition(1) Parent(#TableLayout_Main)
+Define_Com Class(#PRIM_TBLO.Row) Name(#Row1) Displayposition(1) Parent(#TableLayout_Main) Height(1.72)
+Define_Com Class(#PRIM_TBLO.Row) Name(#Row2) Displayposition(2) Parent(#TableLayout_Main) Height(25) Units(Pixels)
+
+* ƒOƒ‹[ƒv
+
+Group_by Name(#XG_HEAD) <<UM057_GenHeadGroup>>
+Group_By   Name(#XG_Keys)   Fields(<<UM055_BaseFileKeys>>)
+
+* ì‹ÆƒtƒB[ƒ‹ƒh
+
+define field(#cmd_type) type(*char) length(32) desc('user object type of the command')
+Define_com #prim_boln #Ret_Code
+
+* ƒpƒlƒ‹‚É‚ ‚éƒtƒB[ƒ‹ƒh‚ÌƒRƒŒƒNƒVƒ‡ƒ“
+
+DEFINE_COM CLASS(#Prim_ACol<#prim_evp>) NAME(#PanelFields)
+Define_Com Class(#Prim_ACol<#prim_evp>) Name(#KeyFields)
+
+
+<<if CA_UM056_SAVEBTN>>
+* V‹Kì¬/XV/íœƒ{ƒ^ƒ“
+
+DEFINE_COM CLASS(#PRIM_PHBN) NAME(#Button_All) BUTTONDEFAULT(True) CAPTION('Undefined') DISPLAYPOSITION(1) LEFT(12) PARENT(#Com_Owner) TABPOSITION(1) TOP(4) WIDTH(120)
+Define_Com Class(#PRIM_TBLO.Item) Name(#Button_AllItem1) Manage(#Button_All) Parent(#TableLayout_Main) Row(#Row2) Sizing(FitToHeight) Column(#Column1) Alignment(CenterLeft) Flow(Right)
+<<endif>>
+
+* ƒpƒlƒ‹‚ÌƒtƒB[ƒ‹ƒh
+
+<<UM057_Repeat True ALL HEAD>>Define_Com Class(#<<field>>.Visual) Parent(#Com_Owner) Marginleft(160) LabelType(<<UM056_Identify_With>>)
+<<UM057_Repeat False ALL HEAD>>Define_Com Class(#PRIM_TBLO.Item) Name(#<<Field>>Item1) Manage(#<<Field>>) Parent(#TableLayout_Main) Row(#Row1) Sizing(FitToWidth) Column(#Column1) Alignment(TopLeft) Flow(Down) Marginleft(5) Margintop(5) Marginright(5)
+
+* <<majorsep>>
+* ƒ‹[ƒ`ƒ“
+* <<majorsep>>
+
+
+* <<minorsep>>
+* ƒRƒ}ƒ“ƒhŽÀsˆ—
+* <<minorsep>>
+Mthroutine Name(uExecute) Options(*REDEFINE)
+
+* Clear any previous messages
+#AVFRAMEWORKMANAGER.avClearMessages Requester(#COM_OWNER)
+
+<<Comment>>æ‘c‚Å’è‹`‚³‚ê‚½ŽÀsƒƒWƒbƒN‚ðs‚¤
+#COM_ANCESTOR.uExecute GotoFreeState(#GotoFreeState) SwitchCallerReference(#SwitchCallerReference)
+<<CommentBlock>>
+#Button_All.enabled := false
+<<CommentBlock>>
+* ‚±‚ÌƒRƒ}ƒ“ƒh ƒnƒ“ƒhƒ‰[‚Ì“®ì‚Í‚±‚ê‚ðŠJŽn‚µ‚½ƒRƒ}ƒ“ƒh‚Ìƒ†[ƒU[ ƒIƒuƒWƒFƒNƒg ƒ^ƒCƒv‚É‚æ‚èC³‚³‚ê‚Ü‚·B
+* (ƒRƒ}ƒ“ƒh‚Ìƒ†[ƒU[ ƒIƒuƒWƒFƒNƒg ƒ^ƒCƒv‚ðŠm”F‚·‚é‚É‚ÍAƒtƒŒ[ƒ€ƒ[ƒN‚ðƒfƒUƒCƒ“ ƒ‚[ƒh‚ÅŠJŽn‚µAƒRƒ}ƒ“ƒhˆ—‚Éi‚Ý‚Ü‚·B) 
+<<CommentBlock>>
+#Cmd_type := #Com_Owner.avCommandType
+Case #Cmd_type
+When Value_Is('= NEW' '= COMMAND_NEW')
+SET Com(#PanelFields<>) Enabled(true)
+#Button_All.caption := 'Save New Details'
+#XG_Head := *null
+When Value_Is('= COPY' '= COMMAND_COPY')
+SET Com(#PanelFields<>) Enabled(true)
+#Button_All.caption := 'Save New Details'
+#Com_owner.getAssociated
+When Value_Is('= DELETE' '= COMMAND_DELETE')
+SET Com(#PanelFields<>) Enabled(False)
+set #Button_All enabled(true) caption('Confirm Deletion')
+#Com_owner.getAssociated
+otherwise
+SET Com(#PanelFields<>) Enabled(true)
+SET Com(#KeyFields<>) Enabled(False)
+#Button_All.caption := 'Save Changes'
+#Com_owner.getAssociated
+endcase
+<<CommentBlock>>
+Endroutine
+
+Mthroutine Name(uInitialize) Options(*REDEFINE)
+Define_Com Class(#prim_evp) Name(#TempField) Reference(*DYNAMIC)
+
+* æ‘c‚Å’è‹`‚³‚ê‚½‰Šú‰»ˆ—‚ðs‚¤ 
+#Com_Ancestor.uInitialize
+
+* <“ÆŽ©‚Ì‰Šú‰»ƒƒWƒbƒN‚ð‚±‚±‚É‹Lq>
+* <“ÆŽ©‚Ì‰Šú‰»ƒƒWƒbƒN‚ð‚±‚±‚É‹Lq>
+* <“ÆŽ©‚Ì‰Šú‰»ƒƒWƒbƒN‚ð‚±‚±‚É‹Lq>
+
+
+* •ÒW‰Â”\ƒtƒB[ƒ‹ƒh‚ÌƒRƒŒƒNƒVƒ‡ƒ“ì¬
+For Each(#Control) In(#Com_Owner.ComponentControls)
+If_Ref Com(#Control) Is(*INSTANCE_OF #prim_evp)
+#TempField <= #Control *As #prim_evp
+#PanelFields.Insert( #TempField )
+Endif
+Endfor
+
+* Build collection of Key fields
+<<UM055_RepeatKeys>>#KeyFields.Insert(#<<field>> )
+
+
+Endroutine
+
+
+Mthroutine Name(uTerminate) Options(*REDEFINE)
+
+* <“ÆŽ©‚ÌI—¹ƒƒWƒbƒN‚ð‚±‚±‚É‹Lq>
+* <“ÆŽ©‚ÌI—¹ƒƒWƒbƒN‚ð‚±‚±‚É‹Lq>
+* <“ÆŽ©‚ÌI—¹ƒƒWƒbƒN‚ð‚±‚±‚É‹Lq>
+
+#PanelFields.RemoveAll
+#KeyFields.RemoveAll
+
+* æ‘c‚Å’è‹`‚³‚ê‚½I—¹ˆ—‚ðs‚¤
+#Com_Ancestor.uTerminate 
+
+Endroutine
+
+
+* <<minorsep>>
+* Œ»ƒCƒ“ƒXƒ^ƒ“ƒX‚ð•\Ž¦‚µ‚ÄAXV‚Ü‚½‚Ííœ‚Ì€”õ
+* <<minorsep>>
+mthroutine name(getAssociated) 
+
+* ƒf[ƒ^ ƒT[ƒrƒX‚Ì’è‹`
+Define_Com Class(#<<UM055_BaseFileWAM>>.Find) Name(#Find)
+Define_Com Class(#vf_elretc) Name(#uStatus)
+
+Group_By Name(#DataFields) <<UM055_BaseFileFields minusKey>>
+
+If_Ref Com(#Com_Owner.avAssociatedInstance) Is_Not(*NULL)
+
+<<UM055_GenGetLst ASSOCIATED>>
+
+if #Ret_code
+* ƒf[ƒ^ ƒT[ƒrƒX‚ÌƒT[ƒrƒX ƒ‚ƒWƒ…[ƒ‹‚Ö‚Ì“¯ŠúŒÄ‚Ño‚µ‚ÌŽÀs‚É‚æ‚èAƒT[ƒo[‚©‚ç‚Ìƒf[ƒ^‚ðŽæ“¾
+
+#Find.Execute(<<UM055_BaseFileKeys>> #DataFields #uStatus )
+
+If (#uStatus *EQ OK)
+
+* •K—v‚Å‚ ‚ê‚ÎA“ÆŽ©‚Ìƒf[ƒ^•\Ž¦ˆ—‚ð‚±‚±‚É‹Lq
+
+Else
+#AVFRAMEWORKMANAGER.avIssueMessage Text('Not found on Server') Requester(#Com_Owner)
+Endif
+Else
+#AVFRAMEWORKMANAGER.avIssueMessage Text('No associated item found') Requester(#Com_Owner)
+Endif
+Endif
+
+endroutine
+
+EvtRoutine Handling(#Button_All.Click)
+CASE OF_FIELD(#CMD_TYPE)
+When Value_Is(= DELETE, = COMMAND_DELETE)
+#com_owner.uDelete
+Otherwise
+#com_owner.uSave
+EndCase
+Endroutine
+
+mthroutine uSave
+* ’: ƒŒƒR[ƒh‚Ì‚·‚×‚Ä‚ÌƒtƒB[ƒ‹ƒh‚ðXV‚·‚éê‡‚ÍA Save srvroutine ‚ªŽg—p‚Å‚«‚Ü‚·B
+* ƒŒƒR[ƒh‚Ì‚·‚×‚Ä‚ÌƒtƒB[ƒ‹ƒh‚ðXV‚µ‚È‚¢ê‡‚ÍA <<UM055_BaseFileWAM>> “à‚É“ÆŽ©‚Ì Update srvroutine ‚ð‹Lq‚µA.Save ‚Ì•Ï‚í‚è‚É‚±‚ê‚ðŽg—p‚·‚é•K—v‚ª‚ ‚è‚Ü‚·B
+Define_Com Class(#<<UM055_BaseFileWAM>>.Save) Name(#Save)
+Define_Com Class(#vf_elretc) Name(#uStatus)
+
+* Get the definition of this group of fields from Server Module  <<UM055_BaseFileWAM>>
+Group_By Name(#SaveFields) <<UM055_BaseFileFields>>
+
+* ’FˆÈ‘O‚ÌƒƒbƒZ[ƒW‚ªŽc‚Á‚Ä‚¢‚é‚Æ¬—‚ðµ‚­‹°‚ê‚ª‚ ‚é‚Ì‚ÅAƒXƒe[ƒ^ƒX ƒo[‚ÌƒƒbƒZ[ƒW‚ðƒNƒŠƒA‚µ‚Ü‚·B
+#AVFRAMEWORKMANAGER.avClearMessages Requester(#COM_OWNER)
+
+* •Û‘¶ˆ—‚ÌŠJŽn (‘‚¢‚à‚Ì‚Å‚ ‚ê‚ÎA“¯ŠúŽÀs‚Ì .Execute ‚Å‚à\‚¢‚Ü‚¹‚ñ)
+#Save.Execute( #SaveFields #uStatus )
+
+If (#uStatus = OK)
+* XV‚ª³í‚ÉI—¹‚µ‚½‚±‚Æ‚ðŽ¦‚·ƒƒbƒZ[ƒW
+#avFrameworkManager.avIssueMessage Text('Save was successful') Requester(#COM_OWNER)
+
+* •K—v‚É‰ž‚¶‚ÄAƒCƒ“ƒXƒ^ƒ“ƒXƒŠƒXƒg‚ðXV
+
+CASE OF_FIELD(#CMD_TYPE)
+When Value_Is(= NEW, = COMMAND_NEW, = COPY, = COMMAND_COPY)
+* Add a new instance list entry
+<<UM055_AddtoList *NONE APPEND >>  Setascurrent(True) Select(True)
+OTHERWISE
+* Update the associated instance list entry
+<<UM055_GenSetVIDs>>
+#Com_Owner.avAssociatedInstance.avVisualID1 := #UF_VisID1u
+#Com_Owner.avAssociatedInstance.avVisualID2 := #UF_VisID2u
+
+* Update any other Additional Columns here, if required
+* For example
+* #Com_Owner.avAssociatedInstance.avAColumn1  := 'My Value'
+
+#COM_OWNER.avAssociatedInstance.avUpdateDisplay
+ENDCASE
+
+
+#Button_All.Enabled := False
+Endif
+
+* ƒT[ƒo[ ƒƒbƒZ[ƒW‚ðŽæ“¾‚µ‚ÄAƒtƒŒ[ƒ€ƒ[ƒN“à‚Å”­s
+#avFrameworkManager.avReceiveSystemMessageQueue Requester(#Com_owner)
+
+CASE OF_FIELD(#CMD_TYPE)
+When Value_Is(= NEW, = COMMAND_NEW)
+* ŽŸ‚ÌƒGƒ“ƒgƒŠ[‚Ì‚½‚ß‚Ì€”õ
+#XG_HEAD := *NULL
+ENDCASE
+Endroutine
+
+Mthroutine uDelete
+Define_Com Class(#<<UM055_BaseFileWAM>>.Delete) Name(#Delete)
+Define_Com Class(#vf_elretc) Name(#uStatus)
+
+If_Ref Com(#Com_Owner.avAssociatedInstance) Is_Not(*NULL)
+
+* ’FˆÈ‘O‚ÌƒƒbƒZ[ƒW‚Í¬—‚ðµ‚­‚Ì‚ÅAƒXƒe[ƒ^ƒX ƒo[‚ÌƒƒbƒZ[ƒW‚ðƒNƒŠƒA‚µ‚Ü‚·B
+#AVFRAMEWORKMANAGER.avClearMessages Requester(#COM_OWNER)
+
+* •Û‘¶ˆ—‚ÌŠJŽn (‘‚¢‚à‚Ì‚Å‚ ‚ê‚ÎA“¯ŠúŽÀs‚Ì .Execute ‚Å‚à\‚¢‚Ü‚¹‚ñ)
+#Delete.Execute( #XG_Keys #uStatus )
+
+If (#uStatus = OK)
+* XV‚ª³í‚ÉI—¹‚µ‚½‚±‚Æ‚ðŽ¦‚·ƒƒbƒZ[ƒW
+#avFrameworkManager.avIssueMessage Text('Delete was successful') Requester(#COM_OWNER)
+
+* ƒCƒ“ƒXƒ^ƒ“ƒXƒŠƒXƒg‚ÌƒGƒ“ƒgƒŠ[‚ðXV
+
+#Com_Owner.avAssociatedInstance.avVisualId2 += ' (Deleted)'
+#Com_Owner.avAssociatedInstance.avUpdateDisplay
+
+#Button_All.Enabled := False
+Endif
+
+* ƒT[ƒo[ ƒƒbƒZ[ƒW‚ðŽæ“¾‚µ‚ÄAƒtƒŒ[ƒ€ƒ[ƒN“à‚Å”­s
+#avFrameworkManager.avReceiveSystemMessageQueue Requester(#Com_owner)
+Endif
+endroutine
+
+
+EvtRoutine Handling(#PanelFields<>.Changed)
+#Button_All.Enabled := True
+EndRoutine
+<<commentblock>>
+End_Com
+</code>

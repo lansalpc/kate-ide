@@ -1,0 +1,287 @@
+<context>
+CommandHandler
+</context>
+<caption>
+CRUD ｺﾏﾝﾄﾞﾊﾝﾄﾞﾗ
+</caption>
+<preamble>
+JPN_vf_um052_Handler_CRUD.htm
+</preamble>
+<hint>
+このｳｨｻﾞｰﾄﾞはCRUD(Create/Read/Update/Delete)のｿｰｽを作成します。
+</hint>
+<sequence>
+000100  
+</sequence>
+<handler>
+VF_UM128 
+VF_UM129 
+VF_UM130     
+</handler>
+<handlertxt>
+If the Instance List fields and Identifier fields are correct, proceed to the next step. 
+Specify the fields that you want to show on your command handler.                  
+Specify the things that you would like to include in the generated code.
+</handlertxt>
+<code>
+<<include VF_UM052_CommandHandler_Preamble.vfi>>
+*
+* NOTE: このｺﾏﾝﾄﾞﾊﾝﾄﾞﾗは新規作成、削除とその他(例：明細およびCreate/Read/Update/Delete)ｺﾏﾝﾄﾞによって実行されます。
+* ｺﾏﾝﾄﾞのﾕｰｻﾞｰ-ｵﾌﾞｼﾞｪｸﾄ-ﾀｲﾌﾟが動く方法が決まります。
+*
+Function Options(*DIRECT) 
+Begin_Com Role(*EXTENDS #VF_AC010) Layoutmanager(#MAIN_LAYOUT) Width(600) Height(240) 
+* <<majorsep>>
+* ﾌｨｰﾙﾄﾞとｸﾞﾙｰﾌﾟの定義
+* <<majorsep>>   
+<<if UM057_Has_HEADFields>>
+Group_by Name(#XG_HEAD) <<UM057_GenHeadGroup>>
+<<endif>>
+<<COMMENT>>ﾜｰｸﾌｨｰﾙﾄﾞとｺﾝﾃﾞｨｼｮﾝ
+define field(#cmd_type) type(*char) length(32) desc('user object type of the command')
+define field(#vis_reslt) reffld(#std_text)
+define field(#msg_rslt) type(*char) length(132)
+define field(#ret_code) reffld(#STD_BOOL)
+def_cond name(*okay) cond((#ret_code = OK) or (#ret_code = TRUE))
+def_cond name(*notokay) cond((#ret_code *ne OK) and (#ret_code *ne TRUE))
+<<if CA_UM056_CHK_CONNECT>>
+define field(#con_rslt) type(*char) length(2)
+Def_Cond Name(*conresult) Cond(#con_rslt = OK)
+<<endif>> 
+* <<majorsep>>
+* ｺﾝﾎﾟｰﾈﾝﾄの定義
+* <<majorsep>>
+<<Comment>>ﾒｲﾝの部分とﾎﾞﾀﾝを整列させるためのﾊﾟﾈﾙ
+Define_Com Class(#PRIM_PANL) Name(#BUTTON_PANEL) Displayposition(2) Height(182) Layoutmanager(#BUTTON_FLOW) Left(246) Parent(#COM_OWNER) Tabposition(2) Tabstop(False) Top(0) Width(128)
+Define_Com Class(#PRIM_PANL) Name(#BODY_HEAD) VerticalScroll(True) Displayposition(1) Layoutmanager(#BODY_HEAD_FLOW)  Left(0) Parent(#COM_OWNER) Tabposition(1) Tabstop(False) Top(0) Width(246)
+DEFINE_COM CLASS(#Prim_ACol<#prim_evp>) NAME(#PanelFields)
+Define_Com Class(#Prim_ACol<#prim_evp>) Name(#KeyFields)
+<<Comment>>「添付」と「ﾌﾛｰ」のﾚｲｱｳﾄ ﾏﾈｰｼﾞｬ
+Define_Com Class(#PRIM_ATLM) Name(#MAIN_LAYOUT)
+Define_Com Class(#PRIM_ATLI) Name(#BUTTON_ATTACH) Attachment(Right)  Manage(#BUTTON_PANEL) Parent(#MAIN_LAYOUT)
+Define_Com Class(#PRIM_FWLM) Name(#BUTTON_FLOW)   Direction(TopToBottom) Flowoperation(Center) Marginbottom(4) Marginleft(4) Marginright(4) Margintop(4) Spacing(4) Spacingitems(4)
+Define_Com Class(#PRIM_ATLI) Name(#BODY_ATTACH)   Attachment(Center) Manage(#BODY_HEAD) Parent(#MAIN_LAYOUT)
+Define_Com Class(#PRIM_FWLM) Name(#BODY_HEAD_FLOW) Direction(TopToBottom) Marginbottom(4) Marginleft(4) Marginright(4) Margintop(4) Spacing(4) Spacingitems(4)
+<<Comment>> 新規作成/更新/削除ﾎﾞﾀﾝ
+<<if CA_UM056_SAVEBTN>>
+DEFINE_COM CLASS(#PRIM_PHBN) NAME(#PUSHB1_BUTTON) BUTTONDEFAULT(True) CAPTION('Undefined') DISPLAYPOSITION(1) LEFT(12) PARENT(#BUTTON_PANEL) TABPOSITION(1) TOP(4) WIDTH(103)
+DEFINE_COM CLASS(#PRIM_FWLI) NAME(#FWLI_PUSHB1_BUTTON) MANAGE(#PUSHB1_BUTTON) PARENT(#BUTTON_FLOW)
+<<else>>
+DEFINE_COM CLASS(#PRIM_PHBN) NAME(#PUSHB1_BUTTON) BUTTONDEFAULT(True) CAPTION('Undefined') DISPLAYPOSITION(1) LEFT(12) PARENT(#BUTTON_PANEL) TABPOSITION(1) TOP(4) WIDTH(1) Visible(False)
+<<endif>>
+<<if UM057_Has_HEADFields>>
+<<comment>>ﾍｯﾀﾞｰｴﾘｱのﾌｨｰﾙﾄﾞ
+<<UM057_Repeat True ALL HEAD>>Define_Com Class(#<<field>>.Visual) Parent(#BODY_HEAD) LabelType(<<UM056_Identify_With>>)
+<<UM057_Repeat False ALL HEAD>>Define_Com Class(#PRIM_FWLI) Name(#FWLI_<<Field>>) Manage(#<<field>>) Parent(#BODY_HEAD_FLOW)
+<<endif>> 
+<<CommentBlock>>
+* <<majorsep>>
+* ｲﾍﾞﾝﾄの定義
+* <<majorsep>>
+<<CommentBlock>>
+* <<majorsep>>
+* ﾌﾟﾛﾊﾟﾃｨの定義
+* <<majorsep>>
+<<CommentBlock>>
+* <<majorsep>>
+* ﾒｿｯﾄﾞの定義
+* <<majorsep>>
+* <<minorsep>>
+* ｺﾏﾝﾄﾞ実行の処理
+* <<minorsep>>
+<<CommentBlock>>
+Mthroutine Name(uExecute) Options(*REDEFINE)
+<<Comment>>Ancestor の実行ﾛｼﾞｯｸを実行します。
+#Com_Ancestor.uExecute
+
+<<CommentBlock>>
+#PushB1_Button.enabled := false
+<<if UM057_Has_LISTFields>>
+#Main_list.visible := true
+<<endif>>
+<<CommentBlock>>
+* このｺﾏﾝﾄﾞﾊﾝﾄﾞﾗｰの動作はｺﾏﾝﾄﾞのﾕｰｻﾞｰ-ｵﾌﾞｼﾞｪｸﾄ-ﾀｲﾌﾟによって変更されます。
+* (ｺﾏﾝﾄﾞのﾕｰｻﾞｰ-ｵﾌﾞｼﾞｪｸﾄ-ﾀｲﾌﾟを参照するために、ﾃﾞｻﾞｲﾝﾓｰﾄﾞでﾌﾚｰﾑﾜｰｸを開始します) 
+<<CommentBlock>>
+#Cmd_type := #Com_Owner.avCommandType
+Case #Cmd_type
+When Value_Is(= NEW, = COMMAND_NEW)
+set (#PanelFields<>) enabled(true)
+#PUSHB1_Button.caption := 'Save New Details'
+#XG_Head := *null
+When Value_Is(= COPY, = COMMAND_COPY)
+set (#PanelFields<>) enabled(true)
+#PUSHB1_Button.caption := 'Save New Details'
+execute subroutine(getcurrent) with_parms(true)
+When Value_Is(= DELETE, = COMMAND_DELETE)
+set (#PanelFields<>) enabled(false)
+set #PushB1_Button enabled(true) caption('Confirm Deletion')
+execute subroutine(getcurrent) with_parms(true)
+otherwise
+set (#PanelFields<>) enabled(true)
+Set Com(#KeyFields<>) Enabled(False)
+#PUSHB1_Button.caption := 'Save Changes'
+execute subroutine(getcurrent) with_parms(true)
+endcase
+<<CommentBlock>>
+Endroutine
+<<CommentBlock>>
+* <<minorsep>>
+* 初期化処理
+* <<minorsep>>
+Mthroutine Name(uInitialize) Options(*REDEFINE)
+<<Comment>>Ancestor の初期化ﾛｼﾞｯｸを実行します 
+#Com_Ancestor.uInitialize
+
+* Build a collection of all the fields in the panel
+#std_num := 0
+For Each(#Current) In(#Body_Head.ComponentControls)
+IF_REF COM(#Current) IS(*INSTANCE_OF #prim_evp)
+* (prim_evp is the ancestor of prim_evef, prim_evpl, etc)
+#std_num += 1
+Set_ref Com(#PanelFields<#std_num>) to(*dynamic #Current)
+endif
+Endfor 
+* Build collection of Key fields
+<<UM055_RepeatKeys>>#KeyFields.Insert(#<<field>> )
+<<CommentBlock>>
+* <ここに初期化ﾛｼﾞｯｸを記述> 
+<<CommentBlock>>
+Endroutine
+* <<minorsep>>
+* 終了処理
+* <<minorsep>>
+Mthroutine Name(uTerminate) Options(*REDEFINE)
+<<CommentBlock>>
+* <ここに初期化ﾛｼﾞｯｸを記述>
+<<CommentBlock>>
+#PanelFields.RemoveAll
+
+<<Comment>>Do any termination defined in the ancestor
+#Com_Ancestor.uTerminate 
+
+<<CommentBlock>>
+Endroutine
+* <<majorsep>>
+* Subroutines
+* <<majorsep>>
+<<CommentBlock>>
+* <<minorsep>>
+* 更新/削除の準備に現行ｲﾝｽﾀﾝｽを表示
+* <<minorsep>>
+subroutine name(getcurrent) parms((#df_fetch *received))
+define field(#df_fetch) reffld(#std_bool)
+<<if CA_UM056_CHK_CONNECT>>
+<<comment>>Check that the connection is still live 
+#avFrameworkManager.avCheckConnection ReturnValue(#con_rslt)
+If Cond(*conresult)
+<<endif>> 
+<<if UM057_Has_HEADFields>>
+<<UM055_GenGetLst>>
+<<comment>>ﾌｫｰﾑのﾍｯﾀﾞﾌｨｰﾙﾄﾞを満たすために主なﾌｧｲﾙから情報をFetch
+IF COND(#DF_FETCH = TRUE)
+Fetch Fields(#XG_HEAD) From_File(<<UM055_BaseFile>>) With_Key(<<UM055_BaseFileKeys>>) IO_STATUS(#RET_CODE)
+ENDIF
+<<CommentBlock>>
+use builtin(clr_messages)
+<<comment>> 見つからない時の処理
+if cond(*notokay)
+message msgtxt('The requested object was not found. it may have been deleted.')
+#PushB1_Button.enabled := false
+#xg_head := *null
+set (#panelfields<> #pushb1_button) enabled(false)
+else
+endif
+<<else>>
+<<endif>>
+<<if CA_UM056_CHK_CONNECT>>
+endif
+<<endif>> 
+endroutine
+<<CommentBlock>>
+* <<majorsep>>
+* ｲﾍﾞﾝﾄﾊﾝﾄﾞﾗｰ
+* <<majorsep>>
+<<CommentBlock>>
+* <<minorsep>>
+* Create/Update/Deleteﾎﾞﾀﾝの処理
+* <<minorsep>>
+<<CommentBlock>>
+EvtRoutine Handling(#PUSHB1_BUTTON.Click)
+<<CommentBlock>>
+<<if CA_UM056_CHK_CONNECT>>
+<<comment>>Check that the connection is still live 
+#avFrameworkManager.avCheckConnection ReturnValue(#con_rslt)
+If Cond(*conresult)
+<<endif>> 
+* ﾃﾞｰﾀﾍﾞｰｽ更新
+<<comment>>ｺﾏﾝﾄﾞの処理
+CASE OF_FIELD(#CMD_TYPE)
+<<CommentBlock>>
+* 新規作成処理
+When Value_Is(= NEW, = COMMAND_NEW, = COPY, = COMMAND_COPY)
+#VIS_RESLT := '(New)'
+#MSG_RSLT := 'New details have been saved'
+INSERT FIELDS(#XG_HEAD) TO_FILE(<<UM055_BaseFile>>) IO_STATUS(#RET_CODE) IO_ERROR(*NEXT) VAL_ERROR(*NEXT) ISSUE_MSG(*YES)
+<<CommentBlock>>
+* 削除処理
+When Value_Is(= DELETE, = COMMAND_DELETE)
+#VIS_RESLT := '(Deleted)'
+#MSG_RSLT := 'Details have been deleted'
+EXECUTE SUBROUTINE(GETCURRENT) WITH_PARMS(TRUE)
+IF COND(*OKAY)
+DELETE FROM_FILE(<<UM055_BaseFile>>) IO_STATUS(#RET_CODE) IO_ERROR(*NEXT) VAL_ERROR(*NEXT) ISSUE_MSG(*YES)
+ENDIF
+<<CommentBlock>>
+* 明細処理
+OTHERWISE
+#VIS_RESLT := '(Updated)'
+#MSG_RSLT := 'Changed details have been saved'
+UPDATE FIELDS(#XG_Head) IN_FILE(<<UM055_BaseFile>>) WITH_KEY(<<UM055_BaseFileKeys>>) IO_STATUS(#RET_CODE) IO_ERROR(*NEXT) VAL_ERROR(*NEXT) ISSUE_MSG(*YES)
+ENDCASE
+<<comment>>条件に関係の無い処理
+IF COND(*OKAY)
+<<UM055_GenSetVIDs>> 
+<<comment>>Use the AddToList method for new entries (including copies). Otherwise use the UpdateListEntryData method
+CASE OF_FIELD(#CMD_TYPE)
+When Value_Is(= NEW, = COMMAND_NEW, = COPY, = COMMAND_COPY)
+<<comment>>Indicate that <<businessobject_lang ucaption>> instance list updating is about to start
+#avListManager.BeginListUpdate
+<<UM055_GenAddLst vis_reslt>> 
+<<comment>>Indicate that <<businessobject_lang ucaption>> instance list updating is now complete
+#avListManager.EndListUpdate
+<<CommentBlock>>
+Otherwise
+<<UM055_GenUpdLst vis_reslt>> 
+<<CommentBlock>>
+ENDCASE
+*
+CASE OF_FIELD(#CMD_TYPE)
+When Value_Is(= NEW, = COMMAND_NEW)
+<<CommentBlock>>
+* 次の入力の準備
+#XG_HEAD := *NULL
+ENDCASE
+<<CommentBlock>>
+* ﾎﾞﾀﾝを使用不可にする
+#PushB1_Button.enabled := false
+<<CommentBlock>>
+* 要求されたﾒｯｾｰｼﾞを表示
+USE BUILTIN(CLR_MESSAGES)
+MESSAGE MSGID(DCM9899) MSGF(DC@M01) MSGDTA(#MSG_RSLT)
+ENDIF
+<<if CA_UM056_CHK_CONNECT>>
+endif
+<<endif>>
+Endroutine
+<<CommentBlock>>
+* <<minorsep>>
+* ﾌｨｰﾙﾄﾞの変更処理
+* <<minorsep>>
+<<CommentBlock>>
+EvtRoutine Handling(#PanelFields<>.Changed)
+#PushB1_Button.Enabled := True
+EndRoutine
+<<commentblock>>
+End_Com
+</code>

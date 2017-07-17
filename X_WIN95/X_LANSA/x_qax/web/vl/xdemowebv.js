@@ -1,0 +1,1 @@
+﻿LANSA.addComponent({id:"XDEMOWEBV",nm:"xDemoWebVariableSizing",ot:"wp",tp:"Web Page",de:"Variable Sizing",tl:14010003},function(l,oI,u){var cO=l.rC(oI,{an:"PRIM_WEB",co:function(){cO.aN.call(this);this.aH("INITIALIZE",this,e1);}});function e1(sender,Ps){var r=l.eR(this,cO,"#Com_owner.Initialize",3);r.ln=3;{}r.ln=5;r.e();};},{rp:["PRIM_WEB"]});

@@ -1,0 +1,133 @@
+<caption>
+Critère de recherche CRUD      
+</caption>
+<preamble>
+FRA_vf_um052_Filter_Blind_One.htm
+</preamble>
+<context>
+Filter 
+</context>
+<mode>
+ONE
+</mode>
+<sequence>
+000100  
+</sequence>
+<handlertxt>
+Specify the physical file that your business object is to be based on.  Then choose which fields to show on the instance list and which field / fields uniquely identify a record.    
+Choisissez toutes les autres options nécessaires.
+</handlertxt>
+<handler>
+VF_UM128 
+VF_UM109 
+</handler>
+<hint>
+L'assistant produit le code pour un filtre qui nécessite peu ou pas de modifications manuelles à partir du fichier ou de la vue précisée. Il est conçu pour les développeurs qui sont de nouveaux utilisateurs du VL Framework.
+</hint>
+<code>
+<<include VF_UM052_Filter_Preamble.vfi>>
+Function Options(*DIRECT)
+Begin_Com Role(*EXTENDS £VF_AC007O) Height(182) Width(326) 
+* <<majorsep>>
+* Définitions de zones simples, groupes et conditions
+* <<majorsep>>
+Group_By   Name(£XG_Ident)   Fields(<<UM055_GenFldList>>)
+Group_By   Name(£XG_Keys)   Fields(<<UM055_BaseFileKeys>>)
+
+* La liste est utilisée pour recevoir les données du Module de Service d'accès au fichier 
+Def_List Name(£<<UM055_BaseFile>>List) Counter(£ListCount) Type(*Working) Entrys(*Max) <<UM055_BaseFileFields>> 
+
+* <<majorsep>>
+* Routines
+* <<majorsep>>
+
+<<CommentBlock>>
+Mthroutine Name(uInitialize) Options(*Redefine)
+* Définir le service de données
+Define_Com Class(£<<UM055_BaseFileWAM>>.FindAll) Name(£FindAll)
+
+* Le modifier en filtre caché
+Set Com(£Com_Owner) Avfilterlocation(NONE)
+* Les filtres cachés ne sont pas autorisés à être déplacés vers HAUT GAUCHE DROITE BAS
+Set Com(£Com_Owner) Avallowlocationchange(False)
+
+* Aller à l'état occupé
+£COM_OWNER.avGotoBusyState Showbusytext('Recherche') Animated(False)
+
+* demander au module de service <<UM055_BaseFileWAM>>  de lire toutes les données à partir du serveur
+£XG_Keys := *NULL
+£FindAll.ExecuteAsync( £<<UM055_BaseFile>>List )
+
+Evtroutine Handling(£FindAll.Completed)
+
+£avListManager.ClearList
+
+Selectlist Named(£<<UM055_BaseFile>>List)
+
+* toute logique de sélection en plus pourrait se placer ici
+
+<<UM055_AddtoList>>  
+
+Endselect
+Clr_List Named(£<<UM055_BaseFile>>List)
+
+
+* Retour à l'état disponible
+£com_Owner.avGotoFreeState
+
+Endroutine
+Endroutine
+
+<<if CA_UM109_TERMINATE>>
+Mthroutine Name(uTerminate) Options(*REDEFINE)
+<<CommentBlock>>
+* <ici votre logique de fin> 
+* <ici votre logique de fin> 
+* <ici votre logique de fin>
+<<CommentBlock>>
+<<Comment>>Effectuer toute logique de fin définie dans l'ancêtre
+£Com_Ancestor.uTerminate
+<<CommentBlock>>
+Endroutine
+<<endif>>
+
+<<if CA_UM109_LISTEN>>
+* <<minorsep>>
+* Gère toute demande externe de mise à jour de la liste d'instance  
+* <<minorsep>>
+EvtRoutine £Com_owner.avEvent WithId(£EventId) WithAInfo1(£AInfo1) WithAInfo2(£AInfo2) WithAInfo3(£AInfo3) WithAInfo4(£AInfo4) WithAInfo5(£AInfo5)  WithNInfo1(£NInfo1) WithNInfo2(£NInfo2) WithNInfo3(£NInfo3) WithNInfo4(£NInfo4) WithNInfo5(£NInfo5)
+
+* placer les valeurs reçues dans des zones
+£vf_elIdn := £EventId.Value
+
+* Mappage de des valeurs AInfo et NInfo passées, dans les zones clés  - <<UM055_BaseFileKeys>>
+<<UM055_GenMapKeys>> 
+
+Case £vf_elIDN
+
+when value_is(= Refresh_Instance_List)
+* Recharge la liste d'instance
+
+£Com_Owner.uInitialize
+
+when value_is(= Add_List_Entry)
+* Ajoute une entrée à la liste 
+
+* <votre logique ici>
+
+when value_is(= Update_List_Entry)
+* Mise à jour d'une entrée existante de la liste d'instance
+
+* <votre logique ici>
+
+when value_is(=  Delete_List_Entry)
+
+* <votre logique ici>
+
+endcase
+
+Endroutine
+<<endif>>
+
+End_Com
+</code>  

@@ -1,0 +1,37 @@
+<context>
+CommandHandler
+</context>
+<caption>
+uExecute ﾙｰﾁﾝのｲﾝｽﾀﾝｽ (ｿｰｽの一部分)  
+</caption>
+<preamble>
+JPN_vf_um052_Handler_uExecute_Single.htm
+</preamble> 
+<hint>
+このｳｨｻﾞｰﾄﾞは一つのﾋﾞｼﾞﾈｽｵﾌﾞｼﾞｪｸﾄのｲﾝｽﾀﾝｽと連動するｺﾏﾝﾄﾞﾊﾝﾄﾞﾗで用いる典型的なuExecuteﾙｰﾁﾝのｿｰｽを作成します。
+</hint>
+<sequence>
+000300  
+</sequence>
+<handler>
+VF_UM055 
+</handler>
+<handlertxt>
+このﾋﾞｼﾞﾈｽ ｵﾌﾞｼﾞｪｸﾄの定義を自動的に生成できるように、ﾋﾞｼﾞﾈｽ ｵﾌﾞｼﾞｪｸﾄに近い物理ﾌｧｲﾙの名前を指定して下さい。   
+</handlertxt>
+<code>
+* <<minorsep>>
+* ｺﾏﾝﾄﾞ実行の処理
+* <<minorsep>>
+<<CommentBlock>>
+Mthroutine Name(uExecute) Options(*REDEFINE)
+<<UM055_GenDclTmpCol>>  
+<<Comment>> Ancestor の実行ﾛｼﾞｯｸを実行します。
+#Com_Ancestor.uExecute
+
+<<UM055_GenGetLst>>
+<<comment>>ﾌｫｰﾑのﾍｯﾀﾞｰﾌｨｰﾙﾄﾞに書き込まれるﾒｲﾝﾌｧｲﾙから情報をFETCHする
+Fetch Fields(<<TBA>>) From_File(<<UM055_BaseFile>>) With_Key(<<UM055_BaseFileKeys>>) 
+<<CommentBlock>>
+Endroutine
+</code>   

@@ -1,0 +1,202 @@
+﻿<context>
+CommandHandler 
+</context>
+<caption>
+Šî–{“I‚ÈƒRƒ}ƒ“ƒh ƒnƒ“ƒhƒ‰[
+</caption>
+<mode>
+ONE
+</mode>
+<preamble>
+ENG_vf_um052_Handler_Outline_One.htm
+</preamble>
+<hint>
+‚±‚ÌƒEƒBƒU[ƒh‚ÍAŠî–{“I‚ÈƒRƒ}ƒ“ƒh ƒnƒ“ƒhƒ‰[‚ÌƒR[ƒh‚ð¶¬‚µ‚Ü‚·B   
+</hint>
+<sequence>
+000100  
+</sequence>
+<handler>
+VF_UM128 
+VF_UM129     
+VF_UM130   
+</handler>
+<handlertxt>
+If  the Instance List fields and Identifier fields are correct, proceed to the next step.     
+Specify the fields that you want on your command handler.                  
+Specify the things that you would like to include in the generated code.    
+</handlertxt>
+<code>
+<<include VF_UM052_CommandHandler_Preamble.vfi>>
+Function Options(*DIRECT) 
+Begin_Com Role(*EXTENDS #VF_AC010O) Layoutmanager(#TableLayout_Main) Width(600) Height(240) Verticalscroll(True) 
+
+* ƒOƒ‹[ƒv’è‹`
+
+Group_by Name(#XG_HEAD) <<UM057_GenHeadGroup>>
+
+* ƒŒƒCƒAƒEƒgŠÇ—
+
+Define_Com Class(#PRIM_TBLO) Name(#TableLayout_Main)
+Define_Com Class(#PRIM_TBLO.Column) Name(#Column1) Displayposition(1) Parent(#TableLayout_Main)
+Define_Com Class(#PRIM_TBLO.Row) Name(#Row1) Displayposition(1) Parent(#TableLayout_Main) Height(1.72)
+Define_Com Class(#PRIM_TBLO.Row) Name(#Row2) Displayposition(2) Parent(#TableLayout_Main) Height(25) Units(Pixels)
+
+* ƒRƒ“ƒ|[ƒlƒ“ƒg
+
+<<if CA_UM056_SAVEBTN>>
+* •Û‘¶ƒ{ƒ^ƒ“
+Define_Com Class(#PRIM_PHBN) Name(#Button_Save) Buttondefault(True) Caption('Save') Displayposition(2) Tabposition(1) Left(0) Top(232) Height(24) Parent(#COM_OWNER)
+Define_Com Class(#PRIM_TBLO.Item) Name(#SAVE_BUTTONItem1) Manage(#Button_Save) Parent(#TableLayout_Main) Row(#Row2) Sizing(None) Column(#Column1) Alignment(CenterLeft)
+<<endif>>
+
+<<comment>>ƒtƒB[ƒ‹ƒh
+<<UM057_Repeat True ALL HEAD>>Define_Com Class(#<<field>>.Visual) Parent(#COM_OWNER) LabelType(<<UM056_Identify_With>>) Marginleft(175)
+
+<<UM057_Repeat False ALL HEAD>>Define_Com Class(#PRIM_TBLO.Item) Name(#TableItem_<<Field>>) Manage(#<<field>>) Parent(#TableLayout_Main) Row(#Row1) Sizing(FitToWidth) Column(#Column1) Alignment(TopLeft) Flow(Down) Marginleft(5) Margintop(5) Marginright(5)
+
+
+* ƒpƒlƒ‹‚É‚ ‚é‚·‚×‚Ä‚ÌƒtƒB[ƒ‹ƒh‚ÌƒRƒŒƒNƒVƒ‡ƒ“
+Define_Com Class(#Prim_ACol<#prim_evp>) Name(#PanelFields)
+
+* <<majorsep>>
+* ƒ‹[ƒ`ƒ“
+* <<majorsep>>
+
+
+Mthroutine Name(uInitialize) Options(*REDEFINE)
+Define_Com Class(#prim_evp) Name(#TempField) Reference(*DYNAMIC)
+
+* æ‘c‚Å’è‹`‚³‚ê‚½‰Šú‰»ˆ—‚ðs‚¤
+
+#Com_Ancestor.uInitialize
+
+* <“ÆŽ©‚Ì‰Šú‰»ƒƒWƒbƒN‚ð‚±‚±‚É‹Lq>
+* <“ÆŽ©‚Ì‰Šú‰»ƒƒWƒbƒN‚ð‚±‚±‚É‹Lq>
+* <“ÆŽ©‚Ì‰Šú‰»ƒƒWƒbƒN‚ð‚±‚±‚É‹Lq>
+
+
+* •ÒW‰Â”\ƒtƒB[ƒ‹ƒh‚ÌƒRƒŒƒNƒVƒ‡ƒ“ì¬
+For Each(#Control) In(#Com_Owner.ComponentControls)
+If_Ref Com(#Control) Is(*INSTANCE_OF #prim_evp)
+#TempField <= #Control *As #prim_evp
+#PanelFields.Insert( #TempField )
+Endif
+Endfor
+
+Endroutine
+
+
+Mthroutine Name(uTerminate) Options(*REDEFINE)
+
+* <“ÆŽ©‚ÌI—¹ƒƒWƒbƒN‚ð‚±‚±‚É‹Lq>
+* <“ÆŽ©‚ÌI—¹ƒƒWƒbƒN‚ð‚±‚±‚É‹Lq>
+* <“ÆŽ©‚ÌI—¹ƒƒWƒbƒN‚ð‚±‚±‚É‹Lq>
+
+* æ‘c‚Å’è‹`‚³‚ê‚½I—¹ˆ—‚ðs‚¤
+
+#Com_Ancestor.uTerminate
+
+Endroutine
+
+
+* <<minorsep>>
+* ƒRƒ}ƒ“ƒhŽÀsˆ—
+* <<minorsep>>
+Mthroutine Name(uExecute) Options(*REDEFINE)
+Define_Com Class(#prim_boln) Name(#Ret_code)
+
+* ƒf[ƒ^ ƒT[ƒrƒX‚Ì’è‹`
+Define_Com Class(#<<UM055_BaseFileWAM>>.Find) Name(#Find)
+Define_Com Class(#vf_elretc) Name(#uStatus)
+
+* Clear any previous messages
+#AVFRAMEWORKMANAGER.avClearMessages Requester(#COM_OWNER)
+
+<<Comment>>Do any execution logic defined in the ancestor
+#COM_ANCESTOR.uExecute GotoFreeState(#GotoFreeState) SwitchCallerReference(#SwitchCallerReference)
+
+Group_By Name(#DataFields) <<UM055_BaseFileFields minusKey>>
+
+If_Ref Com(#Com_Owner.avAssociatedInstance) Is_Not(*NULL)
+
+<<UM055_GenGetLst ASSOCIATED>>
+
+if #Ret_code
+* ƒf[ƒ^ ƒT[ƒrƒX‚ÌƒT[ƒrƒX ƒ‚ƒWƒ…[ƒ‹‚Ö‚Ì“¯ŠúŒÄ‚Ño‚µ‚ÌŽÀs‚É‚æ‚èAƒT[ƒo[‚©‚ç‚Ìƒf[ƒ^‚ðŽæ“¾
+
+#Find.Execute(<<UM055_BaseFileKeys>> #DataFields #uStatus )
+
+If (#uStatus *EQ OK)
+
+* •K—v‚Å‚ ‚ê‚ÎA“ÆŽ©‚Ìƒf[ƒ^•\Ž¦ˆ—‚ð‚±‚±‚É‹Lq
+
+Else
+#AVFRAMEWORKMANAGER.avIssueMessage Text('Not found on Server') Requester(#Com_Owner)
+Endif
+Else
+#AVFRAMEWORKMANAGER.avIssueMessage Text('No current item found') Requester(#Com_Owner)
+Endif
+Endif
+
+<<if CA_UM056_SAVEBTN>>
+* ƒtƒB[ƒ‹ƒh•ÏXŽž‚ÉAƒ{ƒ^ƒ“‚ð—LŒø
+#Button_Save.Enabled := False
+<<endif>>
+
+Endroutine
+
+<<if CA_UM056_SAVEBTN>>
+Evtroutine Handling(#Button_Save.Click)
+#com_owner.Button_Save
+Endroutine
+
+Mthroutine Name(Button_Save)
+* ’: ƒŒƒR[ƒh‚Ì‚·‚×‚Ä‚ÌƒtƒB[ƒ‹ƒh‚ðXV‚·‚éê‡‚ÍA Save srvroutine ‚ªŽg—p‚Å‚«‚Ü‚·B
+* ƒŒƒR[ƒh‚Ì‚·‚×‚Ä‚ÌƒtƒB[ƒ‹ƒh‚ðXV‚µ‚È‚¢ê‡‚ÍA <<UM055_BaseFileWAM>> “à‚É“ÆŽ©‚Ì Update srvroutine ‚ð‹Lq‚µA.Save ‚Ì•Ï‚í‚è‚É‚±‚ê‚ðŽg—p‚·‚é•K—v‚ª‚ ‚è‚Ü‚·B
+Define_Com Class(#<<UM055_BaseFileWAM>>.Save) Name(#Save)
+Define_Com Class(#vf_elretc) Name(#uStatus)
+
+* ‚±‚ÌƒtƒB[ƒ‹ƒh‚ÌƒOƒ‹[ƒv‚Ì’è‹`‚ðƒT[ƒrƒX ƒ‚ƒWƒ…[ƒ‹ <<UM055_BaseFileWAM>> ‚©‚çŽæ“¾
+Group_By Name(#SaveFields) <<UM055_BaseFileFields>>
+
+
+If_Ref Com(#Com_Owner.avAssociatedInstance) Is_Not(*NULL)
+
+* ’FˆÈ‘O‚ÌƒƒbƒZ[ƒW‚ªŽc‚Á‚Ä‚¢‚é‚Æ¬—‚ðµ‚­‹°‚ê‚ª‚ ‚é‚Ì‚ÅAƒXƒe[ƒ^ƒX ƒo[‚ÌƒƒbƒZ[ƒW‚ðƒNƒŠƒA‚µ‚Ü‚·B
+#AVFRAMEWORKMANAGER.avClearMessages Requester(#COM_OWNER)
+
+* •Û‘¶ˆ—‚ÌŠJŽn (‘‚¢‚à‚Ì‚Å‚ ‚ê‚ÎA“¯ŠúŽÀs‚Ì .Execute ‚Å‚à\‚¢‚Ü‚¹‚ñ)
+#Save.Execute( #SaveFields #uStatus )
+
+If (#uStatus = OK)
+* XV‚ª³í‚ÉI—¹‚µ‚½‚±‚Æ‚ðŽ¦‚·ƒƒbƒZ[ƒW
+#avFrameworkManager.avIssueMessage Text('Update was successful') Requester(#COM_OWNER)
+
+* ƒCƒ“ƒXƒ^ƒ“ƒX ƒŠƒXƒg‚ÌŒ»ƒGƒ“ƒgƒŠ[‚ðXV 
+
+<<UM055_GenSetVIDs>>
+#Com_Owner.avAssociatedInstance.avVisualID1 := #UF_VisID1u
+#Com_Owner.avAssociatedInstance.avVisualID2 := #UF_VisID2u
+
+* Update any other Additional Columns here, if required
+* For example
+* #Com_Owner.avAssociatedInstance.avAColumn1  := 'My Value'
+
+#COM_OWNER.avAssociatedInstance.avUpdateDisplay
+
+#Button_Save.Enabled := False
+Endif
+
+* ƒT[ƒo[ ƒƒbƒZ[ƒW‚ðŽæ“¾‚µ‚ÄAƒtƒŒ[ƒ€ƒ[ƒN“à‚Å”­s
+#avFrameworkManager.avReceiveSystemMessageQueue Requester(#Com_owner)
+Endif
+Endroutine
+
+Evtroutine Handling(#PanelFields<>.Changed)
+#Button_Save.Enabled := True
+Endroutine
+<<endif>>
+
+End_Com
+</code>

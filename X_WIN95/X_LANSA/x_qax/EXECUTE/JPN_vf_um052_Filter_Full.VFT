@@ -1,0 +1,144 @@
+<context>
+Filter
+</context>
+<caption>
+ﾌｧｲﾙおよびﾋﾞｭｰを検索するﾌｨﾙﾀを作成
+</caption>
+<preamble>
+JPN_vf_um052_Filter_Full.htm
+</preamble>
+<sequence>
+000100  
+</sequence>
+<handler>
+VF_UM128 
+VF_UM058 
+VF_UM109   
+</handler>
+<handlertxt>
+Specify the physical file that your business object is to be based on.  Then choose which fields to show on the instance list and which field / fields uniquely identify a record.
+Specify the physical file that will underpin the search made by this filter. Then select the required view, keys and search options as they appear.
+Choose any other options you may want.
+</handlertxt>
+<hint>
+このｳｨｻﾞｰﾄﾞはﾌｧｲﾙおよびﾋﾞｭｰによってﾌｨﾙﾀのｿｰｽを生成します。修正が必要な個所は殆どありません。Visual LANSA ﾌﾚｰﾑﾜｰｸの初心者向けのｳｨｻﾞｰﾄﾞです。
+</hint>
+<code>
+<<include VF_UM052_Filter_Preamble.vfi>>
+Function Options(*DIRECT)
+Begin_Com Role(*EXTENDS #VF_AC007) Height(182) Width(326) LayoutManager(#MAIN_LAYOUT)
+* <<majorsep>>
+* ﾌｨｰﾙﾄﾞ、ｸﾞﾙｰﾌﾟ、と条件の定義
+* <<majorsep>>
+Group_By   Name(#XG_Keys)    Fields(<<UM058_KeyList>>)
+Group_By   Name(#XG_Ident)   Fields(<<UM055_GenFldList>>)
+Def_List   Name(#Save_Keys)   Fields(#XG_Keys) Type(*Working) Entrys(1)
+Def_Cond   Name(*SearchOK)   <<UM058_SearchCondition>> 
+* <<majorsep>>
+* ｺﾝﾎﾟｰﾈﾝﾄの定義
+* <<majorsep>>
+<<Comment>> ﾒｲﾝの部分とﾎﾞﾀﾝを整列させるためのﾊﾟﾈﾙ
+Define_Com Class(#PRIM_PANL) Name(#BODY_PANEL) Displayposition(1) Height(182) Layoutmanager(#BODY_FLOW) Left(0) Parent(#COM_OWNER) Tabposition(1) Tabstop(False) Top(0) Width(246) Horizontalscroll(True) Verticalscroll(True)
+Define_Com Class(#PRIM_PANL) Name(#BUTTON_PANEL) Displayposition(2) Height(182) Layoutmanager(#BUTTON_FLOW) Left(246) Parent(#COM_OWNER) Tabposition(2) Tabstop(False) Top(0) Width(88)
+<<Comment>>「添付」と「ﾌﾛｰ」のﾚｲｱｳﾄ ﾏﾈｰｼﾞｬ
+Define_Com Class(#PRIM_ATLM) Name(#MAIN_LAYOUT)
+Define_Com Class(#PRIM_ATLI) Name(#BODY_ATTACH)   Attachment(Center) Manage(#BODY_PANEL) Parent(#MAIN_LAYOUT)
+Define_Com Class(#PRIM_ATLI) Name(#BUTTON_ATTACH) Attachment(Right)  Manage(#BUTTON_PANEL) Parent(#MAIN_LAYOUT)
+Define_Com Class(#PRIM_FWLM) Name(#BUTTON_FLOW) Direction(TopToBottom) Flowoperation(Center) Marginbottom(4) Marginleft(4) Marginright(4) Margintop(4) Spacing(4) Spacingitems(4)
+Define_Com Class(#PRIM_FWLM) Name(#BODY_FLOW) Direction(TopToBottom) Marginbottom(4) Marginleft(4) Marginright(4) Margintop(4) Spacing(4) Spacingitems(4) Sizingrulehor(Maximize)
+Define_Com class(#PRIM_PHBN) Name(#Search_Button) Buttondefault(True) Caption('検索') Parent(#BUTTON_PANEL)
+Define_Com Class(#PRIM_FWLI) Name(#FWLI_Search_Button) Manage(#Search_Button) Parent(#BUTTON_FLOW)
+<<Comment>> ﾌｨﾙﾀに表示されるﾌｨｰﾙﾄﾞの定義
+<<UM058_Repeat True>>Define_Com Class(#<<field>>.Visual) Parent(#BODY_PANEL)
+<<UM058_Repeat False>>Define_Com Class(#PRIM_FWLI) Name(#FWLI_<<Field>>) Manage(#<<field>>) Parent(#BODY_FLOW)
+<<if CA_UM058_CLEARLIST>>
+Define_Com Class(#PRIM_CKBX) Name(#CLEAR_LIST) Caption('ﾘｽﾄの消去') Parent(#BODY_PANEL) DisplayPosition(1)
+Define_Com Class(#PRIM_FWLI) Name(#FWLI_CLEAR_LIST) Manage(#CLEAR_LIST) Parent(#BODY_FLOW)
+<<endif>>
+* <<majorsep>>
+* ﾒｿｯﾄﾞの定義
+* <<majorsep>>
+<<CommentBlock>>
+Mthroutine Name(uInitialize) Options(*Redefine) 
+<<if CA_UM058_REMEMBERKEYS>>
+<<comment>> このﾌｨﾙﾀを前回実行した時に使用した値を取得します。
+<<UM058_Repeat False Alpha_NU  >>#avFrameworkManager.avRestoreValue WithID1(*Component) WithID2(#<<field>>.Name) ToAValue(#<<field>>)    
+<<UM058_Repeat False Alpha_U  >>#avFrameworkManager.avRestoreValue WithID1(*Component) WithID2(#<<field>>.Name) ToAValueU(#<<field>>)    
+<<UM058_Repeat False Numeric>>#avFrameworkManager.avRestoreValue WithID1(*Component) WithID2(#<<field>>.Name) ToNValue(#VF_ELNUMX)<<split>>#<<field>> := #VF_ELNUMX<<field_intrinsic_to>>    
+<<if CA_UM058_CLEARLIST>>
+#avFrameworkManager.avRestoreValue WithID1(*Component) WithID2(#CLEAR_LIST.Name) ToAValue(#CLEAR_LIST.ButtonState) UseAValueDefault(Checked)
+<<endif>>
+<<endif>>
+<<comment>> 検索ﾎﾞﾀﾝの使用可能/不可を設定します。
+Set #Search_Button Enabled(*SearchOK)
+<<CommentBlock>>
+Endroutine
+<<CommentBlock>>
+* <<majorsep>>
+* Subroutines
+* <<majorsep>>
+<<CommentBlock>>
+* <<majorsep>>
+* Event Handlers
+* <<majorsep>>
+<<CommentBlock>>
+* <<minorsep>>
+* ｷｰ ﾌｨｰﾙﾄﾞを変更した時の処理 
+* <<minorsep>>
+<<CommentBlock>>
+<<UM058_Repeat False ALL>><<split>>EvtRoutine Handling(#<<field>>.Changed) Options(*NOCLEARMESSAGES *NOCLEARERRORS)<<split>>Set #Search_Button Enabled(*SearchOK)<<split>>EndRoutine<<split>><<CommentBlock>>
+* <<minorsep>>
+* 検索ﾎﾞﾀﾝの処理 
+* <<minorsep>>
+<<CommentBlock>>
+EvtRoutine Handling(#Search_Button.Click) Options(*NOCLEARMESSAGES *NOCLEARERRORS)
+<<if CA_UM058_REMEMBERKEYS>>
+<<comment>> このﾌｨﾙﾀｰの次に実行する時のために値を記憶します。
+<<UM058_Repeat False Alpha_NU  >>#avFrameworkManager.avSaveValue WithID1(*Component) WithID2(#<<field>>.Name) FromAValue(#<<field>>)
+<<UM058_Repeat False Alpha_U  >>#avFrameworkManager.avSaveValue WithID1(*Component) WithID2(#<<field>>.Name) FromAValueU(#<<field>>)
+<<UM058_Repeat False Numeric>>#avFrameworkManager.avSaveValue WithID1(*Component) WithID2(#<<field>>.Name) FromNValue(#<<field>><<field_intrinsic_from>>)   
+<<if CA_UM058_CLEARLIST>>
+#avFrameworkManager.avSaveValue WithID1(*Component) WithID2(#CLEAR_LIST.Name) FromAValue(#CLEAR_LIST.ButtonState)
+<<endif>>
+<<endif>>
+<<comment>> SELECT のﾙｰﾌﾟ処理でｷｰの値が変わりますのでその前に値を保存します。 
+Inz_List #Save_Keys 1 
+<<comment>> <<businessobject_lang ucaption>> のｲﾝｽﾀﾝｽ ﾘｽﾄの更新を開始することをｱﾌﾟﾘｹｰｼｮﾝに知らせます。
+#avListManager.BeginListUpdate
+
+<<if CA_UM058_CLEARLIST>>
+<<comment>> <<businessobject_lang ucaption>> のｲﾝｽﾀﾝｽ ﾘｽﾄをｸﾘｱします。
+If cond(#Clear_List.ButtonState = Checked)
+#avListManager.ClearList
+Endif 
+<<else>>
+<<comment>> <<businessobject_lang ucaption>> のｲﾝｽﾀﾝｽ ﾘｽﾄをｸﾘｱします。
+#avListManager.ClearList
+<<endif>>
+<<Comment>> <<businessobject_lang ucaption>> の適切なｲﾝｽﾀﾝｽを選択します。
+<<if CA_UM058_ALLOWGENERIC>>
+<<if CA_UM058_FULLKEY>>
+Select Fields(#XG_Ident) From_File(<<UM058_ViewName>>) With_key(#XG_Keys) Generic(*yes) Nbr_keys(*WithKey)  
+<<else>>
+Select Fields(#XG_Ident) From_File(<<UM058_ViewName>>) With_key(#XG_Keys) Generic(*yes) Nbr_Keys(*Compute)  
+<<endif>>  
+<<else>>
+<<if CA_UM058_FULLKEY>>
+Select Fields(#XG_Ident) From_File(<<UM058_ViewName>>) With_key(#XG_Keys) Nbr_keys(*WithKey)  
+<<else>>
+Select Fields(#XG_Ident) From_File(<<UM058_ViewName>>) With_key(#XG_Keys) Nbr_Keys(*Compute)  
+<<endif>>
+<<endif>>
+<<UM055_AddtoList>>  
+
+EndSelect
+<<comment>> <<businessobject_lang ucaption>> のｲﾝｽﾀﾝｽ ﾘｽﾄの更新を完了したことをｱﾌﾟﾘｹｰｼｮﾝに知らせます。 
+#avListManager.EndListUpdate
+
+<<comment>> 保存したｷｰの値を復元します。
+Get_Entry 1 #Save_Keys 
+<<comment>> 
+Endroutine
+<<commentblock>>
+End_Com
+</code>  
