@@ -1,17 +1,17 @@
 LI	CB	 	 	 	 	 	 	 	 	 
 LI	LI	 	 	 	 	 	 	 	 	 
-FD	SO	xscountry.CTD	Y	 	XSCOUNTRY	N	 	 	I	 
-FD	EO	xscountry.DLL	Y	 	XSCOUNTRY	N	 	 	I	 
-FD	SD	xscountry.DLL	Y	 	XSCOUNTRY	N	 	 	I	 
-FD	SO	xsprdct.CTD	Y	 	XSPRDCT	N	 	 	I	 
-FD	EO	xsprdct.DLL	Y	 	XSPRDCT	N	 	 	I	 
-FD	SD	xsprdct.DLL	Y	 	XSPRDCT	N	 	 	I	 
-FD	SO	xsprdlne.CTD	Y	 	XSPRDLNE	N	 	 	I	 
-FD	EO	xsprdlne.DLL	Y	 	XSPRDLNE	N	 	 	I	 
-FD	SD	xsprdlne.DLL	Y	 	XSPRDLNE	N	 	 	I	 
-FD	SO	xsproduct.CTD	Y	 	XSPRODUCT	N	 	 	I	 
-FD	EO	xsproduct.DLL	Y	 	XSPRODUCT	N	 	 	I	 
-FD	SD	xsproduct.DLL	Y	 	XSPRODUCT	N	 	 	I	 
+FD	SO	xscountry.CTD	Y	 	XSCOUNTRY	N	 	 	R	 
+FD	EO	xscountry.DLL	Y	 	XSCOUNTRY	N	 	 	R	 
+FD	SD	xscountry.DLL	Y	 	XSCOUNTRY	N	 	 	R	 
+FD	SO	xsprdct.CTD	Y	 	XSPRDCT	N	 	 	R	 
+FD	EO	xsprdct.DLL	Y	 	XSPRDCT	N	 	 	R	 
+FD	SD	xsprdct.DLL	Y	 	XSPRDCT	N	 	 	R	 
+FD	SO	xsprdlne.CTD	Y	 	XSPRDLNE	N	 	 	R	 
+FD	EO	xsprdlne.DLL	Y	 	XSPRDLNE	N	 	 	R	 
+FD	SD	xsprdlne.DLL	Y	 	XSPRDLNE	N	 	 	R	 
+FD	SO	xsproduct.CTD	Y	 	XSPRODUCT	N	 	 	R	 
+FD	EO	xsproduct.DLL	Y	 	XSPRODUCT	N	 	 	R	 
+FD	SD	xsproduct.DLL	Y	 	XSPRODUCT	N	 	 	R	 
 FD	SO	xsstate.CTD	Y	 	XSSTATE	N	 	 	I	 
 FD	EO	xsstate.DLL	Y	 	XSSTATE	N	 	 	I	 
 FD	SD	xsstate.DLL	Y	 	XSSTATE	N	 	 	I	 
