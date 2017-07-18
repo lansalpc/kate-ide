@@ -1,0 +1,35 @@
+C Creation of Package - B0000989 - Started	2017/07/18 15:36:13
+C Copy of file lxxbdf.asc was successful	2017/07/18 15:36:13
+C Copy of file xscountry.CTD was successful	2017/07/18 15:36:13
+C Copy of file xscountry.dll was successful	2017/07/18 15:36:13
+C Unload of data for File XSCOUNTRY successful	2017/07/18 15:36:13
+C Export of LANSA internal data - Started	2017/07/18 15:36:13
+ 	2017/07/18 15:36:13
+-> Object Export Facility Started 18/07/17 15:36:13 (15:36:13.765134)	2017/07/18 15:36:13
+-> This procedure is being logged into file C:\Users\kate\AppData\Local\Temp\export.log (15:36:13.765633)	2017/07/18 15:36:13
+-> Export of table lxxf60 (to C:\PROGRA~2\LANSA\TipVCS\X_WIN95\X_LANSA\x_apps\OL74\X_PKGWRK\1.0.65535\build\internal\lxxf60.asc) in progress. Please wait (15:36:13.804729)	2017/07/18 15:36:13
+-> Export of table lxxf60 (to C:\PROGRA~2\LANSA\TipVCS\X_WIN95\X_LANSA\x_apps\OL74\X_PKGWRK\1.0.65535\build\internal\lxxf60.asc) completed normally (15:36:13.811919)	2017/07/18 15:36:13
+-> Export of table lxxfof (to C:\PROGRA~2\LANSA\TipVCS\X_WIN95\X_LANSA\x_apps\OL74\X_PKGWRK\1.0.65535\build\internal\lxxfof.asc) in progress. Please wait (15:36:14.055988)	2017/07/18 15:36:13
+-> Export of table lxxfof (to C:\PROGRA~2\LANSA\TipVCS\X_WIN95\X_LANSA\x_apps\OL74\X_PKGWRK\1.0.65535\build\internal\lxxfof.asc) completed normally (15:36:14.056064)	2017/07/18 15:36:13
+-> Definition of file XSCOUNTRY in library IDETESTLIB successfully exported. (15:36:14.349296)	2017/07/18 15:36:13
+-> Definition of system variable *LANGUAGE successfully exported. (15:36:14.488839)	2017/07/18 15:36:13
+-> Definition of system variable *PARTITION successfully exported. (15:36:14.551159)	2017/07/18 15:36:13
+-> Export of table lxxf96 (to C:\PROGRA~2\LANSA\TipVCS\X_WIN95\X_LANSA\x_apps\OL74\X_PKGWRK\1.0.65535\build\internal\lxxf96.asc) in progress. Please wait (15:36:14.639769)	2017/07/18 15:36:13
+-> Export of table lxxf96 (to C:\PROGRA~2\LANSA\TipVCS\X_WIN95\X_LANSA\x_apps\OL74\X_PKGWRK\1.0.65535\build\internal\lxxf96.asc) completed normally (15:36:14.644694)	2017/07/18 15:36:13
+-> Export of table lxxf73 (to C:\PROGRA~2\LANSA\TipVCS\X_WIN95\X_LANSA\x_apps\OL74\X_PKGWRK\1.0.65535\build\internal\lxxf73.asc) in progress. Please wait (15:36:14.812810)	2017/07/18 15:36:13
+-> Export of table lxxf73 (to C:\PROGRA~2\LANSA\TipVCS\X_WIN95\X_LANSA\x_apps\OL74\X_PKGWRK\1.0.65535\build\internal\lxxf73.asc) completed normally (15:36:14.812877)	2017/07/18 15:36:13
+-> Export of table lxxfku (to C:\PROGRA~2\LANSA\TipVCS\X_WIN95\X_LANSA\x_apps\OL74\X_PKGWRK\1.0.65535\build\internal\lxxfku.asc) in progress. Please wait (15:36:15.038588)	2017/07/18 15:36:13
+-> Export of table lxxfku (to C:\PROGRA~2\LANSA\TipVCS\X_WIN95\X_LANSA\x_apps\OL74\X_PKGWRK\1.0.65535\build\internal\lxxfku.asc) completed normally (15:36:15.058914)	2017/07/18 15:36:13
+-> Object Export Facility Ended 18/07/17 15:36:15. 0 fatal errors were detected. 0 warnings were issued. (15:36:15.079670)	2017/07/18 15:36:13
+ 	2017/07/18 15:36:13
+C Export of LANSA internal data - Completed Successfully	2017/07/18 15:36:15
+C Copy of file pkgdesc.txt was successful	2017/07/18 15:36:15
+C Copy of file appdesc.txt was successful	2017/07/18 15:36:15
+C Copy of file lxxadf.asc was successful	2017/07/18 15:36:15
+W Only ENG, FRA and JPN MSI files are automatically supported. To create MSI file for another language refer to documentation.	2017/07/18 15:36:15
+W DBMS Type entered but Execution Database Support has not been selected	2017/07/18 15:36:15
+C MSI Build (Step 1) complete	2017/07/18 15:36:15
+C MSI Build (Step 2) bypassed	2017/07/18 15:36:15
+            11 Completion messages	2017/07/18 15:36:15
+            2 Warning messages	2017/07/18 15:36:15
+            0 Fatal messages	2017/07/18 15:36:15
