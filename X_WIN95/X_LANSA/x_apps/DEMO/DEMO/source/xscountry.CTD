@@ -19,13 +19,6 @@ DEFINE_COLUMNS
     TYPE=CHAR
     LEN=100
     NOT_NULL
-  NAME=XSSTTDSC
-    INTERNAL=XSSTTDSC
-    ALTERNATE=XSStateDescription
-    DESC=State Description
-    TYPE=CHAR
-    LEN=100
-    NOT_NULL
   NAME=@@UPID
     INTERNAL=@@UPID
     DESC=Field update / access identifier
