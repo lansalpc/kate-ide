@@ -200,12 +200,12 @@ function( Lansa, objectId, undefined )
          var WHITE = this.createReference( "WHITE", "PRIM_VS", "SolidBrush" );
 
          //
-         // DEFINE_COM Class(#PRIM_VS.SolidBrush) Name(#Blue1) Color(1:76:144)
+         // DEFINE_COM Class(#PRIM_VS.SolidBrush) Name(#Blue1) Color(0:204:0)
          //
          var BLUE1 = this.createReference( "BLUE1", "PRIM_VS", "SolidBrush" );
 
          //
-         // DEFINE_COM Class(#PRIM_VS.SolidBrush) Name(#Blue2) Color(0:61:118)
+         // DEFINE_COM Class(#PRIM_VS.SolidBrush) Name(#Blue2) Color(0:153:51)
          //
          var BLUE2 = this.createReference( "BLUE2", "PRIM_VS", "SolidBrush" );
 
@@ -474,13 +474,13 @@ function( Lansa, objectId, undefined )
          // -----------------------
          // -- Initialize #BLUE1 --
          // -----------------------
-         BLUE1.setColor( "1:76:144" );
+         BLUE1.setColor( "0:204:0" );
          BLUE1.initialize();
 
          // -----------------------
          // -- Initialize #BLUE2 --
          // -----------------------
-         BLUE2.setColor( "0:61:118" );
+         BLUE2.setColor( "0:153:51" );
          BLUE2.initialize();
 
          // ---------------------------------
@@ -682,18 +682,18 @@ function( Lansa, objectId, undefined )
    //
    function evtRoutine1( sender, parms )
    {
-      var ref = this.REF, rtn = Lansa.evtRoutine( this, COM_OWNER, "#Com_owner.Initialize", 58 );
+      var ref = this.REF, rtn = Lansa.evtRoutine( this, COM_OWNER, "#Com_owner.Initialize", 60 );
 
       //
       // EVTROUTINE Handling(#Com_owner.Initialize)
       //
-      rtn.Line( 58 );
+      rtn.Line( 60 );
       {
 
          //
          // #Response := 'The Web Server is running.  Press the button to test the Application Server.'
          //
-         rtn.Line( 60 );
+         rtn.Line( 62 );
          ref.RESPONSE.set( "The Web Server is running.  Press the button to test the Application Server." );
 
       }
@@ -701,7 +701,7 @@ function( Lansa, objectId, undefined )
       //
       // ENDROUTINE
       //
-      rtn.Line( 62 );
+      rtn.Line( 64 );
       rtn.end();
    };
 
@@ -710,18 +710,18 @@ function( Lansa, objectId, undefined )
    //
    function evtRoutine2( sender, parms )
    {
-      var fld = this.FLD.XVLWEBTST, ref = this.REF, rtn = Lansa.evtRoutine( this, COM_OWNER, "#SendRequest.Click", 64 );
+      var fld = this.FLD.XVLWEBTST, ref = this.REF, rtn = Lansa.evtRoutine( this, COM_OWNER, "#SendRequest.Click", 66 );
 
       //
       // EVTROUTINE Handling(#SendRequest.Click)
       //
-      rtn.Line( 64 );
+      rtn.Line( 66 );
       {
 
          //
          // #WebServerRequest.Execute( #ProgramLibrary )
          //
-         rtn.Line( 68 );
+         rtn.Line( 70 );
          ref.WEBSERVERREQUEST.mthEXECUTE( {  }, { FLD: { "PROGRAMLIBRARY": fld.PROGRAMLIBRARY } } );
 
       }
@@ -729,7 +729,7 @@ function( Lansa, objectId, undefined )
       //
       // ENDROUTINE
       //
-      rtn.Line( 70 );
+      rtn.Line( 72 );
       rtn.end();
    };
 
@@ -738,24 +738,24 @@ function( Lansa, objectId, undefined )
    //
    function evtRoutine3( sender, parms )
    {
-      var fld = this.FLD.XVLWEBTST, ref = this.REF, rtn = Lansa.evtRoutine( this, COM_OWNER, "#WebServerRequest.Completed", 72 );
+      var fld = this.FLD.XVLWEBTST, ref = this.REF, rtn = Lansa.evtRoutine( this, COM_OWNER, "#WebServerRequest.Completed", 74 );
 
       //
       // EVTROUTINE Handling(#WebServerRequest.Completed)
       //
-      rtn.Line( 72 );
+      rtn.Line( 74 );
       {
 
          //
          // #Response := 'The Application Server responded.  The current LANSA system program library is ' + #ProgramLibrary + '.'
          //
-         rtn.Line( 74 );
+         rtn.Line( 76 );
          ref.RESPONSE.set( Lansa.cat( Lansa.cat( "The Application Server responded.  The current LANSA system program library is ", fld.PROGRAMLIBRARY.get() ), "." ) );
 
          //
          // #SendRequest.Visible := false
          //
-         rtn.Line( 76 );
+         rtn.Line( 78 );
          ref.SENDREQUEST.setVisible( false );
 
       }
@@ -763,7 +763,7 @@ function( Lansa, objectId, undefined )
       //
       // ENDROUTINE
       //
-      rtn.Line( 78 );
+      rtn.Line( 80 );
       rtn.end();
    };
 
@@ -772,7 +772,7 @@ function( Lansa, objectId, undefined )
    //
    function evtRoutine4( sender, parms )
    {
-      var rtn = Lansa.evtRoutine( this, COM_OWNER, "#WebServerRequest.Failed", 80 );
+      var rtn = Lansa.evtRoutine( this, COM_OWNER, "#WebServerRequest.Failed", 82 );
 
       // ---------------------------
       // -- Parameter Definitions --
@@ -782,7 +782,7 @@ function( Lansa, objectId, undefined )
       //
       // EVTROUTINE Handling(#WebServerRequest.Failed) Reason(#reason)
       //
-      rtn.Line( 80 );
+      rtn.Line( 82 );
       {
 
       }
@@ -790,7 +790,7 @@ function( Lansa, objectId, undefined )
       //
       // ENDROUTINE
       //
-      rtn.Line( 84 );
+      rtn.Line( 86 );
       rtn.end();
    };
 
