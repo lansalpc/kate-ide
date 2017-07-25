@@ -1,4 +1,4 @@
-﻿LANSA.addComponent({id:"XGOOGLE02",nm:"xGoogleGauge",ot:"ww",tp:"Widget",de:"Google Gauge",tl:14000101,cl:14010003},function(l,oI,u){var fW=
+﻿LANSA.addComponent({id:"XGOOGLE02",nm:"xGoogleGauge",ot:"ww",tp:"Widget",de:"Google Gauge",tl:14000101,cl:14020000},function(l,oI,u){var fW=
 function( PROTOTYPE, WIDGET )
 {
 google.load( 'visualization', '1', { packages:["gauge"], callback: WIDGET.Finalize } );

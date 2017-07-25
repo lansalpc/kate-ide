@@ -1,4 +1,4 @@
-﻿LANSA.addComponent({id:"XCONNEC01",nm:"xConnectorSystemValue",ot:"ww",tp:"Widget",de:"Get a system value",tl:14000101,cl:14010003},function(l,oI,u){var fF=function(wP){wP.fireReadCompleted=function(pStatus,pValue,pError){var eP=l.ePs();eP.aE("STATUS",pStatus);eP.aS("VALUE",pValue);eP.aS("ERROR",pError);l.fE(this,"READCOMPLETED",eP);};};var fW=
+﻿LANSA.addComponent({id:"XCONNEC01",nm:"xConnectorSystemValue",ot:"ww",tp:"Widget",de:"Get a system value",tl:14000101,cl:14020000},function(l,oI,u){var fF=function(wP){wP.fireReadCompleted=function(pStatus,pValue,pError){var eP=l.ePs();eP.aE("STATUS",pStatus);eP.aS("VALUE",pValue);eP.aS("ERROR",pError);l.fE(this,"READCOMPLETED",eP);};};var fW=
 function( PROTOTYPE, WIDGET )
 {
 PROTOTYPE.onCreateInstance = function()

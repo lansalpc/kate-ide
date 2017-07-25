@@ -1,4 +1,4 @@
-﻿LANSA.addComponent({id:"XGOOGLE04",nm:"xGoogleColumnChart",ot:"ww",tp:"Widget",de:"Google Column Chart",tl:14000101,cl:14010003},function(l,oI,u){var fF=function(wP){wP.fireItemGotSelection=function(pIndex,pCaption,pValue){var eP=l.ePs();eP.aI("INDEX",pIndex);eP.aS("CAPTION",pCaption);eP.aD("VALUE",pValue);l.fE(this,"ITEMGOTSELECTION",eP);};};var fW=
+﻿LANSA.addComponent({id:"XGOOGLE04",nm:"xGoogleColumnChart",ot:"ww",tp:"Widget",de:"Google Column Chart",tl:14000101,cl:14020000},function(l,oI,u){var fF=function(wP){wP.fireItemGotSelection=function(pIndex,pCaption,pValue){var eP=l.ePs();eP.aI("INDEX",pIndex);eP.aS("CAPTION",pCaption);eP.aD("VALUE",pValue);l.fE(this,"ITEMGOTSELECTION",eP);};};var fW=
 function( PROTOTYPE, WIDGET )
 {
 google.load( 'visualization', '1', { packages:["corechart"], callback: WIDGET.Finalize } );

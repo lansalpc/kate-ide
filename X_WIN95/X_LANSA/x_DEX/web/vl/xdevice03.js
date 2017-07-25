@@ -1,4 +1,4 @@
-﻿LANSA.addComponent({id:"XDEVICE03",nm:"xDeviceBarcodeScanner",ot:"ww",tp:"Widget",de:"Scan barcodes on mobile devices",tl:14000101,cl:14010003},function(l,oI,u){var fF=function(wP){wP.fireCompleted=function(pStatus,pBarcodeCount,pMessage){var eP=l.ePs();eP.aE("STATUS",pStatus);eP.aI("BARCODECOUNT",pBarcodeCount);eP.aS("MESSAGE",pMessage);l.fE(this,"COMPLETED",eP);};};var fW=
+﻿LANSA.addComponent({id:"XDEVICE03",nm:"xDeviceBarcodeScanner",ot:"ww",tp:"Widget",de:"Scan barcodes on mobile devices",tl:14000101,cl:14020000},function(l,oI,u){var fF=function(wP){wP.fireCompleted=function(pStatus,pBarcodeCount,pMessage){var eP=l.ePs();eP.aE("STATUS",pStatus);eP.aI("BARCODECOUNT",pBarcodeCount);eP.aS("MESSAGE",pMessage);l.fE(this,"COMPLETED",eP);};};var fW=
 function( PROTOTYPE, WIDGET )
 {
 var

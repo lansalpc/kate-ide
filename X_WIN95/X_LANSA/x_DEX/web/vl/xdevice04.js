@@ -1,4 +1,4 @@
-﻿LANSA.addComponent({id:"XDEVICE04",nm:"xDeviceCamera",ot:"ww",tp:"Widget",de:"Control camera on mobile devices",tl:14000101,cl:14010003},function(l,oI,u){var fF=function(wP){wP.fireCompleted=function(pStatus,pMessage){var eP=l.ePs();eP.aE("STATUS",pStatus);eP.aS("MESSAGE",pMessage);l.fE(this,"COMPLETED",eP);};};var fW=
+﻿LANSA.addComponent({id:"XDEVICE04",nm:"xDeviceCamera",ot:"ww",tp:"Widget",de:"Control camera on mobile devices",tl:14000101,cl:14020000},function(l,oI,u){var fF=function(wP){wP.fireCompleted=function(pStatus,pMessage){var eP=l.ePs();eP.aE("STATUS",pStatus);eP.aS("MESSAGE",pMessage);l.fE(this,"COMPLETED",eP);};};var fW=
 function( PROTOTYPE, WIDGET )
 {
 var

@@ -1,4 +1,4 @@
-﻿LANSA.addComponent({id:"XCONNEC07",nm:"xConnectorChangePassword",ot:"ww",tp:"Widget",de:"Change a profiles password",tl:14000101,cl:14010003},function(l,oI,u){var fF=function(wP){wP.firePasswordChangeCompleted=function(pStatus,pError){var eP=l.ePs();eP.aE("STATUS",pStatus);eP.aS("ERROR",pError);l.fE(this,"PASSWORDCHANGECOMPLETED",eP);};};var fW=
+﻿LANSA.addComponent({id:"XCONNEC07",nm:"xConnectorChangePassword",ot:"ww",tp:"Widget",de:"Change a profiles password",tl:14000101,cl:14020000},function(l,oI,u){var fF=function(wP){wP.firePasswordChangeCompleted=function(pStatus,pError){var eP=l.ePs();eP.aE("STATUS",pStatus);eP.aS("ERROR",pError);l.fE(this,"PASSWORDCHANGECOMPLETED",eP);};};var fW=
 function( PROTOTYPE, WIDGET )
 {
 PROTOTYPE.onCreateInstance = function()

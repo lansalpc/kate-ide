@@ -1,4 +1,4 @@
-﻿LANSA.addComponent({id:"XDEVICE06",nm:"xDeviceFileRead",ot:"ww",tp:"Widget",de:"Read the contents of a local file",tl:14000101,cl:14010003},function(l,oI,u){var fF=function(wP){wP.fireCompleted=function(pStatus,pData,pMessage){var eP=l.ePs();eP.aE("STATUS",pStatus);eP.aS("DATA",pData);eP.aS("MESSAGE",pMessage);l.fE(this,"COMPLETED",eP);};};var fW=
+﻿LANSA.addComponent({id:"XDEVICE06",nm:"xDeviceFileRead",ot:"ww",tp:"Widget",de:"Read the contents of a local file",tl:14000101,cl:14020000},function(l,oI,u){var fF=function(wP){wP.fireCompleted=function(pStatus,pData,pMessage){var eP=l.ePs();eP.aE("STATUS",pStatus);eP.aS("DATA",pData);eP.aS("MESSAGE",pMessage);l.fE(this,"COMPLETED",eP);};};var fW=
 function( PROTOTYPE, WIDGET )
 {
 var

@@ -1,4 +1,4 @@
-﻿LANSA.addComponent({id:"XCONNEC06",nm:"xConnectorDataQueue",ot:"ww",tp:"Widget",de:"Read/Write to a data queue",tl:14000101,cl:14010003},function(l,oI,u){var fF=function(wP){wP.fireReadCompleted=function(pStatus,pValue,pError){var eP=l.ePs();eP.aE("STATUS",pStatus);eP.aS("VALUE",pValue);eP.aS("ERROR",pError);l.fE(this,"READCOMPLETED",eP);};wP.fireWriteCompleted=function(pStatus,pError){var eP=l.ePs();eP.aE("STATUS",pStatus);eP.aS("ERROR",pError);l.fE(this,"WRITECOMPLETED",eP);};};var fW=
+﻿LANSA.addComponent({id:"XCONNEC06",nm:"xConnectorDataQueue",ot:"ww",tp:"Widget",de:"Read/Write to a data queue",tl:14000101,cl:14020000},function(l,oI,u){var fF=function(wP){wP.fireReadCompleted=function(pStatus,pValue,pError){var eP=l.ePs();eP.aE("STATUS",pStatus);eP.aS("VALUE",pValue);eP.aS("ERROR",pError);l.fE(this,"READCOMPLETED",eP);};wP.fireWriteCompleted=function(pStatus,pError){var eP=l.ePs();eP.aE("STATUS",pStatus);eP.aS("ERROR",pError);l.fE(this,"WRITECOMPLETED",eP);};};var fW=
 function( PROTOTYPE, WIDGET )
 {
 PROTOTYPE.onCreateInstance = function()

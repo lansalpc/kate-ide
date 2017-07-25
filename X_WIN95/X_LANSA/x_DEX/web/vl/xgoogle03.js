@@ -1,4 +1,4 @@
-﻿LANSA.addComponent({id:"XGOOGLE03",nm:"xGoogleMap",ot:"ww",tp:"Widget",de:"Google Map",tl:14000101,cl:14010003},function(l,oI,u){var fF=function(wP){wP.fireRightClick=function(pLatitude,pLongitude){var eP=l.ePs();eP.aD("LATITUDE",pLatitude);eP.aD("LONGITUDE",pLongitude);l.fE(this,"RIGHTCLICK",eP);};wP.fireCenterChanged=function(pLatitude,pLongitude){var eP=l.ePs();eP.aD("LATITUDE",pLatitude);eP.aD("LONGITUDE",pLongitude);l.fE(this,"CENTERCHANGED",eP);};};var fW=
+﻿LANSA.addComponent({id:"XGOOGLE03",nm:"xGoogleMap",ot:"ww",tp:"Widget",de:"Google Map",tl:14000101,cl:14020000},function(l,oI,u){var fF=function(wP){wP.fireRightClick=function(pLatitude,pLongitude){var eP=l.ePs();eP.aD("LATITUDE",pLatitude);eP.aD("LONGITUDE",pLongitude);l.fE(this,"RIGHTCLICK",eP);};wP.fireCenterChanged=function(pLatitude,pLongitude){var eP=l.ePs();eP.aD("LATITUDE",pLatitude);eP.aD("LONGITUDE",pLongitude);l.fE(this,"CENTERCHANGED",eP);};};var fW=
 function( PROTOTYPE, WIDGET )
 {
 var apiKey = "YOUR_KEY_HERE";

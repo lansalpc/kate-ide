@@ -1,4 +1,4 @@
-﻿LANSA.addComponent({id:"XCONNEC05",nm:"xConnectorObjectList",ot:"ww",tp:"Widget",de:"Retrieve an object list",tl:14000101,cl:14010003},function(l,oI,u){var fF=function(wP){wP.fireGetListCompleted=function(pStatus,pError){var eP=l.ePs();eP.aE("STATUS",pStatus);eP.aS("ERROR",pError);l.fE(this,"GETLISTCOMPLETED",eP);};};var fW=
+﻿LANSA.addComponent({id:"XCONNEC05",nm:"xConnectorObjectList",ot:"ww",tp:"Widget",de:"Retrieve an object list",tl:14000101,cl:14020000},function(l,oI,u){var fF=function(wP){wP.fireGetListCompleted=function(pStatus,pError){var eP=l.ePs();eP.aE("STATUS",pStatus);eP.aS("ERROR",pError);l.fE(this,"GETLISTCOMPLETED",eP);};};var fW=
 function( PROTOTYPE, WIDGET )
 {
 var m_List;

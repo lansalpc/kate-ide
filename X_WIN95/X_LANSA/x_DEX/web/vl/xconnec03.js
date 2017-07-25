@@ -1,4 +1,4 @@
-﻿LANSA.addComponent({id:"XCONNEC03",nm:"xConnectorEmail",ot:"ww",tp:"Widget",de:"Send email",tl:14000101,cl:14010003},function(l,oI,u){var fF=function(wP){wP.fireEmailSendCompleted=function(pStatus,pError){var eP=l.ePs();eP.aE("STATUS",pStatus);eP.aS("ERROR",pError);l.fE(this,"EMAILSENDCOMPLETED",eP);};};var fW=
+﻿LANSA.addComponent({id:"XCONNEC03",nm:"xConnectorEmail",ot:"ww",tp:"Widget",de:"Send email",tl:14000101,cl:14020000},function(l,oI,u){var fF=function(wP){wP.fireEmailSendCompleted=function(pStatus,pError){var eP=l.ePs();eP.aE("STATUS",pStatus);eP.aS("ERROR",pError);l.fE(this,"EMAILSENDCOMPLETED",eP);};};var fW=
 function( PROTOTYPE, WIDGET )
 {
 var m_ToList = [];

@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en" style="height:100%">
+<html lang="en">
    <head>
       <meta charset="utf-8" />
       <meta name="mobile-web-app-capable" content="yes">
@@ -8,8 +8,11 @@
       <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
    </head>
-   <body style="height:100%; margin-left:0px;margin-right:0px;margin-top:0px;margin-bottom:0px">
-      <script src="/%{lansa_webalias}%/lansa_14_1_0_3/lansa.js"></script>
+   <body>
+      <script%{nonce_attr}%>
+         (function(){ window["LANSA"] = {nonce: "%{nonce}%"}; })();
+      </script>
+      <script src="/%{lansa_webalias}%/lansa_14_2_0_0/lansa.js"></script>
       <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Ubuntu">
       <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lato">
       <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Raleway">
@@ -17,11 +20,11 @@
       <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Lobster">
       <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Play">
       <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Roboto">
-      <script>
+      <script%{nonce_attr}%>
          (function(LANSA){
-            if(!LANSA){document.write("Failed to load /%{lansa_webalias}%/lansa_14_1_0_3/lansa.js");return}
-            LANSA.init({part:"%{lansa_partition}%",sys:"%{lansa_webalias}%",ver:"809543592",lang:{def:"ENG",code:{"ENG":"en","FRA":"fr","JPN":"ja"}}});%{lansa_webroutine_output}%
-            LANSA.showPage("XDEMOW_38");
+            if(!LANSA){document.write("Failed to load /%{lansa_webalias}%/lansa_14_2_0_0/lansa.js");return}
+            LANSA.init({part:"%{lansa_partition}%",sys:"%{lansa_webalias}%",ver:"118863081",lang:{def:"ENG",code:{"ENG":"en","FRA":"fr","JPN":"ja"}},slz:0});%{lansa_webroutine_output}%
+            LANSA.showPage("XDEMOW_38","xDemoWebGoogleFonts");
          }(window["LANSA"]))
       </script>
       <noscript>This page requires JavaScript.</noscript>
