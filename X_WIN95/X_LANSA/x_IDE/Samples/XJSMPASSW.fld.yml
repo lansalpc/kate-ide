@@ -1,0 +1,41 @@
+﻿Field:
+  Name:               xjsmpassword
+  Type:               Alphanumeric
+  Length:             10
+  Decimals:           0
+  Default Value:      "*BLANKS"
+  Enabled For RDMLX:  No
+  System Field:       No
+
+  Input Attributes:
+  - FE
+  - LC
+
+  Multilingual Details:
+  - ENG:
+      Description:        "Password"
+      Label:              "Password"
+      Heading1:           "Password"
+      Heading2:           " "
+      Heading3:           " "
+
+  - FRA:
+      Description:        "jsmpassword"
+      Label:              "jsmpassword"
+      Heading1:           "jsmpassword"
+      Heading2:           " "
+      Heading3:           " "
+
+  - JPN:
+      Description:        "jsmpassword"
+      Label:              "jsmpassword"
+      Heading1:           "jsmpassword"
+      Heading2:           " "
+      Heading3:           " "
+
+  - LLL:
+      Description:        "jsmpassword"
+      Label:              "jsmpassword"
+      Heading1:           "jsmpassword"
+      Heading2:           " "
+      Heading3:           " "

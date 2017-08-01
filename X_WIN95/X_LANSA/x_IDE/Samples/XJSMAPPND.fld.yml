@@ -1,0 +1,41 @@
+﻿Field:
+  Name:               xjsmappend
+  Type:               Alphanumeric
+  Length:             4
+  Decimals:           0
+  Default Value:      "'*NO'"
+  Enabled For RDMLX:  No
+  System Field:       No
+
+  Input Attributes:
+  - FE
+  - LC
+
+  Multilingual Details:
+  - ENG:
+      Description:        "Append"
+      Label:              "Append"
+      Heading1:           "Append"
+      Heading2:           " "
+      Heading3:           " "
+
+  - FRA:
+      Description:        "Append"
+      Label:              "Append"
+      Heading1:           "Append"
+      Heading2:           " "
+      Heading3:           " "
+
+  - JPN:
+      Description:        "Append"
+      Label:              "Append"
+      Heading1:           "Append"
+      Heading2:           " "
+      Heading3:           " "
+
+  - LLL:
+      Description:        "Append"
+      Label:              "Append"
+      Heading1:           "Append"
+      Heading2:           " "
+      Heading3:           " "

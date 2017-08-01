@@ -1,0 +1,41 @@
+﻿Field:
+  Name:               xjsmreplace
+  Type:               Alphanumeric
+  Length:             6
+  Decimals:           0
+  Default Value:      "'*NO'"
+  Enabled For RDMLX:  No
+  System Field:       No
+
+  Input Attributes:
+  - FE
+  - LC
+
+  Multilingual Details:
+  - ENG:
+      Description:        "Replace"
+      Label:              "Replace"
+      Heading1:           "Replace"
+      Heading2:           " "
+      Heading3:           " "
+
+  - FRA:
+      Description:        "Trace"
+      Label:              "Trace"
+      Heading1:           "Trace"
+      Heading2:           " "
+      Heading3:           " "
+
+  - JPN:
+      Description:        "Trace"
+      Label:              "Trace"
+      Heading1:           "Trace"
+      Heading2:           " "
+      Heading3:           " "
+
+  - LLL:
+      Description:        "Trace"
+      Label:              "Trace"
+      Heading1:           "Trace"
+      Heading2:           " "
+      Heading3:           " "

@@ -1,0 +1,51 @@
+﻿Field:
+  Name:               xjsmstatus
+  Type:               Alphanumeric
+  Length:             20
+  Decimals:           0
+  Default Value:      "*BLANKS"
+  Enabled For RDMLX:  No
+  System Field:       No
+
+  Input Attributes:
+  - FE
+  - LC
+
+  Multilingual Details:
+  - ENG:
+      Description:        "JSM Status"
+      Label:              "JSM Status"
+      Heading1:           "JSM"
+      Heading2:           "Status"
+      Heading3:           " "
+
+  - FRA:
+      Description:        "JSM Status"
+      Label:              "JSM Status"
+      Heading1:           "JSM"
+      Heading2:           "Status"
+      Heading3:           " "
+
+  - JPN:
+      Description:        "JSM Status"
+      Label:              "JSM Status"
+      Heading1:           "JSM"
+      Heading2:           "Status"
+      Heading3:           " "
+
+  - LLL:
+      Description:        "JSM Status"
+      Label:              "JSM Status"
+      Heading1:           "JSM"
+      Heading2:           "Status"
+      Heading3:           " "
+
+  Source: |
+    *
+    Begin_Com Role(*EXTENDS #PRIM_OBJT)
+    
+    Begin_Com Role(*Visual #PRIM_EVEF) Name(#VisualEdit) Defaultvisual(True) Usepicklist(False) Componentversion(1) Height(21) Width(466)
+    
+    End_Com
+    
+    End_Com

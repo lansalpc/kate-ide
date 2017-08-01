@@ -1,0 +1,51 @@
+﻿Field:
+  Name:               xjsmuserid
+  Type:               Alphanumeric
+  Length:             10
+  Decimals:           0
+  Default Value:      "*BLANKS"
+  Enabled For RDMLX:  No
+  System Field:       No
+
+  Input Attributes:
+  - FE
+  - LC
+
+  Multilingual Details:
+  - ENG:
+      Description:        "User"
+      Label:              "User"
+      Heading1:           "User"
+      Heading2:           " "
+      Heading3:           " "
+
+  - FRA:
+      Description:        "jsmuserid"
+      Label:              "jsmuserid"
+      Heading1:           "jsmuserid"
+      Heading2:           " "
+      Heading3:           " "
+
+  - JPN:
+      Description:        "jsmuserid"
+      Label:              "jsmuserid"
+      Heading1:           "jsmuserid"
+      Heading2:           " "
+      Heading3:           " "
+
+  - LLL:
+      Description:        "jsmuserid"
+      Label:              "jsmuserid"
+      Heading1:           "jsmuserid"
+      Heading2:           " "
+      Heading3:           " "
+
+  Source: |
+    *
+    Begin_Com Role(*EXTENDS #PRIM_OBJT)
+    
+    Begin_Com Role(*Visual #PRIM_EVEF) Name(#VisualEdit) Defaultvisual(True) Usepicklist(False) Componentversion(1) Height(21) Width(323)
+    
+    End_Com
+    
+    End_Com

@@ -1,0 +1,40 @@
+﻿Field:
+  Name:               xjsmhandle
+  Type:               Alphanumeric
+  Length:             4
+  Decimals:           0
+  Default Value:      "*BLANKS"
+  Enabled For RDMLX:  No
+  System Field:       No
+
+  Input Attributes:
+  - FE
+
+  Multilingual Details:
+  - ENG:
+      Description:        "JSM Handle"
+      Label:              "JSM Handle"
+      Heading1:           "JSM"
+      Heading2:           "Handle"
+      Heading3:           " "
+
+  - FRA:
+      Description:        "JSM Handle"
+      Label:              "JSM Handle"
+      Heading1:           "JSM"
+      Heading2:           "Handle"
+      Heading3:           " "
+
+  - JPN:
+      Description:        "JSM Handle"
+      Label:              "JSM Handle"
+      Heading1:           "JSM"
+      Heading2:           "Handle"
+      Heading3:           " "
+
+  - LLL:
+      Description:        "JSM Handle"
+      Label:              "JSM Handle"
+      Heading1:           "JSM"
+      Heading2:           "Handle"
+      Heading3:           " "

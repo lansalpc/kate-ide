@@ -1,0 +1,41 @@
+﻿Field:
+  Name:               xjsmmode
+  Type:               Alphanumeric
+  Length:             6
+  Decimals:           0
+  Default Value:      "'*READ'"
+  Enabled For RDMLX:  No
+  System Field:       No
+
+  Input Attributes:
+  - FE
+  - LC
+
+  Multilingual Details:
+  - ENG:
+      Description:        "Mode"
+      Label:              "Mode"
+      Heading1:           "Mode"
+      Heading2:           " "
+      Heading3:           " "
+
+  - FRA:
+      Description:        "Trace"
+      Label:              "Trace"
+      Heading1:           "Trace"
+      Heading2:           " "
+      Heading3:           " "
+
+  - JPN:
+      Description:        "Trace"
+      Label:              "Trace"
+      Heading1:           "Trace"
+      Heading2:           " "
+      Heading3:           " "
+
+  - LLL:
+      Description:        "Trace"
+      Label:              "Trace"
+      Heading1:           "Trace"
+      Heading2:           " "
+      Heading3:           " "

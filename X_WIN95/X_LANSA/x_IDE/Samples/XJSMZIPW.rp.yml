@@ -1,0 +1,391 @@
+﻿Reusable Part:
+  Name:               XJSMZipServiceWorkflows
+  Enabled For RDMLX:  Yes
+  Target Platform:    Windows/IBM i/Linux
+
+  Framework:
+    Id1:                10240
+    Id2:                30
+
+  Multilingual Details:
+  - ENG:
+      Description:        "JSM ZipService Workflows"
+
+  - FRA:
+      Description:        "JSM ZipService Workflows"
+
+  - JPN:
+      Description:        "JSM ZipService Workflows"
+
+  - LLL:
+      Description:        "JSM ZipService Workflows"
+
+  Source: |
+    * If you need to modify this reusable part to accomodate your specific requirements, copy the object into another reusable part which does not start with x*.
+    
+    Function Options(*DIRECT)
+    Begin_Com Role(*EXTENDS #XJSMZipServiceCommands)
+    
+    Mthroutine Name(WFZipSingleFile) Help('JSM Open & Load, Open, Add, Unload & JSM Close')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#ZipFileName) Help('File path of the archive to be created. If no path, or a relative path, is specified the file will be created relative to the JSM instance directory. The file extension should be .zip to ensure the file can be correctly recognized and processed by other applications.')
+    Define_Map For(*INPUT) Class(#xjsmserver) Name(#Server) Mandatory('') Help('Server (host:port). If no server argument is supplied, then the JSM server host is obtained by reading the JSMCLTDTA data area.')
+    Define_Map For(*INPUT) Class(#xjsmtrace) Name(#Trace) Mandatory('*NO') Help('Enable tracing from the client program - *NO, *YES, *ERROR')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#FiletoAdd) Help('Specify the name, and optionally the path, of a file to be added to the current archive.')
+    Define_Map For(*OUTPUT) Class(#xjsmstatus) Name(#Status) Help('Return Status from last JSMX_* built in function executed')
+    Define_Map For(*OUTPUT) Class(#xjsmmessage) Name(#Message) Help('Message associated with return status')
+    Define_Map For(*RESULT) Class(#prim_boln) Name(#Result) Help('Boolean indicating if routine completed successfully')
+    
+    #Result := False
+    
+    If (*Not #com_owner.JSMOpenandLoad( #server #Trace #Status #Message ))
+    
+    Return
+    
+    Endif
+    
+    If (*Not #com_owner.ZipOpen( #ZipFileName '*WRITE' '*NO' #Status #Message ))
+    
+    * always close but do not return status/message
+    #com_owner.JSMCloseandUnload( #xjsmstatus #xjsmmessage )
+    
+    Return
+    
+    Endif
+    
+    If (*Not #com_owner.ZipAddFile( #FiletoAdd #Status #Message ))
+    
+    * always close but do not return status/message
+    #com_owner.JSMCloseandUnload( #xjsmstatus #xjsmmessage )
+    
+    Return
+    
+    Endif
+    
+    If (*Not #com_owner.JSMCloseandUnload( #Status #Message ))
+    
+    Return
+    
+    Endif
+    
+    #Result := True
+    
+    Endroutine
+    
+    
+    Mthroutine Name(WFZipMultipleFiles) Help('JSM Open & Load, Open, Add, Unload & JSM Close')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#ZipFileName) Help('File path of the archive to be created. If no path, or a relative path, is specified the file will be created relative to the JSM instance directory. The file extension should be .zip to ensure the file can be correctly recognized and processed by other applications.')
+    Define_Map For(*INPUT) Class(#xjsmserver) Name(#Server) Mandatory('') Help('Server (host:port). If no server argument is supplied, then the JSM server host is obtained by reading the JSMCLTDTA data area.')
+    Define_Map For(*INPUT) Class(#xjsmtrace) Name(#Trace) Mandatory('*NO') Help('Enable tracing from the client program - *NO, *YES, *ERROR')
+    Define_Map For(*INPUT) Class(#prim_lcol<#prim_alph>) Name(#Files) Help('Collection of file names #prim_lcol<#prim_alph> to be added to the current archive') Pass(*BY_REFERENCE)
+    Define_Map For(*OUTPUT) Class(#xjsmstatus) Name(#Status) Help('Return Status from last JSMX_* built in function executed')
+    Define_Map For(*OUTPUT) Class(#xjsmmessage) Name(#Message) Help('Message associated with return status')
+    Define_Map For(*RESULT) Class(#prim_boln) Name(#Result) Help('Boolean indicating if routine completed successfully')
+    
+    #Result := False
+    
+    If (*Not #com_owner.JSMOpenandLoad( #server #Trace #Status #Message ))
+    
+    Return
+    
+    Endif
+    
+    If (*Not #com_owner.ZipOpen( #ZipFileName '*WRITE' '*NO' #Status #Message ))
+    
+    * always close but do not return status/message
+    #com_owner.JSMCloseandUnload( #xjsmstatus #xjsmmessage )
+    
+    Return
+    
+    Endif
+    
+    If (*Not #com_owner.ZipAddFiles( #Files #Status #Message ))
+    
+    * always close but do not return status/message
+    #com_owner.JSMCloseandUnload( #xjsmstatus #xjsmmessage )
+    
+    Return
+    
+    Endif
+    
+    If (*Not #com_owner.JSMCloseandUnload( #Status #Message ))
+    
+    Return
+    
+    Endif
+    
+    #Result := True
+    
+    Endroutine
+    
+    Mthroutine Name(WFZipSinglePath) Help('JSM Open & Load, Open, Add, Unload & JSM Close')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#ZipFileName) Help('File path of the archive to be created. If no path, or a relative path, is specified the file will be created relative to the JSM instance directory. The file extension should be .zip to ensure the file can be correctly recognized and processed by other applications.')
+    Define_Map For(*INPUT) Class(#xjsmserver) Name(#Server) Mandatory('') Help('Server (host:port). If no server argument is supplied, then the JSM server host is obtained by reading the JSMCLTDTA data area.')
+    Define_Map For(*INPUT) Class(#xjsmtrace) Name(#Trace) Mandatory('*NO') Help('Enable tracing from the client program - *NO (default), *YES, *ERROR')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#PathtoAdd) Help('File path specifies the path of a single directory to be added to the current archive.')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#Base) Mandatory('*NONE') Help('Nominate a path to be used as the relative path for all files in the zip archive - *NONE (default), *CURRENT, *PARENT, <path>')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#Tree) Mandatory('*YES') Help('Specifies whether the add operations should recursively traverse sub-directories of the directory(s) specified - *YES (default), *NO')
+    Define_Map For(*OUTPUT) Class(#xjsmstatus) Name(#Status) Help('Return Status from last JSMX_* built in function executed')
+    Define_Map For(*OUTPUT) Class(#xjsmmessage) Name(#Message) Help('Message associated with return status')
+    Define_Map For(*RESULT) Class(#prim_boln) Name(#Result) Help('Boolean indicating if routine completed successfully')
+    
+    #Result := False
+    
+    If (*Not #com_owner.JSMOpenandLoad( #server #Trace #Status #Message ))
+    
+    Return
+    
+    Endif
+    
+    If (*Not #com_owner.ZipOpen( #ZipFileName '*WRITE' '*NO' #Status #Message ))
+    
+    * always close but do not return status/message
+    #com_owner.JSMCloseandUnload( #xjsmstatus #xjsmmessage )
+    
+    Return
+    
+    Endif
+    
+    If (*Not #com_owner.ZipAddPath( #PathtoAdd #Base #Tree #Status #Message ))
+    
+    * always close but do not return status/message
+    #com_owner.JSMCloseandUnload( #xjsmstatus #xjsmmessage )
+    
+    Return
+    
+    Endif
+    
+    If (*Not #com_owner.JSMCloseandUnload( #Status #Message ))
+    
+    Return
+    
+    Endif
+    
+    #Result := True
+    
+    Endroutine
+    
+    Mthroutine Name(WFZipMultiplePaths) Help('JSM Open & Load, Open, Add, Unload & JSM Close')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#ZipFileName) Help('File path of the archive to be created. If no path, or a relative path, is specified the file will be created relative to the JSM instance directory. The file extension should be .zip to ensure the file can be correctly recognized and processed by other applications.')
+    Define_Map For(*INPUT) Class(#xjsmserver) Name(#Server) Mandatory('') Help('Server (host:port). If no server argument is supplied, then the JSM server host is obtained by reading the JSMCLTDTA data area.')
+    Define_Map For(*INPUT) Class(#xjsmtrace) Name(#Trace) Mandatory('*NO') Help('Enable tracing from the client program - *NO, *YES, *ERROR')
+    Define_Map For(*INPUT) Class(#prim_lcol<#prim_alph>) Name(#Paths) Help('Collection of paths #prim_lcol<#prim_alph> to be added to the current archive') Pass(*BY_REFERENCE)
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#Base) Mandatory('*NONE') Help('Nominate a path to be used as the relative path for all files in the zip archive - *NONE, *CURRENT, *PARENT, <path>')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#Tree) Mandatory('*YES') Help('Specifies whether the add operations should recursively traverse sub-directories of the directory(s) specified - *YES, *NO')
+    Define_Map For(*OUTPUT) Class(#xjsmstatus) Name(#Status) Help('Return Status from last JSMX_* built in function executed')
+    Define_Map For(*OUTPUT) Class(#xjsmmessage) Name(#Message) Help('Message associated with return status')
+    Define_Map For(*RESULT) Class(#prim_boln) Name(#Result) Help('Boolean indicating if routine completed successfully')
+    
+    #Result := False
+    
+    If (*Not #com_owner.JSMOpenandLoad( #server #Trace #Status #Message ))
+    
+    Return
+    
+    Endif
+    
+    If (*Not #com_owner.ZipOpen( #ZipFileName '*WRITE' '*NO' #Status #Message ))
+    
+    * always close but do not return status/message
+    #com_owner.JSMCloseandUnload( #xjsmstatus #xjsmmessage )
+    
+    Return
+    
+    Endif
+    
+    If (*Not #com_owner.ZipAddPaths( #Paths #Base #Tree #Status #Message ))
+    
+    * always close but do not return status/message
+    #com_owner.JSMCloseandUnload( #xjsmstatus #xjsmmessage )
+    
+    Return
+    
+    Endif
+    
+    If (*Not #com_owner.JSMCloseandUnload( #Status #Message ))
+    
+    Return
+    
+    Endif
+    
+    #Result := True
+    
+    Endroutine
+    
+    Mthroutine Name(WFZipGetAllAsList) Help('JSM Open & Load, Open, Get, Unload & JSM Close')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#ZipFileName) Help('File path of the archive to be created. If no path, or a relative path, is specified the file will be created relative to the JSM instance directory. The file extension should be .zip to ensure the file can be correctly recognized and processed by other applications.')
+    Define_Map For(*INPUT) Class(#xjsmserver) Name(#Server) Mandatory('') Help('Server (host:port). If no server argument is supplied, then the JSM server host is obtained by reading the JSMCLTDTA data area.')
+    Define_Map For(*INPUT) Class(#xjsmtrace) Name(#Trace) Mandatory('*NO') Help('Enable tracing from the client program - *NO, *YES, *ERROR')
+    Define_Map For(*OUTPUT) Class(#prim_lcol<#prim_alph>) Name(#Files) Help('Collection of Files #prim_lcol<#prim_alph> in the current archive') Pass(*BY_REFERENCE)
+    Define_Map For(*OUTPUT) Class(#xjsmstatus) Name(#Status) Help('Return Status from last JSMX_* built in function executed')
+    Define_Map For(*OUTPUT) Class(#xjsmmessage) Name(#Message) Help('Message associated with return status')
+    Define_Map For(*RESULT) Class(#prim_boln) Name(#Result) Help('Boolean indicating if routine completed successfully')
+    
+    #Result := False
+    
+    Set_Ref Com(#Files) To(*create_as #prim_lcol<#prim_alph>)
+    
+    If (*Not #com_owner.JSMOpenandLoad( #server #Trace #Status #Message ))
+    
+    Return
+    
+    Endif
+    
+    If (*Not #com_owner.ZipOpen( #ZipFileName '*READ' '*NO' #Status #Message ))
+    
+    * always close but do not return status/message
+    #com_owner.JSMCloseandUnload( #xjsmstatus #xjsmmessage )
+    
+    Return
+    
+    Endif
+    
+    If (*Not #com_owner.ZipGetAllAsList( #Files #Status #Message ))
+    
+    * always close but do not return status/message
+    #com_owner.JSMCloseandUnload( #xjsmstatus #xjsmmessage )
+    
+    Return
+    
+    Endif
+    
+    If (*Not #com_owner.JSMCloseandUnload( #Status #Message ))
+    
+    Return
+    
+    Endif
+    
+    #Result := True
+    
+    Endroutine
+    
+    Mthroutine Name(WFZipGetFile) Help('JSM Open & Load, Open, Get, Unload & JSM Close')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#ZipFileName) Help('File path of the archive to be created. If no path, or a relative path, is specified the file will be created relative to the JSM instance directory. The file extension should be .zip to ensure the file can be correctly recognized and processed by other applications.')
+    Define_Map For(*INPUT) Class(#xjsmserver) Name(#Server) Mandatory('') Help('Server (host:port). If no server argument is supplied, then the JSM server host is obtained by reading the JSMCLTDTA data area.')
+    Define_Map For(*INPUT) Class(#xjsmtrace) Name(#Trace) Mandatory('*NO') Help('Enable tracing from the client program - *NO, *YES, *ERROR')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#File) Help('Specifies the full path of a single entry in the zip archive that is to be extracted.')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#Base) Mandatory('*NONE') Help('Specifies whether path information in the zip file entries is used when extracting the files to the directory specified by the TO keyword - *NONE, *CURRENT, <path>')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#Occurrence) Mandatory('*ALL') Help('By default all occurrences of a file are written out. If you only require the first occurrence of the file to be written out use the keyword value *FIRST - *ALL, *FIRST')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#ExtractToPath) Help('Specifies the path to the directory that will receive the extracted files.')
+    Define_Map For(*OUTPUT) Class(#xjsmstatus) Name(#Status) Help('Return Status from last JSMX_* built in function executed')
+    Define_Map For(*OUTPUT) Class(#xjsmmessage) Name(#Message) Help('Message associated with return status')
+    Define_Map For(*RESULT) Class(#prim_boln) Name(#Result) Help('Boolean indicating if routine completed successfully')
+    
+    #Result := False
+    
+    If (*Not #com_owner.JSMOpenandLoad( #server #Trace #Status #Message ))
+    
+    Return
+    
+    Endif
+    
+    If (*Not #com_owner.ZipOpen( #ZipFileName '*READ' '*NO' #Status #Message ))
+    
+    * always close but do not return status/message
+    #com_owner.JSMCloseandUnload( #xjsmstatus #xjsmmessage )
+    
+    Return
+    
+    Endif
+    
+    If (*Not #com_owner.ZipGetFile( #File #Base #Occurrence #ExtractToPath #Status #Message ))
+    
+    * always close but do not return status/message
+    #com_owner.JSMCloseandUnload( #xjsmstatus #xjsmmessage )
+    
+    Return
+    
+    Endif
+    
+    If (*Not #com_owner.JSMCloseandUnload( #Status #Message ))
+    
+    Return
+    
+    Endif
+    
+    #Result := True
+    
+    Endroutine
+    
+    Mthroutine Name(WFZipGetPath) Help('JSM Open & Load, Open, Get, Unload & JSM Close')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#ZipFileName) Help('File path of the archive to be created. If no path, or a relative path, is specified the file will be created relative to the JSM instance directory. The file extension should be .zip to ensure the file can be correctly recognized and processed by other applications.')
+    Define_Map For(*INPUT) Class(#xjsmserver) Name(#Server) Mandatory('') Help('Server (host:port). If no server argument is supplied, then the JSM server host is obtained by reading the JSMCLTDTA data area.')
+    Define_Map For(*INPUT) Class(#xjsmtrace) Name(#Trace) Mandatory('*NO') Help('Enable tracing from the client program - *NO, *YES, *ERROR')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#Path) Mandatory('*ALL') Help('Path is compared against the full path of the zip file entries to select those that are to be extracted - *ALL, <path>')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#Base) Mandatory('*NONE') Help('Specifies whether path information in the zip file entries is used when extracting the files to the directory specified by the TO keyword - *NONE, *CURRENT, <path>')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#ExtractToPath) Help('Specifies the path to the directory that will receive the extracted files.')
+    Define_Map For(*OUTPUT) Class(#xjsmstatus) Name(#Status) Help('Return Status from last JSMX_* built in function executed')
+    Define_Map For(*OUTPUT) Class(#xjsmmessage) Name(#Message) Help('Message associated with return status')
+    Define_Map For(*RESULT) Class(#prim_boln) Name(#Result) Help('Boolean indicating if routine completed successfully')
+    
+    #Result := False
+    
+    If (*Not #com_owner.JSMOpenandLoad( #server #Trace #Status #Message ))
+    
+    Return
+    
+    Endif
+    
+    If (*Not #com_owner.ZipOpen( #ZipFileName '*READ' '*NO' #Status #Message ))
+    
+    * always close but do not return status/message
+    #com_owner.JSMCloseandUnload( #xjsmstatus #xjsmmessage )
+    
+    Return
+    
+    Endif
+    
+    If (*Not #com_owner.ZipGetPath( #Path #Base #ExtractToPath #Status #Message ))
+    
+    * always close but do not return status/message
+    #com_owner.JSMCloseandUnload( #xjsmstatus #xjsmmessage )
+    
+    Return
+    
+    Endif
+    
+    If (*Not #com_owner.JSMCloseandUnload( #Status #Message ))
+    
+    Return
+    
+    Endif
+    
+    #Result := True
+    
+    Endroutine
+    
+    Mthroutine Name(WFZipDelete) Help('JSM Open & Load, Delete, Unload & JSM Close')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#ZipFileName) Help('File path of the archive to be created. If no path, or a relative path, is specified the file will be created relative to the JSM instance directory. The file extension should be .zip to ensure the file can be correctly recognized and processed by other applications.')
+    Define_Map For(*INPUT) Class(#xjsmserver) Name(#Server) Mandatory('') Help('Server (host:port). If no server argument is supplied, then the JSM server host is obtained by reading the JSMCLTDTA data area.')
+    Define_Map For(*INPUT) Class(#xjsmtrace) Name(#Trace) Mandatory('*NO') Help('Enable tracing from the client program - *NO, *YES, *ERROR')
+    Define_Map For(*OUTPUT) Class(#xjsmstatus) Name(#Status) Help('Return Status from last JSMX_* built in function executed')
+    Define_Map For(*OUTPUT) Class(#xjsmmessage) Name(#Message) Help('Message associated with return status')
+    Define_Map For(*RESULT) Class(#prim_boln) Name(#Result) Help('Boolean indicating if routine completed successfully')
+    
+    #Result := False
+    
+    If (*Not #com_owner.JSMOpenandLoad( #server #Trace #Status #Message ))
+    
+    Return
+    
+    Endif
+    
+    If (*Not #com_owner.ZipDelete( #ZipFileName #Status #Message ))
+    
+    * always close but do not return status/message
+    #com_owner.JSMCloseandUnload( #xjsmstatus #xjsmmessage )
+    
+    Return
+    
+    Endif
+    
+    If (*Not #com_owner.JSMCloseandUnload( #Status #Message ))
+    
+    Return
+    
+    Endif
+    
+    #Result := True
+    
+    Endroutine
+    
+    End_Com

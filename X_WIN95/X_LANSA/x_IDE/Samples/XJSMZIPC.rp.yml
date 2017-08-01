@@ -1,0 +1,352 @@
+﻿Reusable Part:
+  Name:               XJSMZipServiceCommands
+  Enabled For RDMLX:  Yes
+  Target Platform:    Windows/IBM i/Linux
+
+  Framework:
+    Id1:                10240
+    Id2:                30
+
+  Multilingual Details:
+  - ENG:
+      Description:        "JSM ZipService Commands"
+
+  - FRA:
+      Description:        "JSM ZipService Commands"
+
+  - JPN:
+      Description:        "JSM ZipService Commands"
+
+  - LLL:
+      Description:        "JSM ZipService Commands"
+
+  Source: |
+    Function Options(*DIRECT)
+    Begin_Com Role(*EXTENDS #PRIM_OBJT)
+    
+    Define_Com Class(#prim_lcol<#Prim_alph>) Name(#PathsorFiles)
+    
+    Def_List Name(#Processing) Fields(#xjsmsubject) Counter(#listcount) Type(*WORKING)
+    
+    Mthroutine Name(JSMOpenandLoad) Help('Open JSM Server connection and load ZipService')
+    Define_Map For(*INPUT) Class(#xjsmserver) Name(#Server) Mandatory('') Help('Server (host:port). If no server argument is supplied, then the JSM server host is obtained by reading the JSMCLTDTA data area.')
+    Define_Map For(*INPUT) Class(#xjsmtrace) Name(#Trace) Mandatory('*NO') Help('Enable tracing from the client program - *NO, *YES, *ERROR')
+    Define_Map For(*OUTPUT) Class(#xjsmstatus) Name(#Status) Help('Return Status from last JSMX_* built in function executed')
+    Define_Map For(*OUTPUT) Class(#xjsmmessage) Name(#Message) Help('Message associated with return status')
+    Define_Map For(*RESULT) Class(#prim_boln) Name(#Result) Help('Boolean indicating if routine completed successfully')
+    
+    #Result := False
+    
+    * Start JSM server
+    Use Builtin(jsmx_open) With_Args(#Server) To_Get(#Status #Message #xjsmhandle)
+    
+    If (#Status <> OK)
+    
+    Return
+    
+    Endif
+    
+    * Load the ZipService
+    #xjsmcmd := 'service_load service(zipservice) trace(' + #Trace + ')'
+    Use Builtin(jsmx_command) With_Args(#xjsmhandle #xjsmcmd) To_Get(#Status #Message)
+    
+    If (#Status = OK)
+    
+    #Result := True
+    
+    Endif
+    
+    Endroutine
+    
+    Mthroutine Name(ZipCreate) Help('Create an archive file and make it the current archive for this instance of the ZipService')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#FileName) Help('File path of the archive to be created. If no path, or a relative path, is specified the file will be created relative to the JSM instance directory. The file extension should be .zip to ensure the file can be correctly recognized and processed by other applications.')
+    Define_Map For(*OUTPUT) Class(#xjsmstatus) Name(#Status) Help('Return Status from last JSMX_* built in function executed')
+    Define_Map For(*OUTPUT) Class(#xjsmmessage) Name(#Message) Help('Message associated with return status')
+    Define_Map For(*RESULT) Class(#prim_boln) Name(#Result) Help('Boolean indicating if routine completed successfully')
+    
+    #Result := False
+    
+    #xjsmcmd := 'create file(' + #FileName + ')'
+    Use Builtin(jsmx_command) With_Args(#xjsmhandle #xjsmcmd) To_Get(#Status #Message)
+    
+    If (#Status = OK)
+    
+    #Result := True
+    
+    Endif
+    
+    Endroutine
+    
+    Mthroutine Name(ZipOpen) Help('Open an existing zip file and make it the current archive')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#FileName) Help('File path of the archive to be opened. If no path, or a relative path, is specified the file will be created relative to the JSM instance directory.')
+    Define_Map For(*INPUT) Class(#std_text) Name(#Mode) Mandatory('*READ') Help('Open archive for reading or writing. Default *READ supports opening an existing archive to interrogate its contents .  Value *WRITE allows new files to be added to the archive. If the file is opened for writing and it does not exist a new archive is created. - *READ, *WRITE')
+    Define_Map For(*INPUT) Class(#std_text) Name(#Replace) Mandatory('*NO') Help('Used in combination with MODE(*WRITE) to indicate if contents of the existing file can be replaced. Default value *NO indicates that the contents of the archive are not cleared when the file is opened. A value of *YES indicates that the existing contents of the archive are cleared when the file is opened. - *NO, *YES')
+    Define_Map For(*OUTPUT) Class(#xjsmstatus) Name(#Status) Help('Return Status from last JSMX_* built in function executed')
+    Define_Map For(*OUTPUT) Class(#xjsmmessage) Name(#Message) Help('Message associated with return status')
+    Define_Map For(*RESULT) Class(#prim_boln) Name(#Result) Help('Boolean indicating if routine completed successfully')
+    
+    #Result := False
+    
+    * open the current archive file
+    #xjsmcmd := 'open file(' + #FileName + ') mode(' + #Mode + ') replace(' + #Replace + ')'
+    Use Builtin(jsmx_command) With_Args(#xjsmhandle #xjsmcmd) To_Get(#Status #Message)
+    
+    If (#Status = OK)
+    
+    #Result := True
+    
+    Endif
+    
+    Endroutine
+    
+    Mthroutine Name(ZipAddFile) Help('Add a single file to the current archive (the archive last successfully opened using the CREATE or OPEN command) in the current instance of the ZipService')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#FileName) Help('File name to be added to the current archive')
+    Define_Map For(*OUTPUT) Class(#xjsmstatus) Name(#Status) Help('Return Status from last JSMX_* built in function executed')
+    Define_Map For(*OUTPUT) Class(#xjsmmessage) Name(#Message) Help('Message associated with return status')
+    Define_Map For(*RESULT) Class(#prim_boln) Name(#Result) Help('Boolean indicating if routine completed successfully')
+    
+    #Result := False
+    
+    * add the specified file to the current archive
+    #xjsmcmd := 'add file(' + #FileName + ')'
+    Use Builtin(jsmx_command) With_Args(#xjsmhandle #xjsmcmd) To_Get(#Status #Message)
+    
+    If (#Status = OK)
+    
+    #Result := True
+    
+    Endif
+    
+    Endroutine
+    
+    Mthroutine Name(ZipAddFiles) Help('Adds a collection of files to the current archive (the archive last successfully opened using the CREATE or OPEN command) in the current instance of the ZipService.')
+    Define_Map For(*INPUT) Class(#prim_lcol<#prim_alph>) Name(#Files) Help('Collection of file names #prim_lcol<#prim_alph> to be added to the current archive') Pass(*BY_REFERENCE)
+    Define_Map For(*OUTPUT) Class(#xjsmstatus) Name(#Status) Help('Return Status from last JSMX_* built in function executed')
+    Define_Map For(*OUTPUT) Class(#xjsmmessage) Name(#Message) Help('Message associated with return status')
+    Define_Map For(*RESULT) Class(#prim_boln) Name(#Result) Help('Boolean indicating if routine completed successfully')
+    
+    #Result := False
+    
+    Clr_List Named(#Processing)
+    
+    For Each(#file) In(#Files)
+    
+    #xjsmsubject := #file.Value.LowerCase
+    Add_Entry To_List(#Processing)
+    
+    Endfor
+    
+    * add the specified files to the current archive
+    * NOTE - strangely the list must be passed as in to_get values!
+    #xjsmcmd := 'add file(*list)'
+    Use Builtin(jsmx_command) With_Args(#xjsmhandle #xjsmcmd) To_Get(#Status #Message #Processing)
+    
+    If (#Status = OK)
+    
+    #Result := True
+    
+    Endif
+    
+    Endroutine
+    
+    Mthroutine Name(ZipAddPath) Help('Adds the files from a directory to the current archive (the archive last successfully opened using the CREATE or OPEN command) in the current instance of the ZipService.')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#Path) Help('Specifies the path of a directory to be added to the current archive.')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#Base) Mandatory('*NONE') Help('Nominate a path to be used as the relative path for all files in the zip archive - *NONE, *CURRENT, *PARENT, <path>')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#Tree) Mandatory('*YES') Help('Specifies whether the add operations should recursively traverse sub-directories of the directory(s) specified - *YES, *NO')
+    Define_Map For(*OUTPUT) Class(#xjsmstatus) Name(#Status) Help('Return Status from last JSMX_* built in function executed')
+    Define_Map For(*OUTPUT) Class(#xjsmmessage) Name(#Message) Help('Message associated with return status')
+    Define_Map For(*RESULT) Class(#prim_boln) Name(#Result) Help('Boolean indicating if routine completed successfully')
+    
+    #Result := False
+    
+    * add the specified path to the current archive
+    #xjsmcmd := 'add path(' + #Path + ') Base(' + #Base + ') Tree (' + #Tree + ')'
+    
+    Use Builtin(jsmx_command) With_Args(#xjsmhandle #xjsmcmd) To_Get(#Status #Message)
+    
+    If (#Status = OK)
+    
+    #Result := True
+    
+    Endif
+    
+    Endroutine
+    
+    Mthroutine Name(ZipAddPaths) Help('Adds the files from a collection of directories to the current archive (the archive last successfully opened using the CREATE or OPEN command) in the current instance of the ZipService.')
+    Define_Map For(*INPUT) Class(#prim_lcol<#prim_alph>) Name(#Paths) Help('Collection of path names #prim_lcol<#prim_alph> to be added to the current archive') Pass(*BY_REFERENCE)
+    Define_Map For(*INPUT) Class(#std_text) Name(#Base) Mandatory('*NONE') Help('Nominate a path to be used as the relative path for all files in the zip archive - *NONE, *CURRENT, *PARENT, <path>')
+    Define_Map For(*INPUT) Class(#std_text) Name(#Tree) Mandatory('*YES') Help('Specifies whether the add operations should recursively traverse sub-directories of the directory(s) specified - *YES, *NO')
+    Define_Map For(*OUTPUT) Class(#xjsmstatus) Name(#Status) Help('Return Status from last JSMX_* built in function executed')
+    Define_Map For(*OUTPUT) Class(#xjsmmessage) Name(#Message) Help('Message associated with return status')
+    Define_Map For(*RESULT) Class(#prim_boln) Name(#Result) Help('Boolean indicating if routine completed successfully')
+    
+    #Result := False
+    
+    Clr_List Named(#Processing)
+    
+    For Each(#path) In(#Paths)
+    
+    #xjsmsubject := #path.Value.LowerCase
+    Add_Entry To_List(#Processing)
+    
+    Endfor
+    
+    * add the specified paths to the current archive
+    #xjsmcmd := 'add path( *list ) Base(' + #Base + ') Tree (' + #Tree + ')'
+    Use Builtin(jsmx_command) With_Args(#xjsmhandle #xjsmcmd) To_Get(#Status #Message #processing)
+    
+    If (#Status = OK)
+    
+    #Result := True
+    
+    Endif
+    
+    Endroutine
+    
+    Mthroutine Name(ZipDelete) Help('Deletes the specified file. If you do not specify the path, or if you specify a relative path, the ZipService attempts to delete the file relative to the JSM instance directory.')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#FileName) Help('The path (optional) and name of the file to be deleted.')
+    Define_Map For(*OUTPUT) Class(#xjsmstatus) Name(#Status) Help('Return Status from last JSMX_* built in function executed')
+    Define_Map For(*OUTPUT) Class(#xjsmmessage) Name(#Message) Help('Message associated with return status')
+    Define_Map For(*RESULT) Class(#prim_boln) Name(#Result) Help('Boolean indicating if routine completed successfully')
+    
+    #Result := False
+    
+    #xjsmcmd := 'delete file(' + #FileName + ')'
+    Use Builtin(jsmx_command) With_Args(#xjsmhandle #xjsmcmd) To_Get(#Status #Message)
+    
+    If (#Status = OK)
+    
+    #Result := True
+    
+    Endif
+    
+    Endroutine
+    
+    Mthroutine Name(ZipGetAllAsList) Help('Returns a collection with all the zip file entries.')
+    Define_Map For(*OUTPUT) Class(#prim_lcol<#prim_alph>) Name(#Files) Help('Collection of file names #prim_lcol<#prim_alph> returned from the current archive') Pass(*BY_REFERENCE)
+    Define_Map For(*OUTPUT) Class(#xjsmstatus) Name(#Status) Help('Return Status from last JSMX_* built in function executed')
+    Define_Map For(*OUTPUT) Class(#xjsmmessage) Name(#Message) Help('Message associated with return status')
+    Define_Map For(*RESULT) Class(#prim_boln) Name(#Result) Help('Boolean indicating if routine completed successfully')
+    
+    Define_Com Class(#prim_alph) Name(#CurrentFile)
+    
+    #Result := False
+    
+    #xjsmcmd := 'get entry(*LIST)'
+    Use Builtin(jsmx_command) With_Args(#xjsmhandle #xjsmcmd) To_Get(#Status #Message #Processing)
+    
+    If (#Status = OK)
+    
+    #Result := True
+    
+    #PathsorFiles.RemoveAll
+    
+    Selectlist Named(#Processing)
+    
+    #com_owner.Addentry( #xjsmsubject )
+    
+    Endselect
+    
+    #Files <= #PathsorFiles
+    
+    Endif
+    
+    Endroutine
+    
+    Mthroutine Name(Addentry)
+    Define_Map For(*INPUT) Class(#prim_alph) Name(#currentFile)
+    
+    #PathsorFiles.Insert( #currentFile )
+    
+    Endroutine
+    
+    Mthroutine Name(ZipGetPath)
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#Path) Mandatory('*ALL') Help('Path is compared against the full path of the zip file entries to select those that are to be extracted - *ALL, <path>')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#Base) Mandatory('*NONE') Help('Specifies whether path information in the zip file entries is used when extracting the files to the directory specified by the TO keyword - *NONE, *CURRENT, <path>')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#ExtractToPath) Help('Specifies the path to the directory that will receive the extracted files.')
+    Define_Map For(*OUTPUT) Class(#xjsmstatus) Name(#Status) Help('Return Status from last JSMX_* built in function executed')
+    Define_Map For(*OUTPUT) Class(#xjsmmessage) Name(#Message) Help('Message associated with return status')
+    Define_Map For(*RESULT) Class(#prim_boln) Name(#Result) Help('Boolean indicating if routine completed successfully')
+    
+    #Result := False
+    
+    #xjsmcmd := 'get entry(*READ) path(' + #Path + ') base(' + #Base + ') to(' + #ExtractToPath + ')'
+    Use Builtin(jsmx_command) With_Args(#xjsmhandle #xjsmcmd) To_Get(#Status #Message)
+    
+    If (#Status = OK)
+    
+    #Result := True
+    
+    Endif
+    
+    Endroutine
+    
+    Mthroutine Name(ZipGetFile) Help('Extract File(s) from the current zip archive')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#File) Mandatory('') Help('Specifies the full path of a file in the zip archive that is to be extracted.')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#Base) Mandatory('*NONE') Help('Specifies whether path information in the zip file entries is used when extracting the files to the directory specified by the TO keyword - *NONE, *CURRENT, <path>')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#Occurrence) Mandatory('*ALL') Help('By default all occurrences of a file are written out. If you only require the first occurrence of the file to be written out use the keyword value *FIRST - *ALL, *FIRST')
+    Define_Map For(*INPUT) Class(#xjsmstring) Name(#ExtractToPath) Help('Specifies the path to the directory that will receive the extracted files.')
+    Define_Map For(*OUTPUT) Class(#xjsmstatus) Name(#Status) Help('Return Status from last JSMX_* built in function executed')
+    Define_Map For(*OUTPUT) Class(#xjsmmessage) Name(#Message) Help('Message associated with return status')
+    Define_Map For(*RESULT) Class(#prim_boln) Name(#Result) Help('Boolean indicating if routine completed successfully')
+    
+    #Result := False
+    
+    #xjsmcmd := 'get entry(*READ) File(' + #File + ') base(' + #Base + ') occurrence(' + #Occurrence + ') to(' + #ExtractToPath + ')'
+    Use Builtin(jsmx_command) With_Args(#xjsmhandle #xjsmcmd) To_Get(#Status #Message)
+    
+    If (#Status = OK)
+    
+    #Result := True
+    
+    Endif
+    
+    Endroutine
+    
+    Mthroutine Name(ZipClose) Help('Closes the current archive')
+    Define_Map For(*OUTPUT) Class(#xjsmstatus) Name(#Status) Help('Return Status from last JSMX_* built in function executed')
+    Define_Map For(*OUTPUT) Class(#xjsmmessage) Name(#Message) Help('Message associated with return status')
+    Define_Map For(*RESULT) Class(#prim_boln) Name(#Result) Help('Boolean indicating if routine completed successfully')
+    
+    #Result := False
+    
+    * close the current archive file
+    Use Builtin(jsmx_command) With_Args(#xjsmhandle 'close') To_Get(#Status #Message)
+    
+    If (#Status = OK)
+    
+    #Result := True
+    
+    Endif
+    
+    Endroutine
+    
+    Mthroutine Name(JSMCloseandUnload) Help('Unload ZipService and close JSM Server connection')
+    Define_Map For(*OUTPUT) Class(#xjsmstatus) Name(#Status) Help('Return Status from last JSMX_* built in function executed')
+    Define_Map For(*OUTPUT) Class(#xjsmmessage) Name(#Message) Help('Message associated with return status')
+    Define_Map For(*RESULT) Class(#prim_boln) Name(#Result) Help('Boolean indicating if routine completed successfully')
+    
+    #Result := False
+    
+    Use Builtin(jsmx_command) With_Args(#xjsmhandle 'service_unload') To_Get(#Status #Message)
+    
+    If (#Status <> OK)
+    
+    Return
+    
+    Endif
+    
+    * Close the thread
+    Use Builtin(jsmx_close) With_Args(#xjsmhandle) To_Get(#Status #Message)
+    
+    If (#Status = OK)
+    
+    #Result := True
+    
+    #xjsmhandle := *null
+    
+    Endif
+    
+    Endroutine
+    
+    End_Com

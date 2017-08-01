@@ -1,0 +1,41 @@
+﻿Field:
+  Name:               xjsmemail
+  Type:               Char
+  Length:             250
+  Decimals:           0
+  Default Value:      "*NULL"
+  Enabled For RDMLX:  Yes
+  System Field:       No
+
+  Input Attributes:
+  - FE
+  - LC
+
+  Multilingual Details:
+  - ENG:
+      Description:        "Email"
+      Label:              "Email"
+      Heading1:           "Email"
+      Heading2:           " "
+      Heading3:           " "
+
+  - FRA:
+      Description:        "Email"
+      Label:              "Email"
+      Heading1:           "Email"
+      Heading2:           " "
+      Heading3:           " "
+
+  - JPN:
+      Description:        "Email"
+      Label:              "Email"
+      Heading1:           "Email"
+      Heading2:           " "
+      Heading3:           " "
+
+  - LLL:
+      Description:        "Email"
+      Label:              "Email"
+      Heading1:           "Email"
+      Heading2:           " "
+      Heading3:           " "

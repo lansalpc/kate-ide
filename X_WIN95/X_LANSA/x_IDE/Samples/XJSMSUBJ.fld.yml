@@ -1,0 +1,41 @@
+﻿Field:
+  Name:               xjsmsubject
+  Type:               Alphanumeric
+  Length:             256
+  Decimals:           0
+  Default Value:      "*BLANKS"
+  Enabled For RDMLX:  No
+  System Field:       No
+
+  Input Attributes:
+  - FE
+  - LC
+
+  Multilingual Details:
+  - ENG:
+      Description:        "Subject"
+      Label:              "Subject"
+      Heading1:           "Subject"
+      Heading2:           " "
+      Heading3:           " "
+
+  - FRA:
+      Description:        "Subject"
+      Label:              "Subject"
+      Heading1:           "Subject"
+      Heading2:           " "
+      Heading3:           " "
+
+  - JPN:
+      Description:        "Subject"
+      Label:              "Subject"
+      Heading1:           "Subject"
+      Heading2:           " "
+      Heading3:           " "
+
+  - LLL:
+      Description:        "Subject"
+      Label:              "Subject"
+      Heading1:           "Subject"
+      Heading2:           " "
+      Heading3:           " "

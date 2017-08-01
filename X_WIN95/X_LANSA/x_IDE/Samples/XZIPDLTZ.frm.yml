@@ -1,0 +1,64 @@
+﻿Form:
+  Name:               XZipDelete
+  Enabled For RDMLX:  Yes
+
+  Framework:
+    Id1:                10240
+    Id2:                30
+
+  Multilingual Details:
+  - ENG:
+      Description:        "Delete a Zip archive"
+
+  - FRA:
+      Description:        "Delete a Zip archive"
+
+  - JPN:
+      Description:        "Delete a Zip archive"
+
+  - LLL:
+      Description:        "Delete a Zip archive"
+
+  Source: |
+    Function Options(*DIRECT)
+    Begin_Com Role(*EXTENDS #PRIM_FORM) Clientwidth(808) Clientheight(330) Componentversion(2) Layoutmanager(#Layout1)
+    
+    Define_Com Class(#PRIM_TBLO) Name(#Layout1)
+    Define_Com Class(#PRIM_TBLO.Column) Name(#Column1) Displayposition(1) Parent(#Layout1)
+    Define_Com Class(#PRIM_TBLO.Row) Name(#Row1) Displayposition(1) Parent(#Layout1)
+    Define_Com Class(#PRIM_TBLO.Row) Name(#Row2) Displayposition(2) Parent(#Layout1) Height(80) Units(Pixels)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#LayoutItem1) Alignment(CenterRight) Column(#Column1) Manage(#Button1) Parent(#Layout1) Row(#Row2) Sizing(None) Flow(Right) Marginbottom(10) Marginright(10)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#DescriptionItem1) Manage(#Description) Parent(#Layout1) Row(#Row1) Sizing(FitToWidth) Column(#Column1) Alignment(TopLeft) Flow(Down) Marginleft(10) Margintop(10)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#xjsmserverItem1) Manage(#xjsmserver) Parent(#Layout1) Row(#Row1) Sizing(None) Column(#Column1) Alignment(TopLeft) Flow(Down) Marginleft(10) Margintop(10)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#xjsmtraceItem1) Manage(#xjsmtrace) Parent(#Layout1) Row(#Row1) Sizing(None) Column(#Column1) Alignment(TopLeft) Flow(Down) Marginleft(10) Margintop(10)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#LayoutItem2) Alignment(TopLeft) Column(#Column1) Manage(#ZipFile) Parent(#Layout1) Row(#Row1) Sizing(FitToWidth) Flow(Down) Marginleft(10) Margintop(20) Marginright(10)
+    
+    Define_Com Class(#XJSMZipServiceWorkflows) Name(#ZipService)
+    
+    Define_Com Class(#PRIM_LABL) Name(#Description) Displayposition(1) Parent(#COM_OWNER) Tabposition(1) Caption('Use this form to delete a zip archive.') Width(798) Tabstop(False) Height(23)
+    
+    Define_Com Class(#xjsmserver.Visual) Name(#xjsmserver) Displayposition(2) Parent(#COM_OWNER) Tabposition(2) Caption('JSM Server') Labeltype(Caption) Top(43) Left(10)
+    Define_Com Class(#xjsmtrace.Visual) Name(#xjsmtrace) Displayposition(3) Parent(#COM_OWNER) Tabposition(3) Top(74) Left(10)
+    Define_Com Class(#xjsmstring.Visual) Name(#ZipFile) Displayposition(4) Parent(#COM_OWNER) Tabposition(4) Top(115) Caption('Zip file to delete') Labeltype(Caption) Left(10) Width(788)
+    
+    Define_Com Class(#PRIM_PHBN) Name(#Button1) Caption('Delete zip') Displayposition(5) Parent(#COM_OWNER) Tabposition(5) Top(268) Width(145) Left(653)
+    Define_Com Class(#PRIM_STBR) Name(#StatusBar1) Displayposition(6) Height(24) Left(0) Messageposition(1) Parent(#COM_OWNER) Tabposition(6) Tabstop(False) Top(306) Width(808)
+    
+    Evtroutine Handling(#com_owner.CreateInstance)
+    
+    Set Com(#com_owner) Caption(*component_desc)
+    
+    #zipfile.SetFocus
+    #zipfile := '*.zip'
+    
+    Endroutine
+    
+    Evtroutine Handling(#Button1.Click)
+    
+    #ZipService.WFZipDelete( #ZipFile #xjsmserver #xjsmtrace #xjsmstatus #xjsmmessage )
+    
+    Message Msgtxt(#xjsmstatus + ' - ' + #xjsmmessage)
+    
+    Endroutine
+    
+    End_Com

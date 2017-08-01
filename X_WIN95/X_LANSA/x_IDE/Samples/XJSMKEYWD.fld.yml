@@ -1,0 +1,41 @@
+﻿Field:
+  Name:               xjsmkeyword
+  Type:               Alphanumeric
+  Length:             20
+  Decimals:           0
+  Default Value:      "*BLANKS"
+  Enabled For RDMLX:  No
+  System Field:       No
+
+  Input Attributes:
+  - FE
+  - LC
+
+  Multilingual Details:
+  - ENG:
+      Description:        "Keyword"
+      Label:              "Keyword"
+      Heading1:           "Keyword"
+      Heading2:           " "
+      Heading3:           " "
+
+  - FRA:
+      Description:        "Keyword"
+      Label:              "Keyword"
+      Heading1:           "Keyword"
+      Heading2:           " "
+      Heading3:           " "
+
+  - JPN:
+      Description:        "Keyword"
+      Label:              "Keyword"
+      Heading1:           "Keyword"
+      Heading2:           " "
+      Heading3:           " "
+
+  - LLL:
+      Description:        "Keyword"
+      Label:              "Keyword"
+      Heading1:           "Keyword"
+      Heading2:           " "
+      Heading3:           " "

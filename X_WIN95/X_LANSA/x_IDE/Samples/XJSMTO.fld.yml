@@ -1,0 +1,41 @@
+﻿Field:
+  Name:               xjsmto
+  Type:               Alphanumeric
+  Length:             150
+  Decimals:           0
+  Default Value:      "*BLANKS"
+  Enabled For RDMLX:  No
+  System Field:       No
+
+  Input Attributes:
+  - FE
+  - LC
+
+  Multilingual Details:
+  - ENG:
+      Description:        "To"
+      Label:              "To"
+      Heading1:           "To"
+      Heading2:           " "
+      Heading3:           " "
+
+  - FRA:
+      Description:        "jsmto"
+      Label:              "jsmto"
+      Heading1:           "jsmto"
+      Heading2:           " "
+      Heading3:           " "
+
+  - JPN:
+      Description:        "jsmto"
+      Label:              "jsmto"
+      Heading1:           "jsmto"
+      Heading2:           " "
+      Heading3:           " "
+
+  - LLL:
+      Description:        "jsmto"
+      Label:              "jsmto"
+      Heading1:           "jsmto"
+      Heading2:           " "
+      Heading3:           " "

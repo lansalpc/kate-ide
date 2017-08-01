@@ -1,0 +1,41 @@
+﻿Field:
+  Name:               xjsmfrom
+  Type:               Alphanumeric
+  Length:             150
+  Decimals:           0
+  Default Value:      "*BLANKS"
+  Enabled For RDMLX:  No
+  System Field:       No
+
+  Input Attributes:
+  - FE
+  - LC
+
+  Multilingual Details:
+  - ENG:
+      Description:        "From"
+      Label:              "From"
+      Heading1:           "From"
+      Heading2:           " "
+      Heading3:           " "
+
+  - FRA:
+      Description:        "jsmfrom"
+      Label:              "jsmfrom"
+      Heading1:           "jsmfrom"
+      Heading2:           " "
+      Heading3:           " "
+
+  - JPN:
+      Description:        "jsmfrom"
+      Label:              "jsmfrom"
+      Heading1:           "jsmfrom"
+      Heading2:           " "
+      Heading3:           " "
+
+  - LLL:
+      Description:        "jsmfrom"
+      Label:              "jsmfrom"
+      Heading1:           "jsmfrom"
+      Heading2:           " "
+      Heading3:           " "

@@ -1,0 +1,41 @@
+﻿Field:
+  Name:               xjsmbase
+  Type:               Alphanumeric
+  Length:             10
+  Decimals:           0
+  Default Value:      "'*NONE'"
+  Enabled For RDMLX:  No
+  System Field:       No
+
+  Input Attributes:
+  - FE
+  - LC
+
+  Multilingual Details:
+  - ENG:
+      Description:        "Base for path"
+      Label:              "Base for path"
+      Heading1:           "Base"
+      Heading2:           "for"
+      Heading3:           "path"
+
+  - FRA:
+      Description:        "Base for path"
+      Label:              "Base for path"
+      Heading1:           "Base"
+      Heading2:           "for"
+      Heading3:           "path"
+
+  - JPN:
+      Description:        "Base for path"
+      Label:              "Base for path"
+      Heading1:           "Base"
+      Heading2:           "for"
+      Heading3:           "path"
+
+  - LLL:
+      Description:        "Base for path"
+      Label:              "Base for path"
+      Heading1:           "Base"
+      Heading2:           "for"
+      Heading3:           "path"

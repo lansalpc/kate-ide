@@ -1,0 +1,40 @@
+﻿Field:
+  Name:               xjsmoutq
+  Type:               Alphanumeric
+  Length:             10
+  Decimals:           0
+  Default Value:      "*BLANKS"
+  Enabled For RDMLX:  No
+  System Field:       No
+
+  Input Attributes:
+  - FE
+
+  Multilingual Details:
+  - ENG:
+      Description:        "Outq"
+      Label:              "Outq"
+      Heading1:           "Outq"
+      Heading2:           " "
+      Heading3:           " "
+
+  - FRA:
+      Description:        "jsmoutq"
+      Label:              "jsmoutq"
+      Heading1:           "jsmoutq"
+      Heading2:           " "
+      Heading3:           " "
+
+  - JPN:
+      Description:        "jsmoutq"
+      Label:              "jsmoutq"
+      Heading1:           "jsmoutq"
+      Heading2:           " "
+      Heading3:           " "
+
+  - LLL:
+      Description:        "jsmoutq"
+      Label:              "jsmoutq"
+      Heading1:           "jsmoutq"
+      Heading2:           " "
+      Heading3:           " "

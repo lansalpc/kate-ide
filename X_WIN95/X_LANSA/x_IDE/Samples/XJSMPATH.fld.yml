@@ -1,0 +1,41 @@
+﻿Field:
+  Name:               xjsmpath
+  Type:               Alphanumeric
+  Length:             150
+  Decimals:           0
+  Default Value:      "*BLANKS"
+  Enabled For RDMLX:  No
+  System Field:       No
+
+  Input Attributes:
+  - FE
+  - LC
+
+  Multilingual Details:
+  - ENG:
+      Description:        "Path"
+      Label:              "Path"
+      Heading1:           "Path"
+      Heading2:           " "
+      Heading3:           " "
+
+  - FRA:
+      Description:        "jsmpath"
+      Label:              "jsmpath"
+      Heading1:           "jsmpath"
+      Heading2:           " "
+      Heading3:           " "
+
+  - JPN:
+      Description:        "jsmpath"
+      Label:              "jsmpath"
+      Heading1:           "jsmpath"
+      Heading2:           " "
+      Heading3:           " "
+
+  - LLL:
+      Description:        "jsmpath"
+      Label:              "jsmpath"
+      Heading1:           "jsmpath"
+      Heading2:           " "
+      Heading3:           " "

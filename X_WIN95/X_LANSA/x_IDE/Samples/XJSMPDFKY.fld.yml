@@ -1,0 +1,41 @@
+﻿Field:
+  Name:               xjsmpdfkey
+  Type:               Alphanumeric
+  Length:             20
+  Decimals:           0
+  Default Value:      "*BLANKS"
+  Enabled For RDMLX:  No
+  System Field:       No
+
+  Input Attributes:
+  - FE
+  - LC
+
+  Multilingual Details:
+  - ENG:
+      Description:        "PDF Key"
+      Label:              "PDF Key"
+      Heading1:           "PDF Key"
+      Heading2:           " "
+      Heading3:           " "
+
+  - FRA:
+      Description:        "PDF Key"
+      Label:              "PDF Key"
+      Heading1:           "PDF"
+      Heading2:           "Key"
+      Heading3:           " "
+
+  - JPN:
+      Description:        "PDF Key"
+      Label:              "PDF Key"
+      Heading1:           "PDF"
+      Heading2:           "Key"
+      Heading3:           " "
+
+  - LLL:
+      Description:        "PDF Key"
+      Label:              "PDF Key"
+      Heading1:           "PDF"
+      Heading2:           "Key"
+      Heading3:           " "

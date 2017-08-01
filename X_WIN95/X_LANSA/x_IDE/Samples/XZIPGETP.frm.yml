@@ -1,0 +1,75 @@
+﻿Form:
+  Name:               XZipGetPath
+  Enabled For RDMLX:  Yes
+
+  Framework:
+    Id1:                10240
+    Id2:                30
+
+  Multilingual Details:
+  - ENG:
+      Description:        "Extract path from a zip archive"
+
+  - FRA:
+      Description:        "Extract path from a zip archive"
+
+  - JPN:
+      Description:        "Extract path from a zip archive"
+
+  - LLL:
+      Description:        "Extract path from a zip archive"
+
+  Source: |
+    Function Options(*DIRECT)
+    Begin_Com Role(*EXTENDS #PRIM_FORM) Clientwidth(808) Clientheight(324) Componentversion(2) Layoutmanager(#Layout1)
+    
+    Define_Com Class(#PRIM_TBLO) Name(#Layout1)
+    Define_Com Class(#PRIM_TBLO.Column) Name(#Column1) Displayposition(1) Parent(#Layout1) Units(Pixels) Width(280)
+    Define_Com Class(#PRIM_TBLO.Column) Name(#Column2) Displayposition(2) Parent(#Layout1)
+    Define_Com Class(#PRIM_TBLO.Row) Name(#Row1) Displayposition(1) Parent(#Layout1)
+    Define_Com Class(#PRIM_TBLO.Row) Name(#Row2) Displayposition(2) Parent(#Layout1) Height(80) Units(Pixels)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#LayoutItem1) Alignment(CenterRight) Column(#Column2) Manage(#Button1) Parent(#Layout1) Row(#Row2) Sizing(None) Flow(Right) Marginbottom(10) Marginright(10)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#DescriptionItem1) Manage(#Description) Parent(#Layout1) Row(#Row1) Sizing(FitToWidth) Column(#Column1) Alignment(TopLeft) Flow(Down) Marginleft(10) Margintop(10) Columnspan(2)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#xjsmserverItem1) Manage(#xjsmserver) Parent(#Layout1) Row(#Row1) Sizing(None) Column(#Column1) Alignment(TopLeft) Flow(Down) Marginleft(10) Margintop(10) Columnspan(2)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#xjsmtraceItem1) Manage(#xjsmtrace) Parent(#Layout1) Row(#Row1) Sizing(None) Column(#Column1) Alignment(TopLeft) Flow(Down) Marginleft(10) Margintop(10)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#LayoutItem2) Alignment(TopLeft) Column(#Column1) Manage(#ZipFile) Parent(#Layout1) Row(#Row1) Sizing(FitToWidth) Flow(Down) Marginleft(10) Margintop(20) Marginright(10) Columnspan(2)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#LayoutItem3) Alignment(TopLeft) Column(#Column1) Manage(#PathToGet) Parent(#Layout1) Row(#Row1) Sizing(FitToWidth) Flow(Down) Marginleft(10) Margintop(10) Marginright(10) Columnspan(2)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#xjsmbaseItem1) Column(#Column1) Manage(#xjsmbase) Parent(#Layout1) Sizing(None) Row(#Row1) Alignment(TopLeft) Flow(Down) Margintop(10) Marginleft(10)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#LayoutItem4) Column(#Column1) Flow(Down) Manage(#ExtractToPath) Parent(#Layout1) Row(#Row1) Sizing(FitToWidth) Alignment(TopLeft) Margintop(10) Marginleft(10) Marginright(10) Columnspan(2)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#Label1Item1) Manage(#Label1) Parent(#Layout1) Row(#Row1) Sizing(FitToWidth) Column(#Column2) Alignment(TopLeft) Flow(Down) Margintop(175) Marginright(10)
+    
+    Define_Com Class(#XJSMZipServiceWorkflows) Name(#ZipService)
+    
+    Define_Com Class(#PRIM_LABL) Name(#Description) Displayposition(1) Parent(#COM_OWNER) Tabposition(1) Caption('Extract path from the zip archive') Width(798) Tabstop(False) Height(23)
+    
+    Define_Com Class(#xjsmserver.Visual) Name(#xjsmserver) Displayposition(2) Parent(#COM_OWNER) Tabposition(2) Caption('JSM Server') Labeltype(Caption) Top(43) Left(10)
+    Define_Com Class(#xjsmtrace.Visual) Name(#xjsmtrace) Displayposition(3) Parent(#COM_OWNER) Tabposition(3) Top(74) Left(10)
+    Define_Com Class(#xjsmstring.Visual) Name(#ZipFile) Displayposition(4) Parent(#COM_OWNER) Tabposition(4) Top(115) Caption('Zip file to extract from') Labeltype(Caption) Left(10) Width(788)
+    Define_Com Class(#xjsmstring.Visual) Name(#PathToGet) Displayposition(5) Parent(#COM_OWNER) Tabposition(5) Top(146) Caption('Path to get') Labeltype(Caption) Left(10) Width(788)
+    
+    Define_Com Class(#PRIM_PHBN) Name(#Button1) Caption('Get file from zip') Displayposition(6) Parent(#COM_OWNER) Tabposition(6) Top(262) Width(145) Left(653)
+    Define_Com Class(#PRIM_STBR) Name(#StatusBar1) Displayposition(7) Height(24) Left(0) Messageposition(1) Parent(#COM_OWNER) Tabposition(7) Tabstop(False) Top(300) Width(808)
+    Define_Com Class(#xjsmbase.Visual) Name(#xjsmbase) Displayposition(8) Parent(#COM_OWNER) Tabposition(8) Top(177) Left(10) Width(251) Height(21) Usepicklist(False)
+    Define_Com Class(#xjsmstring.Visual) Name(#ExtractToPath) Displayposition(9) Parent(#COM_OWNER) Tabposition(9) Top(208) Left(10) Width(788) Caption('Extract to Path') Labeltype(Caption)
+    Define_Com Class(#PRIM_LABL) Name(#Label1) Caption('*NONE, *CURRENT or <path>') Displayposition(10) Ellipses(Word) Height(25) Left(280) Parent(#COM_OWNER) Tabposition(10) Tabstop(False) Top(175) Verticalalignment(Center) Width(518)
+    
+    Evtroutine Handling(#com_owner.CreateInstance)
+    
+    Set Com(#com_owner) Caption(*component_desc)
+    
+    #zipfile.SetFocus
+    #zipfile := '*.zip'
+    #pathtoget := '*ALL'
+    #description := 'Use this form to extract a path or all paths from a zip archive.'
+    
+    Endroutine
+    
+    Evtroutine Handling(#Button1.Click)
+    
+    #ZipService.WFZipGetPath( #ZipFile #xjsmserver #xjsmtrace #PathToGet #xjsmbase #extractToPath #xjsmstatus #xjsmmessage )
+    
+    Message Msgtxt(#xjsmstatus + ' - ' + #xjsmmessage)
+    
+    Endroutine
+    
+    End_Com

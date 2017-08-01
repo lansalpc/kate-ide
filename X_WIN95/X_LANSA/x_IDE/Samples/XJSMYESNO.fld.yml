@@ -1,0 +1,60 @@
+﻿Field:
+  Name:               xjsmyesno
+  Type:               Alphanumeric
+  Length:             4
+  Decimals:           0
+  Default Value:      "'*YES'"
+  Enabled For RDMLX:  No
+  System Field:       No
+
+  Input Attributes:
+  - FE
+  - LC
+
+  Multilingual Details:
+  - ENG:
+      Description:        "*YES or *NO"
+      Label:              "*YES or *NO"
+      Heading1:           "*YES or *NO"
+      Heading2:           " "
+      Heading3:           " "
+
+  - FRA:
+      Description:        "Base for path"
+      Label:              "Base for path"
+      Heading1:           "Base"
+      Heading2:           "for"
+      Heading3:           "path"
+
+  - JPN:
+      Description:        "Base for path"
+      Label:              "Base for path"
+      Heading1:           "Base"
+      Heading2:           "for"
+      Heading3:           "path"
+
+  - LLL:
+      Description:        "Base for path"
+      Label:              "Base for path"
+      Heading1:           "Base"
+      Heading2:           "for"
+      Heading3:           "path"
+
+  Source: |
+    *
+    Begin_Com Role(*EXTENDS #PRIM_OBJT)
+    
+    Begin_Com Role(*Visual #PRIM_EVEF) Name(#VisualEdit) Usepicklist(False) Componentversion(1) Height(21) Width(323)
+    
+    End_Com
+    
+    Begin_Com Role(*picklist) Name(#Picklist) Nomatchaction(Blanks)
+    
+    Define_Com Class(#PRIM_PKIT) Name(#PKIT_1) Value('*YES') Caption('Yes') Parent(#Picklist) Default(True)
+    Define_Com Class(#PRIM_PKIT) Name(#PKIT_2) Value('*NO') Caption('No') Parent(#Picklist)
+    
+    End_Com
+    Begin_Com Role(*Visual #PRIM_EVPL) Name(#VisualPicklist) Appearance(DropDownList) Height(19) Componentversion(1) Width(251) Defaultvisual(True)
+    
+    End_Com
+    End_Com

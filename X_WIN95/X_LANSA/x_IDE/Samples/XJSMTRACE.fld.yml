@@ -1,0 +1,51 @@
+﻿Field:
+  Name:               xjsmtrace
+  Type:               Alphanumeric
+  Length:             6
+  Decimals:           0
+  Default Value:      "'*NO'"
+  Enabled For RDMLX:  No
+  System Field:       No
+
+  Input Attributes:
+  - FE
+  - LC
+
+  Multilingual Details:
+  - ENG:
+      Description:        "Trace"
+      Label:              "Trace"
+      Heading1:           "Trace"
+      Heading2:           " "
+      Heading3:           " "
+
+  - FRA:
+      Description:        "Trace"
+      Label:              "Trace"
+      Heading1:           "Trace"
+      Heading2:           " "
+      Heading3:           " "
+
+  - JPN:
+      Description:        "Trace"
+      Label:              "Trace"
+      Heading1:           "Trace"
+      Heading2:           " "
+      Heading3:           " "
+
+  - LLL:
+      Description:        "Trace"
+      Label:              "Trace"
+      Heading1:           "Trace"
+      Heading2:           " "
+      Heading3:           " "
+
+  Source: |
+    *
+    Begin_Com Role(*EXTENDS #PRIM_OBJT)
+    
+    Begin_Com Role(*Visual #PRIM_EVEF) Name(#VisualEdit) Defaultvisual(True) Usepicklist(False) Componentversion(1) Height(21) Width(266)
+    
+    End_Com
+    
+    End_Com

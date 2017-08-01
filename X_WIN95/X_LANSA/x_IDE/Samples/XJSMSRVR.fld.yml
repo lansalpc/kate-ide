@@ -1,0 +1,51 @@
+﻿Field:
+  Name:               xjsmserver
+  Type:               Alphanumeric
+  Length:             50
+  Decimals:           0
+  Default Value:      "*BLANKS"
+  Enabled For RDMLX:  No
+  System Field:       No
+
+  Input Attributes:
+  - FE
+  - LC
+
+  Multilingual Details:
+  - ENG:
+      Description:        "Server"
+      Label:              "Server"
+      Heading1:           "Server"
+      Heading2:           " "
+      Heading3:           " "
+
+  - FRA:
+      Description:        "jsmserver"
+      Label:              "jsmserver"
+      Heading1:           "jsmserver"
+      Heading2:           " "
+      Heading3:           " "
+
+  - JPN:
+      Description:        "jsmserver"
+      Label:              "jsmserver"
+      Heading1:           "jsmserver"
+      Heading2:           " "
+      Heading3:           " "
+
+  - LLL:
+      Description:        "jsmserver"
+      Label:              "jsmserver"
+      Heading1:           "jsmserver"
+      Heading2:           " "
+      Heading3:           " "
+
+  Source: |
+    *
+    Begin_Com Role(*EXTENDS #PRIM_OBJT)
+    
+    Begin_Com Role(*Visual #PRIM_EVEF) Name(#VisualEdit) Defaultvisual(True) Usepicklist(False) Componentversion(1) Height(21) Width(895)
+    
+    End_Com
+    
+    End_Com
